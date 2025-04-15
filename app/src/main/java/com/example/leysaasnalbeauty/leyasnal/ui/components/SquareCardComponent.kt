@@ -3,6 +3,7 @@ package com.example.leysaasnalbeauty.leyasnal.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,11 +29,14 @@ import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 import com.example.leysaasnalbeauty.ui.theme.MainColor
 
 @Composable
-fun SquareCardComponent(icon:Int, text:String) {
+fun SquareCardComponent(icon: Int, text: String, onClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .size(120.dp).border(2.5.dp, color = DarkAccentColor, shape = RoundedCornerShape(8.dp))
-        ,
+            .size(120.dp)
+            .clickable {
+                onClick()
+            }
+            .border(2.5.dp, color = DarkAccentColor, shape = RoundedCornerShape(8.dp)),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(16.dp),
         colors = CardDefaults.cardColors(
@@ -46,7 +50,11 @@ fun SquareCardComponent(icon:Int, text:String) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Image(painter = painterResource(icon), contentDescription = "Card icon", modifier = Modifier.size(48.dp))
+            Image(
+                painter = painterResource(icon),
+                contentDescription = "Card icon",
+                modifier = Modifier.size(48.dp)
+            )
             BodyText(text, textAlignment = TextAlign.Center)
         }
     }

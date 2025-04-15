@@ -1,8 +1,22 @@
 <resources>
     <string name="app_name">Leysa Asnal Beauty</string>
     <string name="add_earning">Agregar Ingreso</string>
+    <string name="earnings">Ingresos</string>
+    <string name="expenses">Gastos</string>
     <string name="add_expense">Agregar Gasto</string>
+    <string name="clients">Clientas</string>
+    <string name="annotations">Anotaciones</string>
     <string name="new_client">Agregar Clienta</string>
+    <string name="amount">Monto</string>
+    <string name="description">Descripción</string>
+    <string name="home">Principal</string>
+    <string name="clean">Limpiar</string>
+    <string name="phone_number">Número de celular</string>
+    <string name="details">Detalles</string>
+    <string name="accept">Aceptar</string>
+    <string name="expand">Expandir</string>
+    <string name="transactions">Transacciones</string>
+    <string name="cancel">Cancelar</string>
     <string name="new_fidelity_client">Agrear Clienta Fiel</string>
     <string name="create_gift_card">Crear Gift Card</string>
     <string name="notify_client">Notificar Clienta</string>
