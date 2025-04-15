@@ -10,6 +10,8 @@
     <string name="amount">Monto</string>
     <string name="description">Descripción</string>
     <string name="home">Principal</string>
+    <string name="clean_earnings">¿Estás segura que quieres limpiar los datos de los ingresos? Una vez borrados no se pueden recuperar</string>
+    <string name="clean_expenses">¿Estás segura que quieres limpiar los datos de los gastos? Una vez borrados no se pueden recuperar</string>
     <string name="clean">Limpiar</string>
     <string name="phone_number">Número de celular</string>
     <string name="details">Detalles</string>

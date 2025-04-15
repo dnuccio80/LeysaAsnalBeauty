@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.ui.components.AlertDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AmountDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BalanceDetail
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ClientDialog
@@ -37,6 +38,8 @@ fun HomeScreen(innerPadding: PaddingValues) {
     var showAddEarningDialog by rememberSaveable { mutableStateOf(false) }
     var showAddExpenseDialog by rememberSaveable { mutableStateOf(false) }
     var showAddClientDialog by rememberSaveable { mutableStateOf(false) }
+    var showCleanEarningsDialog by rememberSaveable { mutableStateOf(false) }
+    var showCleanExpensesDialog by rememberSaveable { mutableStateOf(false) }
 
     Box(
         Modifier
@@ -62,8 +65,8 @@ fun HomeScreen(innerPadding: PaddingValues) {
                     showNewClientDialog = { showAddClientDialog = true }
                 )
                 Spacer(Modifier.size(0.dp))
-                TransactionsSection(stringResource(R.string.earnings))
-                TransactionsSection(stringResource(R.string.expenses))
+                TransactionsSection(stringResource(R.string.earnings)) { showCleanEarningsDialog = true }
+                TransactionsSection(stringResource(R.string.expenses)) { showCleanExpensesDialog = true }
 
                 // Earning Dialog
                 AmountDialog(
@@ -87,6 +90,21 @@ fun HomeScreen(innerPadding: PaddingValues) {
                     text = stringResource(R.string.new_client),
                     onDismiss = { showAddClientDialog = false },
                     onConfirm = { }
+                )
+
+                // Alert Clean Earnings Dialog
+                AlertDialogItem(
+                    show = showCleanEarningsDialog,
+                    text = stringResource(R.string.clean_earnings),
+                    onDismiss = { showCleanEarningsDialog = false },
+                    onConfirm = { showCleanEarningsDialog = false }
+                )
+
+                AlertDialogItem(
+                    show = showCleanExpensesDialog,
+                    text = stringResource(R.string.clean_expenses),
+                    onDismiss = { showCleanExpensesDialog = false },
+                    onConfirm = { showCleanExpensesDialog = false }
                 )
             }
         }

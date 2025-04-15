@@ -38,7 +38,7 @@ import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 import com.example.leysaasnalbeauty.ui.theme.MainColor
 
 @Composable
-fun TransactionsSection(title:String) {
+fun TransactionsSection(title:String, onCleanButtonClicked:() -> Unit) {
 
     var isExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -70,7 +70,7 @@ fun TransactionsSection(title:String) {
                 }
                 ButtonIconItem(if(isExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown) { isExpanded = !isExpanded }
                 Spacer(Modifier.size(4.dp))
-                ButtonTextItem(stringResource(R.string.clean)) {  }
+                ButtonTextItem(stringResource(R.string.clean)) { onCleanButtonClicked() }
             }
             Column(Modifier.fillMaxWidth()) {
                 HorizontalDivider(thickness = 1.dp, color = DarkAccentColor)

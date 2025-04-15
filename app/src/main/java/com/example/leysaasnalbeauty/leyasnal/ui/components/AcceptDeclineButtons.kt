@@ -16,7 +16,7 @@ import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 
 @Composable
 fun AcceptDeclineButtons(onAccept: () -> Unit, onDecline: () -> Unit) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Absolute.SpaceEvenly) {
         ButtonTextItem(stringResource(R.string.cancel)) { onDecline() }
         ButtonTextItem(stringResource(R.string.accept)) { onAccept() }
     }
