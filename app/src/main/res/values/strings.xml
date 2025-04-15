@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">LeysaAsnalBeauty</string>
+    <string name="app_name">Leysa Asnal Beauty</string>
+    <string name="add_earning">Agregar Ingreso</string>
+    <string name="add_expense">Agregar Gasto</string>
+    <string name="new_client">Agregar Clienta</string>
+    <string name="new_fidelity_client">Agrear Clienta Fiel</string>
+    <string name="create_gift_card">Crear Gift Card</string>
+    <string name="notify_client">Notificar Clienta</string>
+
 </resources>

@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,16 +24,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SquareCardComponent
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EntryDataClass
+import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.example.leysaasnalbeauty.ui.theme.MainColor
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreen(innerPadding: PaddingValues) {
+
+    val entryList: List<EntryDataClass> = listOf(
+        EntryDataClass(R.drawable.ic_money, stringResource(R.string.add_earning)),
+        EntryDataClass(R.drawable.ic_buys, stringResource(R.string.add_expense)),
+        EntryDataClass(R.drawable.ic_woman, stringResource(R.string.new_client)),
+        EntryDataClass(R.drawable.ic_fidelity, stringResource(R.string.new_fidelity_client)),
+        EntryDataClass(R.drawable.ic_gift_card, stringResource(R.string.create_gift_card)),
+        EntryDataClass(R.drawable.ic_message, stringResource(R.string.notify_client)),
+    )
+
     Box(
         Modifier
             .fillMaxSize()
@@ -59,9 +74,10 @@ fun HomeScreen(innerPadding: PaddingValues) {
 
                 FirstTitleText("Hola Ley")
                 Column {
-                    SecondTitleText("Balance", color = MainColor)
+                    SecondTitleText("Balance", color = AccentColor)
                     FirstTitleText("$150.000")
                 }
+                Spacer(Modifier.size(0.dp))
                 FlowRow(
                     Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
@@ -69,12 +85,9 @@ fun HomeScreen(innerPadding: PaddingValues) {
                     maxItemsInEachRow = Int.MAX_VALUE,
 
                     ) {
-                    SquareCardComponent(R.drawable.ic_money, "Agregar Ingreso")
-                    SquareCardComponent(R.drawable.ic_buys, "Agregar Gasto")
-                    SquareCardComponent(R.drawable.ic_woman, "Agregar Clienta")
-                    SquareCardComponent(R.drawable.ic_fidelity, "Nueva Clienta Fiel")
-                    SquareCardComponent(R.drawable.ic_gift_card, "Crear Gift Card")
-                    SquareCardComponent(R.drawable.ic_message, "Notificar Clienta")
+                    entryList.forEach { entry ->
+                        SquareCardComponent(entry.icon, entry.title)
+                    }
                 }
             }
         }
