@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AlertDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AmountDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BalanceDetail
@@ -31,9 +32,8 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.EntryFlowRow
 import com.example.leysaasnalbeauty.leyasnal.ui.components.Greeting
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.TransactionsSection
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun HomeScreen(innerPadding: PaddingValues) {
+fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
 
     var showAddEarningDialog by rememberSaveable { mutableStateOf(false) }
     var showAddExpenseDialog by rememberSaveable { mutableStateOf(false) }
