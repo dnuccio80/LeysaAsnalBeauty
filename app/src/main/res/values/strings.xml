@@ -11,8 +11,9 @@
     <string name="amount">Monto</string>
     <string name="balance">Balance</string>
     <string name="search_client">Buscar clienta por nombre..</string>
-    <string name="empty_client_list">No tienes clientas registradas aún</string>
+    <string name="empty_client_list">No tenes clientas registradas todavía</string>
     <string name="description">Descripción</string>
+    <string name="edit_transaction">Editar Transacción</string>
     <string name="home">Principal</string>
     <string name="clean_earnings">¿Estás segura que quieres limpiar los datos de los ingresos? Una vez borrados no se pueden recuperar</string>
     <string name="clean_expenses">¿Estás segura que quieres limpiar los datos de los gastos? Una vez borrados no se pueden recuperar</string>

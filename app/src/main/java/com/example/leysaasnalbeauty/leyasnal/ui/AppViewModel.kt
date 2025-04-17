@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -84,7 +86,13 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun addEarning(earning: EarningDataClass) {
+    fun addEarning(amount:Int, description:String) {
+
+        val earning:EarningDataClass = EarningDataClass(
+            amount = amount,
+            description = description
+        )
+
         viewModelScope.launch(Dispatchers.IO) {
             addEarningUseCase(earning)
         }
@@ -100,6 +108,14 @@ class AppViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             updateEarningUseCase(earning)
         }
+    }
+
+    // Generic fun
+
+    fun formatPrice(price: Int): String {
+        val format = NumberFormat.getCurrencyInstance(Locale("es", "AR"))
+        format.maximumFractionDigits = 0
+        return format.format(price)
     }
 
 }

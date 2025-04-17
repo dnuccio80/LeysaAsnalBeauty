@@ -1,4 +1,4 @@
-package com.example.leysaasnalbeauty.leyasnal.ui.components
+package com.example.leysaasnalbeauty.leyasnal.ui.sections
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,14 +20,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.ui.components.AcceptDeclineButtons
+import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
+import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
 
 @Composable
-fun AmountDialog(show: Boolean, text: String, onDismiss: () -> Unit, onConfirm: (Int, String) -> Unit) {
+fun EditTransactionDialog(show: Boolean, earning: EarningDataClass, onDismiss:() -> Unit, onConfirm: (EarningDataClass) -> Unit) {
+
     if (!show) return
 
-    var amount by rememberSaveable { mutableStateOf("") }
-    var description by rememberSaveable { mutableStateOf("") }
+    var amount by rememberSaveable { mutableStateOf(earning.amount.toString()) }
+    var description by rememberSaveable { mutableStateOf(earning.description) }
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -45,7 +50,7 @@ fun AmountDialog(show: Boolean, text: String, onDismiss: () -> Unit, onConfirm: 
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SecondTitleText(text)
+                    SecondTitleText(stringResource(R.string.edit_transaction))
                     HorizontalDivider(
                         Modifier.fillMaxWidth(),
                         thickness = 3.dp,
@@ -74,12 +79,18 @@ fun AmountDialog(show: Boolean, text: String, onDismiss: () -> Unit, onConfirm: 
                     onAccept = {
                         if (amount.isNotEmpty() && description.isNotEmpty()) {
                             onDismiss()
-                            onConfirm(amount.toInt(), description)
+                            onConfirm(earning.copy(
+                                amount = amount.toInt(),
+                                description = description
+                            ))
                         }
                     },
                     onDecline = { onDismiss() }
                 )
+
+
             }
         }
     }
+
 }

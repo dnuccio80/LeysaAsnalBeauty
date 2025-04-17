@@ -3,6 +3,7 @@ package com.example.leysaasnalbeauty.leyasnal.ui.sections
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -30,20 +34,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
+import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonIconItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
+import com.example.leysaasnalbeauty.leyasnal.ui.components.TransactionDetailsItem
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
-import com.example.leysaasnalbeauty.ui.theme.MainColor
 
 @Composable
-fun TransactionsSection(title:String, onCleanButtonClicked:() -> Unit) {
+fun TransactionsSection(
+    title: String,
+    earnings: List<EarningDataClass>,
+    viewModel: AppViewModel,
+    onCleanButtonClicked: () -> Unit,
+    onItemListClicked: (EarningDataClass) -> Unit
+) {
 
     var isExpanded by rememberSaveable { mutableStateOf(false) }
 
     val cardHeight by animateDpAsState(
-        targetValue = if(isExpanded) 370.dp else 250.dp,
+        targetValue = if (isExpanded) 370.dp else 250.dp,
         animationSpec = TweenSpec(durationMillis = 200),
     )
 
@@ -65,10 +78,12 @@ fun TransactionsSection(title:String, onCleanButtonClicked:() -> Unit) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Box(modifier = Modifier.weight(1f)){
+                Box(modifier = Modifier.weight(1f)) {
                     SecondTitleText(title)
                 }
-                ButtonIconItem(if(isExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown) { isExpanded = !isExpanded }
+                ButtonIconItem(if (isExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown) {
+                    isExpanded = !isExpanded
+                }
                 Spacer(Modifier.size(4.dp))
                 ButtonTextItem(stringResource(R.string.clean)) { onCleanButtonClicked() }
             }
@@ -76,6 +91,24 @@ fun TransactionsSection(title:String, onCleanButtonClicked:() -> Unit) {
                 HorizontalDivider(thickness = 1.dp, color = DarkAccentColor)
                 HorizontalDivider(thickness = 1.dp, color = Color.Black)
             }
+
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                earnings.forEach {
+                    TransactionDetailsItem(it, viewModel) { earning ->
+                        onItemListClicked(earning)
+                    }
+
+                }
+            }
         }
+
     }
+
+
 }
+
