@@ -20,10 +20,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
 
 @Composable
-fun ClientDialog(show: Boolean, text: String, onDismiss: () -> Unit, onConfirm: () -> Unit) {
+fun ClientDialog(
+    show: Boolean,
+    text: String,
+    onDismiss: () -> Unit,
+    onConfirm: (ClientDataClass) -> Unit
+) {
     if (!show) return
 
     var name by rememberSaveable { mutableStateOf("") }
@@ -33,10 +39,12 @@ fun ClientDialog(show: Boolean, text: String, onDismiss: () -> Unit, onConfirm: 
     Dialog(
         onDismissRequest = { onDismiss() },
     ) {
-        Box(modifier = Modifier
-            .width(250.dp)
-            .border(1.dp, color = Color.White)
-            .background(AccentColor)) {
+        Box(
+            modifier = Modifier
+                .width(250.dp)
+                .border(1.dp, color = Color.White)
+                .background(AccentColor)
+        ) {
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -56,9 +64,9 @@ fun ClientDialog(show: Boolean, text: String, onDismiss: () -> Unit, onConfirm: 
                     onValueChange = { newName ->
                         name = newName
                     },
-                    isNumeric = true,
-                    label = stringResource(R.string.amount),
-                    icon = R.drawable.ic_dollar_sign
+                    isNumeric = false,
+                    label = stringResource(R.string.name),
+                    icon = R.drawable.ic_name
                 )
                 MainTextField(
                     value = phoneNumber,
@@ -80,10 +88,25 @@ fun ClientDialog(show: Boolean, text: String, onDismiss: () -> Unit, onConfirm: 
                     icon = R.drawable.ic_info,
                 )
                 AcceptDeclineButtons(
-                    onAccept = { onDismiss() },
+                    onAccept = {
+                        if (name.isNotEmpty() && phoneNumber.isNotEmpty() && details.isNotEmpty()) {
+                            onDismiss()
+                            onConfirm(
+                                ClientDataClass(
+                                    name = name,
+                                    phone = phoneNumber,
+                                    details = details
+                                )
+                            )
+                            name = ""
+                            phoneNumber = ""
+                            details = ""
+                        }
+                    },
                     onDecline = { onDismiss() }
                 )
             }
         }
     }
 }
+

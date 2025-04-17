@@ -16,11 +16,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 
 @Composable
-fun BottomBar() {
+fun BottomBar(navController: NavHostController) {
 
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
 
@@ -30,13 +32,19 @@ fun BottomBar() {
     ) {
         NavigationBarItem(
             selected = selectedItem == 0,
-            onClick = { selectedItem = 0 },
+            onClick = {
+                selectedItem = 0
+                navController.navigate(Routes.Home.route)
+            },
             icon = { Icon(Icons.Filled.Home, contentDescription = "") },
             label = { BodyText(stringResource(R.string.home)) }
         )
         NavigationBarItem(
             selected = selectedItem == 1,
-            onClick = { selectedItem = 1 },
+            onClick = {
+                selectedItem = 1
+                navController.navigate(Routes.Clients.route)
+            },
             icon = { Icon(Icons.Filled.Favorite, contentDescription = "") },
             label = { BodyText(stringResource(R.string.clients)) }
 

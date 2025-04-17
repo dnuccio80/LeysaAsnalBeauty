@@ -8,7 +8,12 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.HomeScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.AppTopBar
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.BottomBar
@@ -25,12 +30,18 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LeysaAsnalBeautyTheme {
+
+                val navController = rememberNavController()
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = { AppTopBar() },
-                    bottomBar = { BottomBar() }
+                    bottomBar = { BottomBar(navController) }
                 ) { innerPadding ->
-                    HomeScreen(innerPadding, viewModel)
+                    NavHost(navController, startDestination = Routes.Home.route) {
+                        composable(Routes.Home.route) { HomeScreen(innerPadding, viewModel) }
+                        composable(Routes.Clients.route) { ClientsScreen(innerPadding, viewModel) }
+                    }
                 }
             }
         }

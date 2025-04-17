@@ -54,7 +54,7 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                 Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Greeting("Ley")
                 BalanceDetail()
@@ -65,8 +65,12 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     showNewClientDialog = { showAddClientDialog = true }
                 )
                 Spacer(Modifier.size(0.dp))
-                TransactionsSection(stringResource(R.string.earnings)) { showCleanEarningsDialog = true }
-                TransactionsSection(stringResource(R.string.expenses)) { showCleanExpensesDialog = true }
+                TransactionsSection(stringResource(R.string.earnings)) {
+                    showCleanEarningsDialog = true
+                }
+                TransactionsSection(stringResource(R.string.expenses)) {
+                    showCleanExpensesDialog = true
+                }
 
                 // Earning Dialog
                 AmountDialog(
@@ -89,7 +93,9 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     show = showAddClientDialog,
                     text = stringResource(R.string.new_client),
                     onDismiss = { showAddClientDialog = false },
-                    onConfirm = { }
+                    onConfirm = { client ->
+                        viewModel.addNewClient(client)
+                    }
                 )
 
                 // Alert Clean Earnings Dialog

@@ -7,7 +7,10 @@
     <string name="clients">Clientas</string>
     <string name="annotations">Anotaciones</string>
     <string name="new_client">Agregar Clienta</string>
+    <string name="name">Nombre</string>
     <string name="amount">Monto</string>
+    <string name="search_client">Buscar clienta por nombre..</string>
+    <string name="empty_client_list">No tienes clientas registradas aún</string>
     <string name="description">Descripción</string>
     <string name="home">Principal</string>
     <string name="clean_earnings">¿Estás segura que quieres limpiar los datos de los ingresos? Una vez borrados no se pueden recuperar</string>

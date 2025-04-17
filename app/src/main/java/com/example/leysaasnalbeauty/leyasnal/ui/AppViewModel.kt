@@ -27,15 +27,9 @@ class AppViewModel @Inject constructor(
     )
     val clients = _clients
 
-    fun addNewClient(name: String, phone: String, details: String) {
+    fun addNewClient(client:ClientDataClass) {
         viewModelScope.launch(Dispatchers.IO) {
-            addNewClientUseCase(
-                ClientDataClass(
-                    name = name,
-                    phone = phone,
-                    details = details
-                )
-            )
+            addNewClientUseCase(client)
         }
     }
 
