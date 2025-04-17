@@ -1,4 +1,4 @@
-package com.example.leysaasnalbeauty.leyasnal.domain
+package com.example.leysaasnalbeauty.leyasnal.domain.clients
 
 import com.example.leysaasnalbeauty.leyasnal.data.clients.ClientRepository
 import javax.inject.Inject

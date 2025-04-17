@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -41,6 +41,8 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
     var showCleanEarningsDialog by rememberSaveable { mutableStateOf(false) }
     var showCleanExpensesDialog by rememberSaveable { mutableStateOf(false) }
 
+    val earnings by viewModel.earnings.collectAsState()
+
     Box(
         Modifier
             .fillMaxSize()
@@ -54,11 +56,10 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                 Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Greeting("Ley")
-                BalanceDetail()
-                Spacer(Modifier.size(0.dp))
+                BalanceDetail(earnings)
                 EntryFlowRow(
                     showEarningDialog = { showAddEarningDialog = true },
                     showExpenseDialog = { showAddExpenseDialog = true },
