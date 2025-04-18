@@ -1,4 +1,4 @@
-package com.example.leysaasnalbeauty.leyasnal.ui.sections
+package com.example.leysaasnalbeauty.leyasnal.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,19 +20,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
-import com.example.leysaasnalbeauty.leyasnal.ui.components.AcceptDeclineButtons
-import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
-import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
 
 @Composable
-fun EditTransactionDialog(show: Boolean, earning: EarningDataClass, onDismiss:() -> Unit, onConfirm: (EarningDataClass) -> Unit) {
+fun EditExpenseDialog(show: Boolean, expense: ExpenseDataClass, onDismiss:() -> Unit, onConfirm: (ExpenseDataClass) -> Unit) {
 
     if (!show) return
 
-    var amount by rememberSaveable { mutableStateOf(earning.amount.toString()) }
-    var description by rememberSaveable { mutableStateOf(earning.description) }
+    var amount by rememberSaveable { mutableStateOf(expense.amount.toString()) }
+    var description by rememberSaveable { mutableStateOf(expense.description) }
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -79,7 +77,7 @@ fun EditTransactionDialog(show: Boolean, earning: EarningDataClass, onDismiss:()
                     onAccept = {
                         if (amount.isNotEmpty() && description.isNotEmpty()) {
                             onDismiss()
-                            onConfirm(earning.copy(
+                            onConfirm(expense.copy(
                                 amount = amount.toInt(),
                                 description = description
                             ))
@@ -87,8 +85,6 @@ fun EditTransactionDialog(show: Boolean, earning: EarningDataClass, onDismiss:()
                     },
                     onDecline = { onDismiss() }
                 )
-
-
             }
         }
     }

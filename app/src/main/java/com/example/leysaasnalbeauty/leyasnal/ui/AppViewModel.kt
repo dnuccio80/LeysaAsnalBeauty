@@ -2,7 +2,7 @@ package com.example.leysaasnalbeauty.leyasnal.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.leysaasnalbeauty.leyasnal.data.balance.UpdateEarningUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.earnings.UpdateEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.AddNewClientUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.DeleteClientUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.GetAllClientsUseCase
@@ -11,8 +11,14 @@ import com.example.leysaasnalbeauty.leyasnal.domain.earnings.AddEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.DeleteAllEarningsUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.DeleteEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.GetAllEarningsUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.expenses.AddExpenseUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.expenses.DeleteAllExpensesDataUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.expenses.DeleteExpenseUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.expenses.GetAllExpensesUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.expenses.UpdateExpenseUseCase
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -41,7 +47,15 @@ class AppViewModel @Inject constructor(
     private val deleteEarningUseCase: DeleteEarningUseCase,
     private val updateEarningUseCase: UpdateEarningUseCase,
 
-) : ViewModel() {
+    // Expenses
+
+    getAllExpensesUseCase: GetAllExpensesUseCase,
+    private val deleteAllExpensesDataUseCase: DeleteAllExpensesDataUseCase,
+    private val addExpenseUseCase: AddExpenseUseCase,
+    private val deleteExpenseUseCase: DeleteExpenseUseCase,
+    private val updateExpenseUseCase: UpdateExpenseUseCase,
+
+    ) : ViewModel() {
 
     // Vals
 
@@ -55,12 +69,16 @@ class AppViewModel @Inject constructor(
     )
     val earnings = _earnings
 
-    // Funs
+    private val _expenses = getAllExpensesUseCase().stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
+    )
+    val expenses = _expenses
 
+    // Fun
 
     // Clients
 
-    fun addNewClient(client:ClientDataClass) {
+    fun addNewClient(client: ClientDataClass) {
         viewModelScope.launch(Dispatchers.IO) {
             addNewClientUseCase(client)
         }
@@ -86,9 +104,9 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun addEarning(amount:Int, description:String) {
+    fun addEarning(amount: Int, description: String) {
 
-        val earning:EarningDataClass = EarningDataClass(
+        val earning: EarningDataClass = EarningDataClass(
             amount = amount,
             description = description
         )
@@ -107,6 +125,36 @@ class AppViewModel @Inject constructor(
     fun updateEarning(earning: EarningDataClass) {
         viewModelScope.launch(Dispatchers.IO) {
             updateEarningUseCase(earning)
+        }
+    }
+
+    // Expenses
+
+    fun deleteAllExpensesData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteAllExpensesDataUseCase()
+        }
+    }
+
+    fun addExpense(amount: Int, description: String) {
+        val expense = ExpenseDataClass(
+            amount = amount,
+            description = description
+        )
+        viewModelScope.launch(Dispatchers.IO) {
+            addExpenseUseCase(expense)
+        }
+    }
+
+    fun deleteExpense(expense: ExpenseDataClass) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteExpenseUseCase(expense)
+        }
+    }
+
+    fun updateExpense(expense: ExpenseDataClass) {
+        viewModelScope.launch(Dispatchers.IO) {
+            updateExpenseUseCase(expense)
         }
     }
 

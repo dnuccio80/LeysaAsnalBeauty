@@ -1,4 +1,4 @@
-package com.example.leysaasnalbeauty.leyasnal.data.balance
+package com.example.leysaasnalbeauty.leyasnal.data.balance.earnings
 
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.toEarningEntity

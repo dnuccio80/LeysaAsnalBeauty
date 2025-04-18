@@ -41,16 +41,17 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.TransactionDetailsItem
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.TransactionsDataClass
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 
 @Composable
 fun TransactionsSection(
     title: String,
-    earnings: List<EarningDataClass>,
+    transactions: List<TransactionsDataClass>,
     viewModel: AppViewModel,
     onCleanButtonClicked: () -> Unit,
-    onItemListClicked: (EarningDataClass) -> Unit
+    onItemListClicked: (TransactionsDataClass) -> Unit
 ) {
 
     var isExpanded by rememberSaveable { mutableStateOf(false) }
@@ -98,11 +99,10 @@ fun TransactionsSection(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                earnings.forEach {
-                    TransactionDetailsItem(it, viewModel) { earning ->
-                        onItemListClicked(earning)
+                transactions.forEach {
+                    TransactionDetailsItem(it, viewModel) { transaction ->
+                        onItemListClicked(transaction)
                     }
-
                 }
             }
         }

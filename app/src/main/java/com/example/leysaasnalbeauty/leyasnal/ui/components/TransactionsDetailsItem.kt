@@ -4,23 +4,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.TransactionsDataClass
 
 @Composable
-fun TransactionDetailsItem(earning: EarningDataClass, viewModel: AppViewModel, onClick:(EarningDataClass) -> Unit) {
+fun TransactionDetailsItem(transactions: TransactionsDataClass, viewModel: AppViewModel, onClick:(TransactionsDataClass) -> Unit) {
 
-    val formatedAmount = viewModel.formatPrice(earning.amount)
+    val formatedAmount = viewModel.formatPrice(transactions.amount)
 
     Row(Modifier.fillMaxWidth().clickable {
-        onClick(earning)
+        onClick(transactions)
     }) {
         Box(modifier = Modifier.weight(1f)) {
-            BodyText(earning.description)
+            BodyText(transactions.description)
         }
         BodyText(formatedAmount)
     }

@@ -1,4 +1,4 @@
-package com.example.leysaasnalbeauty.leyasnal.data.balance
+package com.example.leysaasnalbeauty.leyasnal.data.balance.earnings
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
