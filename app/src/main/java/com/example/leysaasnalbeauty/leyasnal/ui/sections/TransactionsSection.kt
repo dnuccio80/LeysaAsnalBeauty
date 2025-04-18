@@ -86,7 +86,7 @@ fun TransactionsSection(
                     isExpanded = !isExpanded
                 }
                 Spacer(Modifier.size(4.dp))
-                ButtonTextItem(stringResource(R.string.clean)) { onCleanButtonClicked() }
+                ButtonTextItem(stringResource(R.string.clean), DarkAccentColor) { onCleanButtonClicked() }
             }
             Column(Modifier.fillMaxWidth()) {
                 HorizontalDivider(thickness = 1.dp, color = DarkAccentColor)

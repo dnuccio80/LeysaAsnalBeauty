@@ -51,6 +51,8 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
     var showCleanExpensesDialog by rememberSaveable { mutableStateOf(false) }
     var showEditEarningDialog by rememberSaveable { mutableStateOf(false) }
     var showEditExpenseDialog by rememberSaveable { mutableStateOf(false) }
+    var showDeleteEarningDialog by rememberSaveable { mutableStateOf(false) }
+    var showDeleteExpenseDialog by rememberSaveable { mutableStateOf(false) }
 
     val earnings by viewModel.earnings.collectAsState()
     val expenses by viewModel.expenses.collectAsState()
@@ -197,6 +199,7 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     }
                 )
 
+                // Alert Clean Expenses Dialog
                 AlertDialogItem(
                     show = showCleanExpensesDialog,
                     text = stringResource(R.string.clean_expenses),
@@ -204,6 +207,34 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     onConfirm = {
                         showCleanExpensesDialog = false
                         viewModel.deleteAllExpensesData()
+                    }
+                )
+
+                // Alert Delete Earning Dialog
+                AlertDialogItem(
+                    show = showDeleteEarningDialog,
+                    text = stringResource(R.string.delete_earning_alert),
+                    onDismiss = {
+                        showDeleteEarningDialog = false
+                    },
+                    onConfirm = {
+                        viewModel.deleteEarning(selectedEarning)
+                        showDeleteEarningDialog = false
+                        showEditEarningDialog = false
+                    }
+                )
+
+                // Alert Delete Expense Dialog
+                AlertDialogItem(
+                    show = showDeleteExpenseDialog,
+                    text = stringResource(R.string.delete_expense_alert),
+                    onDismiss = {
+                        showDeleteExpenseDialog = false
+                    },
+                    onConfirm = {
+                        viewModel.deleteExpense(selectedExpense)
+                        showDeleteExpenseDialog = false
+                        showEditExpenseDialog = false
                     }
                 )
 
@@ -216,6 +247,9 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     },
                     onConfirm = {
                         viewModel.updateEarning(it)
+                    },
+                    onDelete = {
+                        showDeleteEarningDialog = true
                     }
                 )
 
@@ -226,6 +260,9 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     onDismiss = { showEditExpenseDialog = false },
                     onConfirm = {
                         viewModel.updateExpense(it)
+                    },
+                    onDelete = {
+                        showDeleteExpenseDialog = true
                     }
                 )
             }

@@ -22,9 +22,11 @@ import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.NegativeColor
+import com.example.leysaasnalbeauty.ui.theme.PositiveColor
 
 @Composable
-fun EditEarningDialog(show: Boolean, earning: EarningDataClass, onDismiss:() -> Unit, onConfirm: (EarningDataClass) -> Unit) {
+fun EditEarningDialog(show: Boolean, earning: EarningDataClass, onDismiss:() -> Unit, onConfirm: (EarningDataClass) -> Unit, onDelete:() -> Unit) {
 
     if (!show) return
 
@@ -73,6 +75,10 @@ fun EditEarningDialog(show: Boolean, earning: EarningDataClass, onDismiss:() -> 
                     icon = R.drawable.ic_info
                 )
                 AcceptDeclineButtons(
+                    acceptText = stringResource(R.string.modify),
+                    declineText = stringResource(R.string.delete),
+                    declineButtonColor = NegativeColor,
+                    acceptButtonColor = PositiveColor,
                     onAccept = {
                         if (amount.isNotEmpty() && description.isNotEmpty()) {
                             onDismiss()
@@ -82,10 +88,8 @@ fun EditEarningDialog(show: Boolean, earning: EarningDataClass, onDismiss:() -> 
                             ))
                         }
                     },
-                    onDecline = { onDismiss() }
+                    onDecline = { onDelete() }
                 )
-
-
             }
         }
     }

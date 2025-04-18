@@ -23,9 +23,11 @@ import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.NegativeColor
+import com.example.leysaasnalbeauty.ui.theme.PositiveColor
 
 @Composable
-fun EditExpenseDialog(show: Boolean, expense: ExpenseDataClass, onDismiss:() -> Unit, onConfirm: (ExpenseDataClass) -> Unit) {
+fun EditExpenseDialog(show: Boolean, expense: ExpenseDataClass, onDismiss:() -> Unit, onConfirm: (ExpenseDataClass) -> Unit, onDelete: () -> Unit) {
 
     if (!show) return
 
@@ -74,6 +76,10 @@ fun EditExpenseDialog(show: Boolean, expense: ExpenseDataClass, onDismiss:() -> 
                     icon = R.drawable.ic_info
                 )
                 AcceptDeclineButtons(
+                    acceptText = stringResource(R.string.modify),
+                    declineText = stringResource(R.string.delete),
+                    declineButtonColor = NegativeColor,
+                    acceptButtonColor = PositiveColor,
                     onAccept = {
                         if (amount.isNotEmpty() && description.isNotEmpty()) {
                             onDismiss()
@@ -83,10 +89,9 @@ fun EditExpenseDialog(show: Boolean, expense: ExpenseDataClass, onDismiss:() -> 
                             ))
                         }
                     },
-                    onDecline = { onDismiss() }
+                    onDecline = { onDelete() }
                 )
             }
         }
     }
-
 }
