@@ -95,7 +95,7 @@ fun ClientsScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                         verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
                         clientList.forEachIndexed { index, client ->
-                            ClientItem(client)
+                            ClientItem(client) { }
 
                             if (index < clientList.lastIndex) {
                                 HorizontalDivider(
@@ -110,7 +110,6 @@ fun ClientsScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     }
                 }
             }
-
         }
     }
 }

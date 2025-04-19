@@ -2,6 +2,7 @@ package com.example.leysaasnalbeauty.leyasnal.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.UpdateEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.AddNewClientUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.DeleteClientUseCase
@@ -94,6 +95,13 @@ class AppViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             updateClientUseCase(client)
         }
+    }
+
+    fun getClientById(clientId: Int): ClientDataClass {
+        clients.value.forEach {
+            if(it.id == clientId) return it
+        }
+        return ClientDataClass(0,"","","")
     }
 
     // Earnings

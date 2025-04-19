@@ -8,11 +8,15 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavArgument
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.HomeScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.AppTopBar
@@ -41,6 +45,20 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController, startDestination = Routes.Home.route) {
                         composable(Routes.Home.route) { HomeScreen(innerPadding, viewModel) }
                         composable(Routes.Clients.route) { ClientsScreen(innerPadding, viewModel) }
+//                        composable(
+//                            Routes.ClientDetails.route,
+//                            arguments = listOf(navArgument("clientId") {
+//                                type = NavType.IntType
+//                            })
+//                        )
+//                        { backStackEntry ->
+//                            ClientDetailsScreen(
+//                                innerPadding = TODO(),
+//                                viewModel = TODO(),
+//                                clientId = TODO()
+//                            ) { }
+//                        }
+//                    }
                     }
                 }
             }

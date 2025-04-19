@@ -19,6 +19,10 @@
     <string name="delete_expense_alert">¿Estás segura que queres eliiminar este gasto?</string>
     <string name="delete_earning_alert">¿Estás segura que queres eliiminar este ingreso?</string>
     <string name="home">Principal</string>
+    <string name="modify_name">Modificar Nombre</string>
+    <string name="modify_phone_number">Modificar Teléfono</string>
+    <string name="modify_details">Modificar Detalles</string>
+    <string name="phone">Teléfono</string>
     <string name="clean_earnings">¿Estás segura que quieres limpiar los datos de los ingresos? Una vez borrados no se pueden recuperar</string>
     <string name="clean_expenses">¿Estás segura que quieres limpiar los datos de los gastos? Una vez borrados no se pueden recuperar</string>
     <string name="clean">Limpiar</string>
