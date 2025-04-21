@@ -194,4 +194,9 @@ class AppViewModel @Inject constructor(
         return format.format(price)
     }
 
+    fun clearBalanceData() {
+        deleteAllExpensesData()
+        deleteAllEarnings()
+    }
+
 }

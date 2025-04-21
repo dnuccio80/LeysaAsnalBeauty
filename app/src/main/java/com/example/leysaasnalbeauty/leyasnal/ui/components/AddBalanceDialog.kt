@@ -28,16 +28,23 @@ import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
 
 @Composable
-fun AddBalanceDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
+fun AddBalanceDialog(
+    show: Boolean,
+    onDismiss: () -> Unit,
+    onPositiveBalanceAdded: (String) -> Unit,
+    onNegativeBalanceAdded: (String) -> Unit
+) {
 
     if (!show) return
 
-    var value by rememberSaveable { mutableStateOf("") }
 
     val list = listOf(
         stringResource(R.string.positive_balance),
         stringResource(R.string.negative_balance),
     )
+
+    var value by rememberSaveable { mutableStateOf("") }
+    var selected by rememberSaveable { mutableStateOf(list[0]) }
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -70,11 +77,14 @@ fun AddBalanceDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: (String) -
                     label = stringResource(R.string.amount),
                     icon = R.drawable.ic_dollar_sign
                 )
-                RadioButtonsGroup(list)
+                RadioButtonsGroup(list, selected) { selected = it }
                 AcceptDeclineButtons(
                     onAccept = {
-                        if(value.isNotEmpty()){
-                            onConfirm(value)
+                        if (value.isEmpty()) return@AcceptDeclineButtons
+                        if(selected == list[0]) {
+                            onPositiveBalanceAdded(value)
+                        } else{
+                            onNegativeBalanceAdded(value)
                         }
                     },
                     onDecline = {
@@ -87,14 +97,10 @@ fun AddBalanceDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: (String) -
 }
 
 @Composable
-fun RadioButtonsGroup(list: List<String>) {
-
-    var selected by rememberSaveable { mutableStateOf(list[0]) }
-
+fun RadioButtonsGroup(list: List<String>, selected: String, onSelectedChanged: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         list.forEach { listItem ->
-            RadioButtonItem(text = listItem, selected) {newSelected -> selected = newSelected }
-
+            RadioButtonItem(text = listItem, selected) { onSelectedChanged(listItem) }
         }
     }
 }

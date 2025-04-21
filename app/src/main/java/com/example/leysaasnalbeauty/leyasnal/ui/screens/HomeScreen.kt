@@ -21,6 +21,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
@@ -59,6 +60,8 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
 
     val earnings by viewModel.earnings.collectAsState()
     val expenses by viewModel.expenses.collectAsState()
+
+    val context = LocalContext.current
 
     // Earning DataClass Saver
     val earningDataClassSaver = Saver<EarningDataClass, List<Any>>(
@@ -254,8 +257,8 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     text = stringResource(R.string.clear_all_data_alert),
                     onDismiss = { showDeleteAllDataDialog = false },
                     onConfirm = {
-                        // Delete All Data
                         showDeleteAllDataDialog = false
+                        viewModel.clearBalanceData()
                     }
                 )
 
@@ -292,9 +295,19 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     onDismiss = {
                         showAddBalanceDialog = false
                     },
-                    onConfirm = {
+                    onPositiveBalanceAdded = { amount ->
                         showAddBalanceDialog = false
-                        // Add balance
+                        viewModel.addEarning(
+                            amount = amount.toInt(),
+                            description = context.getString(R.string.positive_balance_added_description)
+                        )
+                    },
+                    onNegativeBalanceAdded = { amount ->
+                        showAddBalanceDialog = false
+                        viewModel.addExpense(
+                            amount = amount.toInt(),
+                            description = context.getString(R.string.negative_balance_added_description)
+                        )
                     }
                 )
             }

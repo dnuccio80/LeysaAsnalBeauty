@@ -30,6 +30,8 @@
     <string name="clear_all_data_alert">¿Estás segura que querés borrar todos los datos de balance? esto incluye el balance ingresado a mano, los ingresos y los gastos</string>
     <string name="positive_balance">Balance Positivo</string>
     <string name="negative_balance">Balance Negativo</string>
+    <string name="positive_balance_added_description">Balance positivo agregado manualmente</string>
+    <string name="negative_balance_added_description">Balance negativo agregado manualmente</string>
     <string name="clean_earnings">¿Estás segura que quieres limpiar los datos de los ingresos? Una vez borrados no se pueden recuperar</string>
     <string name="clean_expenses">¿Estás segura que quieres limpiar los datos de los gastos? Una vez borrados no se pueden recuperar</string>
     <string name="clean">Limpiar</string>
