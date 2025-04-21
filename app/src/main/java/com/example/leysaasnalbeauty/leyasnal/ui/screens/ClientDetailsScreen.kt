@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
@@ -38,6 +39,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
@@ -45,6 +47,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AcceptDeclineButtons
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AlertDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
+import com.example.leysaasnalbeauty.leyasnal.ui.components.EditClientDetailsDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EditIcon
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
@@ -190,6 +193,9 @@ fun ClientDetailsScreen(
                         onValueChange = {
                             clientDetails = it
                         },
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            capitalization = KeyboardCapitalization.Sentences
+                        ),
                         modifier = Modifier.focusRequester(focusRequester),
                         enabled = editDetailsMode,
                         colors = TextFieldDefaults.colors(
@@ -256,68 +262,3 @@ fun ClientDetailsScreen(
     )
 }
 
-@Composable
-fun EditClientDetailsDialog(
-    show: Boolean,
-    value: String,
-    title: String,
-    label: String,
-    icon: Int,
-    isNumeric: Boolean = false,
-    isPhone: Boolean = false,
-    onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
-) {
-
-    if (!show) return
-
-    var clientValue by rememberSaveable { mutableStateOf(value) }
-
-    Dialog(
-        onDismissRequest = { onDismiss() },
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = AccentColor
-            ),
-            border = BorderStroke(1.dp, color = Color.White)
-        ) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 32.dp, horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp)
-            ) {
-                Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SecondTitleText(title)
-                    HorizontalDivider(
-                        Modifier.fillMaxWidth(),
-                        thickness = 2.dp,
-                        color = Color.White
-                    )
-                }
-                MainTextField(
-                    value = clientValue,
-                    isNumeric = isNumeric,
-                    isPhone = isPhone,
-                    onValueChange = { clientValue = it },
-                    label = label,
-                    icon = icon
-                )
-                AcceptDeclineButtons(
-                    acceptText = stringResource(R.string.modify),
-                    declineText = stringResource(R.string.cancel),
-                    onAccept = {
-                        if (clientValue.isNotEmpty()) {
-                            onConfirm(clientValue)
-                        }
-                    },
-                    onDecline = { onDismiss() }
-                )
-            }
-        }
-    }
-}
