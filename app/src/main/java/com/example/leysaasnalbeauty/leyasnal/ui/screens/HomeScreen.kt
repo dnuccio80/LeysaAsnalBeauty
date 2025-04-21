@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
+import com.example.leysaasnalbeauty.leyasnal.ui.components.AddBalanceDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AlertDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AmountDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BalanceDetail
@@ -53,6 +54,8 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
     var showEditExpenseDialog by rememberSaveable { mutableStateOf(false) }
     var showDeleteEarningDialog by rememberSaveable { mutableStateOf(false) }
     var showDeleteExpenseDialog by rememberSaveable { mutableStateOf(false) }
+    var showAddBalanceDialog by rememberSaveable { mutableStateOf(false) }
+    var showDeleteAllDataDialog by rememberSaveable { mutableStateOf(false) }
 
     val earnings by viewModel.earnings.collectAsState()
     val expenses by viewModel.expenses.collectAsState()
@@ -122,7 +125,14 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Greeting("Ley")
-                BalanceDetail(earnings, expenses, viewModel)
+                BalanceDetail(
+                    earnings, expenses, viewModel, onAddBalanceButtonClick = {
+                        showAddBalanceDialog = true
+                    },
+                    onDeleteButtonClicked = {
+                        showDeleteAllDataDialog = true
+                    }
+                )
                 EntryFlowRow(
                     showEarningDialog = { showAddEarningDialog = true },
                     showExpenseDialog = { showAddExpenseDialog = true },
@@ -238,6 +248,17 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     }
                 )
 
+                // Alert Delete All Data Dialog
+                AlertDialogItem(
+                    show = showDeleteAllDataDialog,
+                    text = stringResource(R.string.clear_all_data_alert),
+                    onDismiss = { showDeleteAllDataDialog = false },
+                    onConfirm = {
+                        // Delete All Data
+                        showDeleteAllDataDialog = false
+                    }
+                )
+
                 // Edit Earning
                 EditEarningDialog(
                     show = showEditEarningDialog,
@@ -263,6 +284,17 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     },
                     onDelete = {
                         showDeleteExpenseDialog = true
+                    }
+                )
+
+                AddBalanceDialog(
+                    show = showAddBalanceDialog,
+                    onDismiss = {
+                        showAddBalanceDialog = false
+                    },
+                    onConfirm = {
+                        showAddBalanceDialog = false
+                        // Add balance
                     }
                 )
             }

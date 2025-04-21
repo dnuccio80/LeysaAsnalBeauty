@@ -43,7 +43,7 @@ fun MainTextField(
         leadingIcon = {
             Icon(
                 painterResource(icon),
-                contentDescription = "money icon",
+                contentDescription = "icon",
                 tint = Color.White
             )
         },

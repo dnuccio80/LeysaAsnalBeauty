@@ -24,7 +24,12 @@
     <string name="modify_details">Modificar Detalles</string>
     <string name="delete_client">Eliminar Clienta</string>
     <string name="delete_client_alert">¿Estás segura que queres eliminar esta clienta?</string>
+    <string name="add_balance">Agregar Balance</string>
     <string name="phone">Teléfono</string>
+    <string name="clear_all_data">Borrar Datos</string>
+    <string name="clear_all_data_alert">¿Estás segura que querés borrar todos los datos de balance? esto incluye el balance ingresado a mano, los ingresos y los gastos</string>
+    <string name="positive_balance">Balance Positivo</string>
+    <string name="negative_balance">Balance Negativo</string>
     <string name="clean_earnings">¿Estás segura que quieres limpiar los datos de los ingresos? Una vez borrados no se pueden recuperar</string>
     <string name="clean_expenses">¿Estás segura que quieres limpiar los datos de los gastos? Una vez borrados no se pueden recuperar</string>
     <string name="clean">Limpiar</string>
