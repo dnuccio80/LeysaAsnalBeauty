@@ -15,6 +15,10 @@ class ClientRepository @Inject constructor(private val clientDao: ClientDao) {
         it.map { clientEntity -> clientEntity.toClientDataClass() }
     }
 
+    fun getClientDetails(id:Int) = clientDao.getClientDetails(id).map {
+        it?.toClientDataClass()
+    }
+
     suspend fun insertClient(client: ClientDataClass) = clientDao.insertClient(client.toClientEntity())
 
     suspend fun deleteClient(client: ClientDataClass) = clientDao.deleteClient(client.toClientEntity())

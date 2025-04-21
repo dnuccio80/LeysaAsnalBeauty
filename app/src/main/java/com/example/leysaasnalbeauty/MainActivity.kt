@@ -17,6 +17,7 @@ import androidx.navigation.navArgument
 import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.HomeScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.AppTopBar
@@ -44,25 +45,31 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(navController, startDestination = Routes.Home.route) {
                         composable(Routes.Home.route) { HomeScreen(innerPadding, viewModel) }
-                        composable(Routes.Clients.route) { ClientsScreen(innerPadding, viewModel) }
-//                        composable(
-//                            Routes.ClientDetails.route,
-//                            arguments = listOf(navArgument("clientId") {
-//                                type = NavType.IntType
-//                            })
-//                        )
-//                        { backStackEntry ->
-//                            ClientDetailsScreen(
-//                                innerPadding = TODO(),
-//                                viewModel = TODO(),
-//                                clientId = TODO()
-//                            ) { }
-//                        }
-//                    }
+                        composable(Routes.Clients.route) {
+                            ClientsScreen(innerPadding, viewModel, onClientClicked = { clientId ->
+                                navController.navigate(Routes.ClientDetails.createRoute(clientId))
+                            })
+                        }
+                        composable(
+                            Routes.ClientDetails.route,
+                            arguments = listOf(navArgument("clientId") {
+                                type = NavType.IntType
+                            })
+                        )
+                        { backStackEntry ->
+                            ClientDetailsScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                clientId = backStackEntry.arguments?.getInt("clientId") ?: 0,
+                            ) {
+                                navController.popBackStack()
+                            }
+                        }
                     }
                 }
             }
         }
     }
 }
+
 

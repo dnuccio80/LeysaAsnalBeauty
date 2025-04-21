@@ -13,6 +13,9 @@ interface ClientDao {
     @Query("SELECT * FROM ClientEntity")
     fun getAllClients(): Flow<List<ClientEntity>>
 
+    @Query("SELECT * FROM ClientEntity WHERE id = :id")
+    fun getClientDetails(id:Int): Flow<ClientEntity>
+
     @Insert
     suspend fun insertClient(client: ClientEntity)
 
@@ -21,5 +24,6 @@ interface ClientDao {
 
     @Update
     suspend fun updateClient(client: ClientEntity)
+
 
 }

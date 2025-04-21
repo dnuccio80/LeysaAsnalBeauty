@@ -1,5 +1,6 @@
 package com.example.leysaasnalbeauty.leyasnal.ui
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.leysaasnalbeauty.leyasnal.data.Routes
@@ -7,6 +8,7 @@ import com.example.leysaasnalbeauty.leyasnal.domain.earnings.UpdateEarningUseCas
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.AddNewClientUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.DeleteClientUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.GetAllClientsUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.clients.GetClientDetailsUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.UpdateClientUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.AddEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.DeleteAllEarningsUseCase
@@ -22,8 +24,13 @@ import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.WhileSubscribed
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -39,6 +46,7 @@ class AppViewModel @Inject constructor(
     private val addNewClientUseCase: AddNewClientUseCase,
     private val deleteClientUseCase: DeleteClientUseCase,
     private val updateClientUseCase: UpdateClientUseCase,
+    private val getClientDetailsUseCase: GetClientDetailsUseCase,
 
     // Earnings
 
@@ -60,10 +68,24 @@ class AppViewModel @Inject constructor(
 
     // Vals
 
-    private val _clients = getAllClientsUseCase().stateIn(
+    private val _clients = getAllClientsUseCase().map { list ->
+        list.sortedBy { it.name }
+    }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
     )
+
     val clients = _clients
+
+    private val clientId = MutableStateFlow(0)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val _clientDetails = clientId.flatMapLatest {
+        getClientDetailsUseCase(clientId.value)
+    }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), null
+    )
+
+    val clientDetails: StateFlow<ClientDataClass?> = _clientDetails
 
     private val _earnings = getAllEarningsUseCase().stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
@@ -97,11 +119,8 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun getClientById(clientId: Int): ClientDataClass {
-        clients.value.forEach {
-            if(it.id == clientId) return it
-        }
-        return ClientDataClass(0,"","","")
+    fun setClientId(id: Int) {
+        clientId.value = id
     }
 
     // Earnings

@@ -44,7 +44,7 @@ import com.example.leysaasnalbeauty.ui.theme.DarkBackground
 import com.example.leysaasnalbeauty.ui.theme.SecondaryBackgroundColor
 
 @Composable
-fun ClientsScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
+fun ClientsScreen(innerPadding: PaddingValues, viewModel: AppViewModel, onClientClicked:(Int) -> Unit) {
 
     val clientList by viewModel.clients.collectAsState()
     var querySearch by rememberSaveable { mutableStateOf("") }
@@ -95,7 +95,9 @@ fun ClientsScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                         verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
                         clientList.forEachIndexed { index, client ->
-                            ClientItem(client) { }
+                            ClientItem(client) {
+                                onClientClicked(client.id)
+                            }
 
                             if (index < clientList.lastIndex) {
                                 HorizontalDivider(
