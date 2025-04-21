@@ -107,9 +107,10 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun deleteClient(client: ClientDataClass) {
+    fun deleteClient(clientId: Int) {
+        val client = clients.value.find { it.id == clientId }
         viewModelScope.launch(Dispatchers.IO) {
-            deleteClientUseCase(client)
+            if(client != null) deleteClientUseCase(client)
         }
     }
 

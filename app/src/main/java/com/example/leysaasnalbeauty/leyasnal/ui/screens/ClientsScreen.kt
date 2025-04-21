@@ -52,7 +52,6 @@ fun ClientsScreen(innerPadding: PaddingValues, viewModel: AppViewModel, onClient
     Box(
         Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .background(Color.Black)
             .padding(innerPadding)
     ) {
@@ -91,6 +90,7 @@ fun ClientsScreen(innerPadding: PaddingValues, viewModel: AppViewModel, onClient
                     Column(
                         Modifier
                             .fillMaxWidth()
+                            .verticalScroll(rememberScrollState())
                             .padding(8.dp),
                         verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {

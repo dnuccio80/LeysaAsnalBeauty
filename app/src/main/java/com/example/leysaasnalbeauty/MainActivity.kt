@@ -61,9 +61,13 @@ class MainActivity : ComponentActivity() {
                                 innerPadding = innerPadding,
                                 viewModel = viewModel,
                                 clientId = backStackEntry.arguments?.getInt("clientId") ?: 0,
-                            ) {
-                                navController.popBackStack()
-                            }
+                                onBackButtonClick = {
+                                        navController.popBackStack()
+                                },
+                                onDeleteClient = { clientId ->
+                                    viewModel.deleteClient(clientId)
+                                }
+                            )
                         }
                     }
                 }

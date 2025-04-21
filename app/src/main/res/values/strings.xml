@@ -22,6 +22,8 @@
     <string name="modify_name">Modificar Nombre</string>
     <string name="modify_phone_number">Modificar Teléfono</string>
     <string name="modify_details">Modificar Detalles</string>
+    <string name="delete_client">Eliminar Clienta</string>
+    <string name="delete_client_alert">¿Estás segura que queres eliminar esta clienta?</string>
     <string name="phone">Teléfono</string>
     <string name="clean_earnings">¿Estás segura que quieres limpiar los datos de los ingresos? Una vez borrados no se pueden recuperar</string>
     <string name="clean_expenses">¿Estás segura que quieres limpiar los datos de los gastos? Una vez borrados no se pueden recuperar</string>

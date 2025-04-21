@@ -43,6 +43,8 @@ import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AcceptDeclineButtons
+import com.example.leysaasnalbeauty.leyasnal.ui.components.AlertDialogItem
+import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EditIcon
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
@@ -50,6 +52,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import com.example.leysaasnalbeauty.ui.theme.PositiveColor
 import com.example.leysaasnalbeauty.ui.theme.SecondaryBackgroundColor
 
@@ -58,19 +61,23 @@ fun ClientDetailsScreen(
     innerPadding: PaddingValues,
     viewModel: AppViewModel,
     clientId: Int,
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    onDeleteClient: (Int) -> Unit
 ) {
 
     val focusRequester = remember { FocusRequester() }
 
     var showEditNameDialog by rememberSaveable { mutableStateOf(false) }
     var showEditPhoneNumberDialog by rememberSaveable { mutableStateOf(false) }
+    var showDeleteClientAlertDialog by rememberSaveable { mutableStateOf(false) }
 
-    viewModel.setClientId(clientId)
+    LaunchedEffect(Unit) {
+        viewModel.setClientId(clientId)
+    }
 
     val client by viewModel.clientDetails.collectAsState()
 
-    if (client == null) return
+    if (client == null || client!!.id != clientId) return
 
     var clientName by rememberSaveable { mutableStateOf(client!!.name) }
     var clientPhoneNumber by rememberSaveable { mutableStateOf(client!!.phone) }
@@ -95,16 +102,26 @@ fun ClientDetailsScreen(
                 .padding(vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Icon(
-                Icons.AutoMirrored.Default.KeyboardArrowLeft,
-                contentDescription = "Back Arrow",
-                tint = Color.White,
-                modifier = Modifier
-                    .size(32.dp)
-                    .clickable {
-                        onBackButtonClick()
-                    }
-            )
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                Icon(
+                    Icons.AutoMirrored.Default.KeyboardArrowLeft,
+                    contentDescription = "Back Arrow",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clickable {
+                            onBackButtonClick()
+                        }
+                )
+                ButtonTextItem(
+                    text = stringResource(R.string.delete_client),
+                    buttonColor = NegativeColor
+                ) {
+                    showDeleteClientAlertDialog = true
+
+                }
+            }
+
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -222,6 +239,19 @@ fun ClientDetailsScreen(
             clientPhoneNumber = it
             showEditPhoneNumberDialog = false
             viewModel.updateClient(client!!.copy(phone = clientPhoneNumber))
+        }
+    )
+    // Delete Client Dialog
+    AlertDialogItem(
+        show = showDeleteClientAlertDialog,
+        text = stringResource(R.string.delete_client_alert),
+
+        onDismiss = {
+            showDeleteClientAlertDialog = false
+        },
+        onConfirm = {
+            onBackButtonClick()
+            onDeleteClient(clientId)
         }
     )
 }
