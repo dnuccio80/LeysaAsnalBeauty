@@ -76,7 +76,8 @@ fun BalanceDetail(
                         Icon(
                             Icons.Default.Add,
                             modifier = Modifier.padding(2.dp),
-                            contentDescription = "add balance button"
+                            contentDescription = "add balance button",
+                            tint = Color.Black
                         )
                     }
                 }
