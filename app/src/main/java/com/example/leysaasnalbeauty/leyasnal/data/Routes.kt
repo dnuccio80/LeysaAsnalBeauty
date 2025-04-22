@@ -9,4 +9,5 @@ sealed class Routes(val route: String) {
         fun createRoute(clientId: Int) = "clientDetails/$clientId"
     }
     data object Annotations: Routes("annotations")
+    data object GiftCardMaker: Routes("giftCardMaker")
 }

@@ -70,13 +70,9 @@ class MainActivity : ComponentActivity() {
 //                                }
 //                            )
 //                        }
+//                        composable(Routes.GiftCardMaker.route) { GiftCardScreen(innerPadding) }
 //                    }
-                    GiftCardScreen(
-                        buyType = "Esmaltado Semipermanente",
-                        to = "Gloria Almeria",
-                        from = "Lola Montero",
-                        innerPadding
-                    )
+                    GiftCardScreen(innerPadding)
                 }
             }
         }
