@@ -1,22 +1,16 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -26,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -36,15 +29,14 @@ import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ClientItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
-import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
-import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
-import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
-import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
-import com.example.leysaasnalbeauty.ui.theme.DarkBackground
 import com.example.leysaasnalbeauty.ui.theme.SecondaryBackgroundColor
 
 @Composable
-fun ClientsScreen(innerPadding: PaddingValues, viewModel: AppViewModel, onClientClicked:(Int) -> Unit) {
+fun ClientsScreen(
+    innerPadding: PaddingValues,
+    viewModel: AppViewModel,
+    onClientClicked: (Int) -> Unit
+) {
 
     val clientList by viewModel.clients.collectAsState()
     var querySearch by rememberSaveable { mutableStateOf("") }
