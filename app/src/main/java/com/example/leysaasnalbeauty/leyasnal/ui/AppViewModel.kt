@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.WhileSubscribed
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -68,13 +69,25 @@ class AppViewModel @Inject constructor(
 
     // Vals
 
+    private val _query = MutableStateFlow("")
+    val query:StateFlow<String> = _query
+
     private val _clients = getAllClientsUseCase().map { list ->
         list.sortedBy { it.name }
     }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
     )
-
     val clients = _clients
+
+    val filteredClients = combine(_clients, _query) { clients, query ->
+        if(query.isEmpty() || query.isBlank()) {
+            clients
+        } else {
+            clients.filter { it.name.contains(query, ignoreCase = true) }
+        }
+    }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
+    )
 
     private val clientId = MutableStateFlow(0)
 
@@ -86,6 +99,7 @@ class AppViewModel @Inject constructor(
     )
 
     val clientDetails: StateFlow<ClientDataClass?> = _clientDetails
+
 
     private val _earnings = getAllEarningsUseCase().stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
@@ -197,6 +211,10 @@ class AppViewModel @Inject constructor(
     fun clearBalanceData() {
         deleteAllExpensesData()
         deleteAllEarnings()
+    }
+
+    fun onQueryChanged(newQuery: String) {
+        _query.value = newQuery
     }
 
 }

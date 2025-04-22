@@ -11,7 +11,7 @@
     <string name="amount">Monto</string>
     <string name="balance">Balance</string>
     <string name="search_client">Buscar clienta por nombre..</string>
-    <string name="empty_client_list">No tenes clientas registradas todavía</string>
+    <string name="empty_client_list">No se encontraron clientas</string>
     <string name="description">Descripción</string>
     <string name="edit_transaction">Editar Transacción</string>
     <string name="modify">Modificar</string>

@@ -17,9 +17,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -38,8 +35,8 @@ fun ClientsScreen(
     onClientClicked: (Int) -> Unit
 ) {
 
-    val clientList by viewModel.clients.collectAsState()
-    var querySearch by rememberSaveable { mutableStateOf("") }
+    val query by viewModel.query.collectAsState()
+    val clientList by viewModel.filteredClients.collectAsState()
 
     Box(
         Modifier
@@ -47,30 +44,30 @@ fun ClientsScreen(
             .background(Color.Black)
             .padding(innerPadding)
     ) {
-        if (clientList.isEmpty()) {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                BodyText(stringResource(R.string.empty_client_list))
-            }
-        } else {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp, horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                MainTextField(
-                    value = querySearch,
-                    isNumeric = false,
-                    isPhone = false,
-                    onValueChange = { querySearch = it },
-                    label = stringResource(R.string.search_client),
-                    icon = R.drawable.ic_search
-                )
 
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp, horizontal = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            MainTextField(
+                value = query,
+                isNumeric = false,
+                isPhone = false,
+                onValueChange = { viewModel.onQueryChanged(it) },
+                label = stringResource(R.string.search_client),
+                icon = R.drawable.ic_search
+            )
+            if (clientList.isEmpty()) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    BodyText(stringResource(R.string.empty_client_list))
+                }
+            } else {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth(),
