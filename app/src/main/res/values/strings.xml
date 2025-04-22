@@ -46,5 +46,11 @@
     <string name="new_fidelity_client">Agregar Clienta Fiel</string>
     <string name="create_gift_card">Crear Gift Card</string>
     <string name="notify_client">Notificar Clienta</string>
+    <string name="gift_type">Tipo de regalo</string>
+    <string name="gift_to">A quien va dirigido el regalo</string>
+    <string name="gift_from">De parte de quien</string>
+    <string name="gift_phone_number">Teléfono de quien recibe</string>
+    <string name="gift_generate">Generar Gift Card</string>
+
 
 </resources>

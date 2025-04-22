@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
@@ -33,6 +34,7 @@ fun GiftCardScreen(innerPadding: PaddingValues) {
     var giftName by rememberSaveable { mutableStateOf("") }
     var toName by rememberSaveable { mutableStateOf("") }
     var fromName by rememberSaveable { mutableStateOf("") }
+    var phoneNumber by rememberSaveable { mutableStateOf("") }
 
     Box(
         Modifier
@@ -44,12 +46,13 @@ fun GiftCardScreen(innerPadding: PaddingValues) {
             FirstTitleText("Crear Gift Card")
             HorizontalDivider(Modifier.fillMaxWidth(), thickness = 2.dp, color = Color.Gray)
             ThirdTitleText("Completa los datos para crear tu gift card")
+            Spacer(Modifier.size(4.dp))
             MainTextField(
                 value = giftName,
                 isNumeric = false,
                 isPhone = false,
                 onValueChange = { giftName = it },
-                label = "Tipo de regalo",
+                label = stringResource(R.string.gift_type),
                 icon = R.drawable.ic_gift
             )
             MainTextField(
@@ -57,7 +60,7 @@ fun GiftCardScreen(innerPadding: PaddingValues) {
                 isNumeric = false,
                 isPhone = false,
                 onValueChange = { toName = it },
-                label = "A quien va dirigido el regalo",
+                label = stringResource(R.string.gift_to),
                 icon = R.drawable.ic_name
             )
             MainTextField(
@@ -65,13 +68,21 @@ fun GiftCardScreen(innerPadding: PaddingValues) {
                 isNumeric = false,
                 isPhone = false,
                 onValueChange = { fromName = it },
-                label = "De parte de quien?",
+                label = stringResource(R.string.gift_from),
                 icon = R.drawable.ic_flower
+            )
+            MainTextField(
+                value = phoneNumber,
+                isNumeric = true,
+                isPhone = true,
+                onValueChange = { phoneNumber = it },
+                label = stringResource(R.string.gift_phone_number),
+                icon = R.drawable.ic_smartphone
             )
             Spacer(Modifier.size(32.dp))
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
                 ButtonTextItem(
-                    text = "Generar Gift Card",
+                    text = stringResource(R.string.gift_generate),
                     buttonColor = AccentColor
                 ) { }
             }
