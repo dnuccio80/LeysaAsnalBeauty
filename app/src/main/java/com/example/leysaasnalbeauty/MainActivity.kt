@@ -19,6 +19,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientsScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.GiftCardScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.HomeScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.AppTopBar
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.BottomBar
@@ -43,33 +44,39 @@ class MainActivity : ComponentActivity() {
                     topBar = { AppTopBar() },
                     bottomBar = { BottomBar(navController) }
                 ) { innerPadding ->
-                    NavHost(navController, startDestination = Routes.Home.route) {
-                        composable(Routes.Home.route) { HomeScreen(innerPadding, viewModel) }
-                        composable(Routes.Clients.route) {
-                            ClientsScreen(innerPadding, viewModel, onClientClicked = { clientId ->
-                                navController.navigate(Routes.ClientDetails.createRoute(clientId))
-                            })
-                        }
-                        composable(
-                            Routes.ClientDetails.route,
-                            arguments = listOf(navArgument("clientId") {
-                                type = NavType.IntType
-                            })
-                        )
-                        { backStackEntry ->
-                            ClientDetailsScreen(
-                                innerPadding = innerPadding,
-                                viewModel = viewModel,
-                                clientId = backStackEntry.arguments?.getInt("clientId") ?: 0,
-                                onBackButtonClick = {
-                                        navController.popBackStack()
-                                },
-                                onDeleteClient = { clientId ->
-                                    viewModel.deleteClient(clientId)
-                                }
-                            )
-                        }
-                    }
+//                    NavHost(navController, startDestination = Routes.Home.route) {
+//                        composable(Routes.Home.route) { HomeScreen(innerPadding, viewModel) }
+//                        composable(Routes.Clients.route) {
+//                            ClientsScreen(innerPadding, viewModel, onClientClicked = { clientId ->
+//                                navController.navigate(Routes.ClientDetails.createRoute(clientId))
+//                            })
+//                        }
+//                        composable(
+//                            Routes.ClientDetails.route,
+//                            arguments = listOf(navArgument("clientId") {
+//                                type = NavType.IntType
+//                            })
+//                        )
+//                        { backStackEntry ->
+//                            ClientDetailsScreen(
+//                                innerPadding = innerPadding,
+//                                viewModel = viewModel,
+//                                clientId = backStackEntry.arguments?.getInt("clientId") ?: 0,
+//                                onBackButtonClick = {
+//                                        navController.popBackStack()
+//                                },
+//                                onDeleteClient = { clientId ->
+//                                    viewModel.deleteClient(clientId)
+//                                }
+//                            )
+//                        }
+//                    }
+                    GiftCardScreen(
+                        buyType = "Esmaltado Semipermanente",
+                        to = "Gloria Almeria",
+                        from = "Lola Montero",
+                        innerPadding
+                    )
                 }
             }
         }

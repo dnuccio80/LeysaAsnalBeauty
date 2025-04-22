@@ -1,8 +1,11 @@
 package com.example.leysaasnalbeauty.leyasnal.ui
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.UpdateEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.AddNewClientUseCase
@@ -110,6 +113,8 @@ class AppViewModel @Inject constructor(
         viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
     )
     val expenses = _expenses
+
+
 
     // Fun
 
