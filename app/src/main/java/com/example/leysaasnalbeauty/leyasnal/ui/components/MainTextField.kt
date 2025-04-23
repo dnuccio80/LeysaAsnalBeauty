@@ -22,6 +22,9 @@ fun MainTextField(
     isPhone: Boolean = false,
     onValueChange: (String) -> Unit,
     label: String,
+    minLines:Int = 1,
+    maxLines: Int = 1,
+    singleLine: Boolean = true,
     @DrawableRes icon: Int
 ) {
 
@@ -39,7 +42,9 @@ fun MainTextField(
             }
         },
         label = { BodyText(label) },
-        singleLine = true,
+        singleLine = singleLine,
+        minLines = minLines,
+        maxLines = maxLines,
         leadingIcon = {
             Icon(
                 painterResource(icon),

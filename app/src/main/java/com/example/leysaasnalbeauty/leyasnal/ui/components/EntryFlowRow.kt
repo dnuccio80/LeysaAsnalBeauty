@@ -16,7 +16,8 @@ import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EntryDataClass
 fun EntryFlowRow(
     showEarningDialog:() -> Unit,
     showExpenseDialog:() -> Unit,
-    showNewClientDialog:() -> Unit
+    addNewClientClicked:() -> Unit,
+    addNewGiftCardClicked:() -> Unit
 ){
 
     val entryList: List<EntryDataClass> = listOf(
@@ -29,8 +30,8 @@ fun EntryFlowRow(
             onClick = { showExpenseDialog() }
         ),
         EntryDataClass(
-            R.drawable.ic_woman, stringResource(R.string.new_client),
-            onClick = { showNewClientDialog() }
+            R.drawable.ic_woman, stringResource(R.string.add_client),
+            onClick = { addNewClientClicked() }
         ),
         EntryDataClass(
             R.drawable.ic_fidelity, stringResource(R.string.new_fidelity_client),
@@ -38,7 +39,7 @@ fun EntryFlowRow(
         ),
         EntryDataClass(
             R.drawable.ic_gift_card, stringResource(R.string.create_gift_card),
-            onClick = { }
+            onClick = { addNewGiftCardClicked() }
         ),
         EntryDataClass(
             R.drawable.ic_message, stringResource(R.string.notify_client),

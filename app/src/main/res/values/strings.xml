@@ -6,7 +6,7 @@
     <string name="add_expense">Agregar Gasto</string>
     <string name="clients">Clientas</string>
     <string name="annotations">Anotaciones</string>
-    <string name="new_client">Agregar Clienta</string>
+    <string name="add_client">Agregar Clienta</string>
     <string name="name">Nombre</string>
     <string name="amount">Monto</string>
     <string name="balance">Balance</string>

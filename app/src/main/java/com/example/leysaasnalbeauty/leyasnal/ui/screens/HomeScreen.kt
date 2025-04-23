@@ -24,13 +24,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AddBalanceDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AlertDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AmountDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BalanceDetail
-import com.example.leysaasnalbeauty.leyasnal.ui.components.ClientDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EntryFlowRow
 import com.example.leysaasnalbeauty.leyasnal.ui.components.Greeting
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
@@ -44,11 +45,14 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.EditExpenseDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.TransactionsSection
 
 @Composable
-fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
+fun HomeScreen(
+    innerPadding: PaddingValues,
+    viewModel: AppViewModel,
+    navController: NavHostController
+) {
 
     var showAddEarningDialog by rememberSaveable { mutableStateOf(false) }
     var showAddExpenseDialog by rememberSaveable { mutableStateOf(false) }
-    var showAddClientDialog by rememberSaveable { mutableStateOf(false) }
     var showCleanEarningsDialog by rememberSaveable { mutableStateOf(false) }
     var showCleanExpensesDialog by rememberSaveable { mutableStateOf(false) }
     var showEditEarningDialog by rememberSaveable { mutableStateOf(false) }
@@ -139,7 +143,8 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                 EntryFlowRow(
                     showEarningDialog = { showAddEarningDialog = true },
                     showExpenseDialog = { showAddExpenseDialog = true },
-                    showNewClientDialog = { showAddClientDialog = true }
+                    addNewClientClicked = { navController.navigate(Routes.AddClient.route) },
+                    addNewGiftCardClicked = { navController.navigate(Routes.GiftCardMaker.route) },
                 )
                 Spacer(Modifier.size(0.dp))
                 TransactionsSection(
@@ -188,16 +193,6 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
                     onDismiss = { showAddExpenseDialog = false },
                     onConfirm = { amount, description ->
                         viewModel.addExpense(amount, description)
-                    }
-                )
-
-                // Client Dialog
-                ClientDialog(
-                    show = showAddClientDialog,
-                    text = stringResource(R.string.new_client),
-                    onDismiss = { showAddClientDialog = false },
-                    onConfirm = { client ->
-                        viewModel.addNewClient(client)
                     }
                 )
 
