@@ -44,7 +44,13 @@ class MainActivity : ComponentActivity() {
                     bottomBar = { BottomBar(navController) }
                 ) { innerPadding ->
                     NavHost(navController, startDestination = Routes.Home.route) {
-                        composable(Routes.Home.route) { HomeScreen(innerPadding, viewModel, navController) }
+                        composable(Routes.Home.route) {
+                            HomeScreen(
+                                innerPadding,
+                                viewModel,
+                                navController
+                            )
+                        }
                         composable(Routes.Clients.route) {
                             ClientsScreen(innerPadding, viewModel, onClientClicked = { clientId ->
                                 navController.navigate(Routes.ClientDetails.createRoute(clientId))
@@ -69,7 +75,11 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        composable(Routes.GiftCardMaker.route) { GiftCardScreen(innerPadding) }
+                        composable(Routes.GiftCardMaker.route) {
+                            GiftCardScreen(innerPadding, onCancel = {
+                                navController.popBackStack()
+                            })
+                        }
                         composable(Routes.AddClient.route) {
                             AddClientScreen(
                                 innerPadding, onAddClient = { client ->

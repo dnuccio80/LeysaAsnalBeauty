@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.itextpdf.io.font.PdfEncodings
 import com.itextpdf.io.font.constants.StandardFonts
@@ -46,7 +48,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 
 @Composable
-fun GiftCardScreen(innerPadding: PaddingValues) {
+fun GiftCardScreen(innerPadding: PaddingValues, onCancel: () -> Unit) {
 
     var giftName by rememberSaveable { mutableStateOf("") }
     var toName by rememberSaveable { mutableStateOf("") }
@@ -73,8 +75,10 @@ fun GiftCardScreen(innerPadding: PaddingValues) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            FirstTitleText("Crear Gift Card")
-            HorizontalDivider(Modifier.fillMaxWidth(), thickness = 2.dp, color = Color.Gray)
+            Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                FirstTitleText("Crear Gift Card")
+                HorizontalDivider(Modifier.fillMaxWidth(), thickness = 2.dp, color = Color.Gray)
+            }
             ThirdTitleText("Completa los datos para crear tu gift card")
             Spacer(Modifier.size(4.dp))
             MainTextField(
@@ -111,12 +115,24 @@ fun GiftCardScreen(innerPadding: PaddingValues) {
             )
             Spacer(Modifier.size(32.dp))
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                ButtonTextItem(
-                    text = stringResource(R.string.gift_generate),
-                    enabled = isButtonEnabled,
-                    buttonColor = AccentColor
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    createPdf(context, giftName, toName, fromName)
+                    ButtonTextItem(
+                        text = stringResource(R.string.cancel),
+                        enabled = true,
+                        buttonColor = AccentColor
+                    ) {
+                        onCancel()
+                    }
+                    ButtonTextItem(
+                        text = stringResource(R.string.gift_generate),
+                        enabled = isButtonEnabled,
+                        buttonColor = AccentColor
+                    ) {
+                        createPdf(context, giftName, toName, fromName)
+                    }
                 }
             }
         }
@@ -157,13 +173,31 @@ private fun createPdf(
     val imageHeight = 350f
     val backX = (pageWidth - imageWidth) / 2
     val backY = 50f
-    canvas.addImageWithTransformationMatrix(backImageData, imageWidth, 0f, 0f, imageHeight, backX, backY, false)
+    canvas.addImageWithTransformationMatrix(
+        backImageData,
+        imageWidth,
+        0f,
+        0f,
+        imageHeight,
+        backX,
+        backY,
+        false
+    )
 
     val imageBytes = drawableToByteArray(context, R.drawable.gift_card_front)
     val imageData = ImageDataFactory.create(imageBytes)
     val frontX = (pageWidth - imageWidth) / 2
     val frontY = backY + imageHeight + 30f
-    canvas.addImageWithTransformationMatrix(imageData, imageWidth, 0f, 0f, imageHeight, frontX, frontY, false)
+    canvas.addImageWithTransformationMatrix(
+        imageData,
+        imageWidth,
+        0f,
+        0f,
+        imageHeight,
+        frontX,
+        frontY,
+        false
+    )
 
     val font =
         PdfFontFactory.createFont(StandardFonts.TIMES_ITALIC, PdfEncodings.WINANSI, true)
