@@ -10,14 +10,16 @@ import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 
 @Composable
-fun ButtonTextItem(text: String,buttonColor:Color, onClick: () -> Unit ) {
+fun ButtonTextItem(text: String,buttonColor:Color, enabled:Boolean = true, onClick: () -> Unit ) {
     Button(
         onClick = { onClick() },
+        enabled = enabled,
         contentPadding = PaddingValues(vertical = 4.dp, horizontal = 16.dp),
         shape = RoundedCornerShape(8.dp),
         elevation = ButtonDefaults.buttonElevation(8.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = buttonColor
+            containerColor = buttonColor,
+            disabledContainerColor = Color.Gray
         )
     ) {
         BodyText(text)

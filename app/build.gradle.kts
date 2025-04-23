@@ -60,6 +60,9 @@ dependencies {
     // Navigation compose
     implementation(libs.androidx.navigation.compose)
 
+    // Pdf Creator
+    implementation(libs.itext7.core)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
