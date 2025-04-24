@@ -1,5 +1,7 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +20,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -40,8 +41,9 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.components.RadioButtonsGroup
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
-import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.helper.getWhatsAppName
+import com.example.leysaasnalbeauty.leyasnal.ui.helper.getWhatsAppSenderAuto
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import com.example.leysaasnalbeauty.ui.theme.PositiveColor
@@ -156,11 +158,14 @@ fun NotifyClientDialog(
         stringResource(R.string.customized_message)
     )
 
+    viewModel.setClientId(clientId)
+
     val context = LocalContext.current
     var selectedRadioButton by rememberSaveable { mutableStateOf(radioButtonList[0]) }
     var isCustomizedMessage by rememberSaveable { mutableStateOf(false) }
     var customMessage by rememberSaveable { mutableStateOf("") }
-
+    var appointmentHour by rememberSaveable { mutableStateOf("") }
+    val client by viewModel.clientDetails.collectAsState()
 
     if (selectedRadioButton == context.getString(R.string.customized_message)) {
         isCustomizedMessage = true
@@ -168,8 +173,7 @@ fun NotifyClientDialog(
         isCustomizedMessage = false
     }
 
-    // Search client by id with viewModel
-    val client = ClientDataClass(0, "Rosa Meltrozo", "", "")
+    if(client == null) return
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -188,7 +192,7 @@ fun NotifyClientDialog(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    SecondTitleText(client.name)
+                    SecondTitleText(client!!.name)
                     HorizontalDivider(
                         Modifier.fillMaxWidth(),
                         thickness = 2.dp,
@@ -202,27 +206,71 @@ fun NotifyClientDialog(
                         selectedRadioButton = it
                     }
                 )
-                MainTextField(
-                    value = customMessage,
-                    isNumeric = false,
-                    isPhone = false,
-                    onValueChange = { customMessage = it },
-                    label = stringResource(R.string.message),
-                    maxLines = 5,
-                    enabled = isCustomizedMessage,
-                    singleLine = false,
-                    icon = R.drawable.ic_chat
-                )
+                when (selectedRadioButton) {
+                    context.getString(R.string.appointment_message) -> {
+                        MainTextField(
+                            value = appointmentHour,
+                            isNumeric = false,
+                            isPhone = false,
+                            onValueChange = { appointmentHour = it },
+                            label = stringResource(R.string.appointment_hour),
+                            maxLines = 5,
+                            singleLine = false,
+                            icon = R.drawable.ic_time
+                        )
+                    }
+
+                    context.getString(R.string.customized_message) -> {
+                        MainTextField(
+                            value = customMessage,
+                            isNumeric = false,
+                            isPhone = false,
+                            onValueChange = { customMessage = it },
+                            label = stringResource(R.string.message),
+                            maxLines = 5,
+                            singleLine = false,
+                            icon = R.drawable.ic_chat
+                        )
+                    }
+
+                    context.getString(R.string.welcome_message) -> {
+                        MainTextField(
+                            value = customMessage,
+                            isNumeric = false,
+                            isPhone = false,
+                            enabled = false,
+                            onValueChange = { customMessage = it },
+                            label = stringResource(R.string.message),
+                            maxLines = 5,
+                            singleLine = false,
+                            icon = R.drawable.ic_chat
+                        )
+                    }
+                }
                 AcceptDeclineButtons(
                     acceptText = stringResource(R.string.send),
                     declineText = stringResource(R.string.cancel),
                     acceptButtonColor = PositiveColor,
                     declineButtonColor = NegativeColor,
-                    onAccept = { },
+                    onAccept = { sendWppMessage(context,client!!.phone, client!!.name) },
                     onDecline = { onDismiss() }
                 )
             }
         }
     }
+}
+
+fun sendWppMessage(context: Context, phoneNumber: String, name: String) {
+    val wppSender = getWhatsAppSenderAuto(
+        context = context
+    )
+
+    val firstName = name.split(" ").first()
+
+    wppSender.sendMessage(
+        context,
+        "549$phoneNumber",
+        "${context.getString(R.string.hello)} $firstName \uD83E\uDD17\n${context.getString(R.string.new_client_message_auto)}"
+    )
 }
 

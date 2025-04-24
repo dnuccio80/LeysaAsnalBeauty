@@ -23,7 +23,7 @@ fun MainTextField(
     onValueChange: (String) -> Unit,
     label: String,
     enabled: Boolean = true,
-    minLines:Int = 1,
+    minLines: Int = 1,
     maxLines: Int = 1,
     singleLine: Boolean = true,
     @DrawableRes icon: Int
@@ -50,8 +50,7 @@ fun MainTextField(
         leadingIcon = {
             Icon(
                 painterResource(icon),
-                contentDescription = "icon",
-                tint = Color.White
+                contentDescription = "icon"
             )
         },
         keyboardOptions =
@@ -67,11 +66,15 @@ fun MainTextField(
         colors = TextFieldDefaults.colors(
             focusedTextColor = Color.White,
             unfocusedTextColor = Color.White,
+            disabledTextColor = Color.Gray,
+            disabledLeadingIconColor = Color.Gray,
+            focusedLeadingIconColor = Color.White,
+            unfocusedLeadingIconColor = Color.White,
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
             focusedIndicatorColor = DarkAccentColor,
             unfocusedIndicatorColor = Color.White,
-            disabledContainerColor = Color.Gray
+            disabledContainerColor = Color.DarkGray,
         ),
         modifier = Modifier.fillMaxWidth()
     )

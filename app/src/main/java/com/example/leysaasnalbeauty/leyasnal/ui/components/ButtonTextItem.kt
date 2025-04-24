@@ -19,7 +19,7 @@ fun ButtonTextItem(text: String,buttonColor:Color, enabled:Boolean = true, onCli
         elevation = ButtonDefaults.buttonElevation(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor,
-            disabledContainerColor = Color.Gray
+            disabledContainerColor = Color.DarkGray
         )
     ) {
         BodyText(text)
