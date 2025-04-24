@@ -152,6 +152,7 @@ fun NotifyClientDialog(
     val radioButtonList = listOf(
         stringResource(R.string.appointment_message),
         stringResource(R.string.welcome_message),
+        stringResource(R.string.after_appointment_message),
         stringResource(R.string.customized_message)
     )
 
@@ -171,7 +172,7 @@ fun NotifyClientDialog(
         isCustomizedMessage = false
     }
 
-    if(client == null) return
+    if (client == null) return
 
     val firstName = client!!.name.split(" ").first()
 
@@ -233,7 +234,19 @@ fun NotifyClientDialog(
                             declineText = stringResource(R.string.cancel),
                             acceptButtonColor = PositiveColor,
                             declineButtonColor = NegativeColor,
-                            onAccept = { sendWppMessage(context,client!!.phone, message = "${context.getString(R.string.hello)} $firstName \uD83E\uDD17\n${context.getString(R.string.date_hour_wpp_message_1)} $appointmentDate ${context.getString(R.string.date_hour_wpp_message_2)} $appointmentHour hs, ${context.getString(R.string.date_hour_wpp_message_3)}") },
+                            onAccept = {
+                                sendWppMessage(
+                                    context,
+                                    client!!.phone,
+                                    message = "${context.getString(R.string.hello)} $firstName \uD83E\uDD17\n${
+                                        context.getString(R.string.date_hour_wpp_message_1)
+                                    } $appointmentDate ${context.getString(R.string.date_hour_wpp_message_2)} $appointmentHour hs, ${
+                                        context.getString(
+                                            R.string.date_hour_wpp_message_3
+                                        )
+                                    }"
+                                )
+                            },
                             onDecline = { onDismiss() }
                         )
                     }
@@ -254,12 +267,52 @@ fun NotifyClientDialog(
                             declineText = stringResource(R.string.cancel),
                             acceptButtonColor = PositiveColor,
                             declineButtonColor = NegativeColor,
-                            onAccept = { sendWppMessage(context,client!!.phone, message = customMessage) },
+                            onAccept = {
+                                sendWppMessage(
+                                    context,
+                                    client!!.phone,
+                                    message = customMessage
+                                )
+                            },
                             onDecline = { onDismiss() }
                         )
                     }
 
+                    context.getString(R.string.after_appointment_message) -> {
+
+                        customMessage = ""
+
+                        MainTextField(
+                            value = customMessage,
+                            isNumeric = false,
+                            isPhone = false,
+                            enabled = false,
+                            onValueChange = { customMessage = it },
+                            label = stringResource(R.string.message),
+                            maxLines = 5,
+                            singleLine = false,
+                            icon = R.drawable.ic_chat
+                        )
+
+                        AcceptDeclineButtons(
+                            acceptText = stringResource(R.string.send),
+                            declineText = stringResource(R.string.cancel),
+                            acceptButtonColor = PositiveColor,
+                            declineButtonColor = NegativeColor,
+                            onAccept = {
+                                sendWppMessage(context, client!!.phone, message = "${context.getString(R.string.hello)} $firstName \uD83E\uDD17\n${
+                                    context.getString(R.string.after_appointment_wpp_message)
+                                }")
+                            },
+                            onDecline = {
+                                onDismiss()
+                            }
+                        )
+                    }
+
                     context.getString(R.string.welcome_message) -> {
+
+                        customMessage = ""
 
                         MainTextField(
                             value = customMessage,
@@ -277,7 +330,15 @@ fun NotifyClientDialog(
                             declineText = stringResource(R.string.cancel),
                             acceptButtonColor = PositiveColor,
                             declineButtonColor = NegativeColor,
-                            onAccept = { sendWppMessage(context,client!!.phone, message = "${context.getString(R.string.hello)} $firstName \uD83E\uDD17\n${context.getString(R.string.new_client_message_auto)}") },
+                            onAccept = {
+                                sendWppMessage(
+                                    context,
+                                    client!!.phone,
+                                    message = "${context.getString(R.string.hello)} $firstName \uD83E\uDD17\n${
+                                        context.getString(R.string.new_client_message_auto)
+                                    }"
+                                )
+                            },
                             onDecline = { onDismiss() }
                         )
                     }
@@ -288,7 +349,7 @@ fun NotifyClientDialog(
     }
 }
 
-fun sendWppMessage(context: Context, phoneNumber: String, message:String) {
+fun sendWppMessage(context: Context, phoneNumber: String, message: String) {
     val wppSender = getWhatsAppSenderAuto(
         context = context
     )

@@ -59,6 +59,7 @@
     <string name="date_hour_wpp_message_2">a las</string>
     <string name="date_hour_wpp_message_3">tenes agendada una cita 💅🏼❣️\nRecorda por favor confirmarme asistencia\nQue tengas un hermoso dia 🌈☀️</string>
     <string name="gift_from">De parte de quien</string>
+    <string name="after_appointment_wpp_message">Espero que hayas tenido una hermosa experiencia hoy en el local 💅🏼❣️\nQue tengas una hermosa semana y nos vemos la proxima 🌈☀️</string>
     <string name="gift_phone_number">Teléfono de quien recibe</string>
     <string name="gift_generate">Generar Gift Card</string>
     <string name="welcome_message">Mensaje de bienvenida</string>
