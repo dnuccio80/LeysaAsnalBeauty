@@ -17,7 +17,8 @@ fun EntryFlowRow(
     showEarningDialog:() -> Unit,
     showExpenseDialog:() -> Unit,
     addNewClientClicked:() -> Unit,
-    addNewGiftCardClicked:() -> Unit
+    addNewGiftCardClicked:() -> Unit,
+    notifyClientClicked:() -> Unit,
 ){
 
     val entryList: List<EntryDataClass> = listOf(
@@ -43,7 +44,7 @@ fun EntryFlowRow(
         ),
         EntryDataClass(
             R.drawable.ic_message, stringResource(R.string.notify_client),
-            onClick = { }
+            onClick = { notifyClientClicked() }
         ),
     )
 

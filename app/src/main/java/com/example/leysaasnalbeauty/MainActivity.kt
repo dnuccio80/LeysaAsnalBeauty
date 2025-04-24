@@ -20,6 +20,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.GiftCardScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.HomeScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.NotifyClientScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.AppTopBar
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.BottomBar
 import com.example.leysaasnalbeauty.ui.theme.LeysaAsnalBeautyTheme
@@ -88,6 +89,16 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onCancel = {
                                     navController.popBackStack()
+                                }
+                            )
+                        }
+                        composable(Routes.NotifyClient.route) {
+                            NotifyClientScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                onCancel = {
+                                    navController.popBackStack()
+                                    viewModel.onQueryChanged("")
                                 }
                             )
                         }

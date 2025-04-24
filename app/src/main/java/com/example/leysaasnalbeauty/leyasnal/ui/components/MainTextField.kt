@@ -22,6 +22,7 @@ fun MainTextField(
     isPhone: Boolean = false,
     onValueChange: (String) -> Unit,
     label: String,
+    enabled: Boolean = true,
     minLines:Int = 1,
     maxLines: Int = 1,
     singleLine: Boolean = true,
@@ -41,6 +42,7 @@ fun MainTextField(
                 onValueChange(it)
             }
         },
+        enabled = enabled,
         label = { BodyText(label) },
         singleLine = singleLine,
         minLines = minLines,
@@ -68,7 +70,8 @@ fun MainTextField(
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
             focusedIndicatorColor = DarkAccentColor,
-            unfocusedIndicatorColor = Color.White
+            unfocusedIndicatorColor = Color.White,
+            disabledContainerColor = Color.Gray
         ),
         modifier = Modifier.fillMaxWidth()
     )

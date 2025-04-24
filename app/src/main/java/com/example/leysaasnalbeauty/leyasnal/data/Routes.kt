@@ -11,4 +11,5 @@ sealed class Routes(val route: String) {
     data object Annotations: Routes("annotations")
     data object GiftCardMaker: Routes("giftCardMaker")
     data object AddClient: Routes("addClient")
+    data object NotifyClient: Routes("notifyClient")
 }

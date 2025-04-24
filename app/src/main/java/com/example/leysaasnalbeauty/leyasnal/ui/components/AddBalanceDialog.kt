@@ -96,30 +96,5 @@ fun AddBalanceDialog(
     }
 }
 
-@Composable
-fun RadioButtonsGroup(list: List<String>, selected: String, onSelectedChanged: (String) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        list.forEach { listItem ->
-            RadioButtonItem(text = listItem, selected) { onSelectedChanged(listItem) }
-        }
-    }
-}
 
-@Composable
-fun RadioButtonItem(text: String, selected: String, onClick: (String) -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
-        onClick(text)
-    }, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        RadioButton(
-            selected = selected == text,
-            onClick = {
-                onClick(text)
-            },
-            colors = RadioButtonDefaults.colors(
-                selectedColor = Color.White,
-                unselectedColor = Color.White
-            )
-        )
-        BodyText(text)
-    }
-}
+

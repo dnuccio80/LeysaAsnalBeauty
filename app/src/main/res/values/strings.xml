@@ -17,12 +17,15 @@
     <string name="share_whatsapp">Compartir en WhatsApp</string>
     <string name="modify">Modificar</string>
     <string name="delete">Eliminar</string>
+    <string name="send">Enviar</string>
     <string name="delete_expense_alert">¿Estás segura que queres eliiminar este gasto?</string>
     <string name="delete_earning_alert">¿Estás segura que queres eliiminar este ingreso?</string>
     <string name="home">Principal</string>
     <string name="modify_name">Modificar Nombre</string>
     <string name="modify_phone_number">Modificar Teléfono</string>
     <string name="modify_details">Modificar Detalles</string>
+    <string name="customized_message">Mensaje personalizado</string>
+    <string name="message">Mensaje</string>
     <string name="delete_client">Eliminar Clienta</string>
     <string name="delete_client_alert">¿Estás segura que queres eliminar esta clienta?</string>
     <string name="add_balance">Agregar Balance</string>
@@ -51,4 +54,6 @@
     <string name="gift_from">De parte de quien</string>
     <string name="gift_phone_number">Teléfono de quien recibe</string>
     <string name="gift_generate">Generar Gift Card</string>
+    <string name="welcome_message">Mensaje de bienvenida</string>
+    <string name="appointment_message">Recordatorio de cita</string>
 </resources>
