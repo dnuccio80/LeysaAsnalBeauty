@@ -1,7 +1,6 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -41,8 +40,6 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.components.RadioButtonsGroup
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
-import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
-import com.example.leysaasnalbeauty.leyasnal.ui.helper.getWhatsAppName
 import com.example.leysaasnalbeauty.leyasnal.ui.helper.getWhatsAppSenderAuto
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
@@ -165,6 +162,7 @@ fun NotifyClientDialog(
     var isCustomizedMessage by rememberSaveable { mutableStateOf(false) }
     var customMessage by rememberSaveable { mutableStateOf("") }
     var appointmentHour by rememberSaveable { mutableStateOf("") }
+    var appointmentDate by rememberSaveable { mutableStateOf("") }
     val client by viewModel.clientDetails.collectAsState()
 
     if (selectedRadioButton == context.getString(R.string.customized_message)) {
@@ -174,6 +172,8 @@ fun NotifyClientDialog(
     }
 
     if(client == null) return
+
+    val firstName = client!!.name.split(" ").first()
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -209,14 +209,32 @@ fun NotifyClientDialog(
                 when (selectedRadioButton) {
                     context.getString(R.string.appointment_message) -> {
                         MainTextField(
+                            value = appointmentDate,
+                            isNumeric = false,
+                            isPhone = false,
+                            onValueChange = { appointmentDate = it },
+                            label = stringResource(R.string.date),
+                            maxLines = 1,
+                            singleLine = true,
+                            icon = R.drawable.ic_date
+                        )
+                        MainTextField(
                             value = appointmentHour,
                             isNumeric = false,
                             isPhone = false,
                             onValueChange = { appointmentHour = it },
                             label = stringResource(R.string.appointment_hour),
-                            maxLines = 5,
-                            singleLine = false,
+                            maxLines = 1,
+                            singleLine = true,
                             icon = R.drawable.ic_time
+                        )
+                        AcceptDeclineButtons(
+                            acceptText = stringResource(R.string.send),
+                            declineText = stringResource(R.string.cancel),
+                            acceptButtonColor = PositiveColor,
+                            declineButtonColor = NegativeColor,
+                            onAccept = { sendWppMessage(context,client!!.phone, message = "${context.getString(R.string.hello)} $firstName \uD83E\uDD17\n${context.getString(R.string.date_hour_wpp_message_1)} $appointmentDate ${context.getString(R.string.date_hour_wpp_message_2)} $appointmentHour hs, ${context.getString(R.string.date_hour_wpp_message_3)}") },
+                            onDecline = { onDismiss() }
                         )
                     }
 
@@ -231,9 +249,18 @@ fun NotifyClientDialog(
                             singleLine = false,
                             icon = R.drawable.ic_chat
                         )
+                        AcceptDeclineButtons(
+                            acceptText = stringResource(R.string.send),
+                            declineText = stringResource(R.string.cancel),
+                            acceptButtonColor = PositiveColor,
+                            declineButtonColor = NegativeColor,
+                            onAccept = { sendWppMessage(context,client!!.phone, message = customMessage) },
+                            onDecline = { onDismiss() }
+                        )
                     }
 
                     context.getString(R.string.welcome_message) -> {
+
                         MainTextField(
                             value = customMessage,
                             isNumeric = false,
@@ -245,32 +272,31 @@ fun NotifyClientDialog(
                             singleLine = false,
                             icon = R.drawable.ic_chat
                         )
+                        AcceptDeclineButtons(
+                            acceptText = stringResource(R.string.send),
+                            declineText = stringResource(R.string.cancel),
+                            acceptButtonColor = PositiveColor,
+                            declineButtonColor = NegativeColor,
+                            onAccept = { sendWppMessage(context,client!!.phone, message = "${context.getString(R.string.hello)} $firstName \uD83E\uDD17\n${context.getString(R.string.new_client_message_auto)}") },
+                            onDecline = { onDismiss() }
+                        )
                     }
                 }
-                AcceptDeclineButtons(
-                    acceptText = stringResource(R.string.send),
-                    declineText = stringResource(R.string.cancel),
-                    acceptButtonColor = PositiveColor,
-                    declineButtonColor = NegativeColor,
-                    onAccept = { sendWppMessage(context,client!!.phone, client!!.name) },
-                    onDecline = { onDismiss() }
-                )
+
             }
         }
     }
 }
 
-fun sendWppMessage(context: Context, phoneNumber: String, name: String) {
+fun sendWppMessage(context: Context, phoneNumber: String, message:String) {
     val wppSender = getWhatsAppSenderAuto(
         context = context
     )
 
-    val firstName = name.split(" ").first()
-
     wppSender.sendMessage(
         context,
         "549$phoneNumber",
-        "${context.getString(R.string.hello)} $firstName \uD83E\uDD17\n${context.getString(R.string.new_client_message_auto)}"
+        message = message
     )
 }
 

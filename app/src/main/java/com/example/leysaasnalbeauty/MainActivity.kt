@@ -97,8 +97,8 @@ class MainActivity : ComponentActivity() {
                                 innerPadding = innerPadding,
                                 viewModel = viewModel,
                                 onCancel = {
-                                    navController.popBackStack()
                                     viewModel.onQueryChanged("")
+                                    navController.popBackStack()
                                 }
                             )
                         }

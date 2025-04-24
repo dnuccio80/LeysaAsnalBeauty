@@ -15,6 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.example.leysaasnalbeauty.R
@@ -52,7 +53,7 @@ fun BottomBar(navController: NavHostController) {
         NavigationBarItem(
             selected = selectedItem == 2,
             onClick = { selectedItem = 2 },
-            icon = { Icon(Icons.Filled.MailOutline, contentDescription = "") },
+            icon = { Icon(painterResource(R.drawable.ic_annotations), contentDescription = "") },
             label = { BodyText(stringResource(R.string.annotations)) }
         )
     }

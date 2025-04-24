@@ -27,6 +27,7 @@
     <string name="customized_message">Mensaje personalizado</string>
     <string name="message">Mensaje</string>
     <string name="appointment_hour">Hora de la cita</string>
+    <string name="date">Fecha</string>
     <string name="delete_client">Eliminar Clienta</string>
     <string name="delete_client_alert">¿Estás segura que queres eliminar esta clienta?</string>
     <string name="add_balance">Agregar Balance</string>
@@ -54,6 +55,9 @@
     <string name="hello">Hola</string>
     <string name="gift_to">A quien va dirigido el regalo</string>
     <string name="new_client_message_auto">Te damos la bienvenida a Leysa Asnal Beauty ❤️\nEsperamos que sea una experiencia de tu agrado y que podamos verte seguido por acá 💅🏼\nQue tengas un hermoso día 🥰❣️</string>
+    <string name="date_hour_wpp_message_1">Te recuerdo que el</string>
+    <string name="date_hour_wpp_message_2">a las</string>
+    <string name="date_hour_wpp_message_3">tenes agendada una cita 💅🏼❣️\nRecorda por favor confirmarme asistencia\nQue tengas un hermoso dia 🌈☀️</string>
     <string name="gift_from">De parte de quien</string>
     <string name="gift_phone_number">Teléfono de quien recibe</string>
     <string name="gift_generate">Generar Gift Card</string>
