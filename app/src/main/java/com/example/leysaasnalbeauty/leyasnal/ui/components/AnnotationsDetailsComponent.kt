@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.TextField
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.ui.theme.DarkBackground
 
 @Composable
 fun AnnotationsDetailsComponent(
@@ -80,11 +82,12 @@ fun AnnotationsDetailsComponent(
                 keyboardOptions = KeyboardOptions.Default.copy(
                     capitalization = KeyboardCapitalization.Sentences
                 ),
-                minLines = 20,
+                minLines = 15,
                 maxLines = 20,
+                shape = RoundedCornerShape(8.dp),
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
+                    focusedContainerColor = DarkBackground,
+                    unfocusedContainerColor = DarkBackground,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedTextColor = Color.White,

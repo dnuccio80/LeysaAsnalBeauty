@@ -26,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.leysaasnalbeauty.R
@@ -80,9 +81,12 @@ fun PostItAnnotationItem(
             item.title, style = TextStyle(
                 fontSize = 24.sp,
                 fontFamily = font,
+                color = Color.Black,
                 fontWeight = FontWeight.ExtraBold,
                 textAlign = TextAlign.Center
-            )
+            ),
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
     }
 
