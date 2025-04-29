@@ -52,7 +52,10 @@ fun BottomBar(navController: NavHostController) {
         )
         NavigationBarItem(
             selected = selectedItem == 2,
-            onClick = { selectedItem = 2 },
+            onClick = {
+                selectedItem = 2
+                navController.navigate(Routes.Annotations.route)
+            },
             icon = { Icon(painterResource(R.drawable.ic_annotations), contentDescription = "") },
             label = { BodyText(stringResource(R.string.annotations)) }
         )

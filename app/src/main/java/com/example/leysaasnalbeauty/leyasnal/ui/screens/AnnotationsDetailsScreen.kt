@@ -30,9 +30,7 @@ import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AcceptDeclineButtons
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
-import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
-import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 
 @Composable
 fun AnnotationsDetailsScreen(
@@ -104,6 +102,7 @@ fun AnnotationsDetailsScreen(
                 )
             )
             AcceptDeclineButtons(
+                declineText = stringResource(R.string.back),
                 onAccept = { },
                 onDecline = { }
             )

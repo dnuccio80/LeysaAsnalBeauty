@@ -48,6 +48,7 @@
     <string name="expand">Expandir</string>
     <string name="transactions">Transacciones</string>
     <string name="cancel">Cancelar</string>
+    <string name="back">Volver</string>
     <string name="new_fidelity_client">Agregar Clienta Fiel</string>
     <string name="create_gift_card">Crear Gift Card</string>
     <string name="notify_client">Notificar Clienta</string>
