@@ -65,4 +65,5 @@
     <string name="welcome_message">Mensaje de bienvenida</string>
     <string name="appointment_message">Recordatorio de cita</string>
     <string name="after_appointment_message">Mensaje post cita</string>
+    <string name="title">Título...</string>
 </resources>

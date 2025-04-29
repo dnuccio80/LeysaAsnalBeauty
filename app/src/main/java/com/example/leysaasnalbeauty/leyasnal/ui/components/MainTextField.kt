@@ -21,12 +21,13 @@ fun MainTextField(
     isNumeric: Boolean,
     isPhone: Boolean = false,
     onValueChange: (String) -> Unit,
-    label: String,
+    label: String? = null,
+    placeholder: String? = null,
     enabled: Boolean = true,
     minLines: Int = 1,
     maxLines: Int = 1,
     singleLine: Boolean = true,
-    @DrawableRes icon: Int
+    @DrawableRes icon: Int? = null
 ) {
 
     val numberRegex = Regex("^\\d*$")
@@ -43,15 +44,26 @@ fun MainTextField(
             }
         },
         enabled = enabled,
-        label = { BodyText(label) },
+        label = {
+            if (label != null) {
+                BodyText(label)
+            }
+        },
         singleLine = singleLine,
         minLines = minLines,
         maxLines = maxLines,
+        placeholder = {
+            if (placeholder != null) {
+                BodyText(placeholder)
+            }
+        },
         leadingIcon = {
-            Icon(
-                painterResource(icon),
-                contentDescription = "icon"
-            )
+            if (icon != null) {
+                Icon(
+                    painterResource(icon),
+                    contentDescription = "icon"
+                )
+            }
         },
         keyboardOptions =
             if (isNumeric) {
@@ -75,6 +87,10 @@ fun MainTextField(
             focusedIndicatorColor = DarkAccentColor,
             unfocusedIndicatorColor = Color.White,
             disabledContainerColor = Color.DarkGray,
+            focusedPlaceholderColor = Color.White,
+            unfocusedPlaceholderColor = Color.White,
+            disabledPlaceholderColor = Color.White,
+            errorPlaceholderColor = Color.White
         ),
         modifier = Modifier.fillMaxWidth()
     )
