@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddAnnotationScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddClientScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsScreen
@@ -120,7 +121,27 @@ class MainActivity : ComponentActivity() {
                             AnnotationsDetailsScreen(
                                 innerPadding = innerPadding,
                                 viewModel = viewModel,
-                                annotationId = backStackEntry.arguments?.getInt("annotationId") ?: 0
+                                annotationId = backStackEntry.arguments?.getInt("annotationId")
+                                    ?: 0,
+                                onBackButtonClicked = {
+                                    navController.popBackStack()
+                                },
+                                onConfirmButtonClicked = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+                        composable(Routes.AddAnnotation.route) {
+                            AddAnnotationScreen(
+                                innerPadding = innerPadding,
+                                onConfirmButtonClicked = { title, description ->
+                                    viewModel.addAnnotation(
+                                        title = title,
+                                        description = description
+                                    )
+                                    navController.popBackStack()
+                                },
+                                onBackButtonClicked = { navController.popBackStack() }
                             )
                         }
                     }

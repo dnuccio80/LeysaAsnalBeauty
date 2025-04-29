@@ -47,6 +47,8 @@
     <string name="accept">Aceptar</string>
     <string name="expand">Expandir</string>
     <string name="transactions">Transacciones</string>
+    <string name="save">Guardar</string>
+    <string name="no_annotations_found">No hay anotaciones aún, inserta una nueva</string>
     <string name="cancel">Cancelar</string>
     <string name="back">Volver</string>
     <string name="new_fidelity_client">Agregar Clienta Fiel</string>
@@ -66,5 +68,6 @@
     <string name="welcome_message">Mensaje de bienvenida</string>
     <string name="appointment_message">Recordatorio de cita</string>
     <string name="after_appointment_message">Mensaje post cita</string>
+    <string name="delete_annotation_alert_dialog">Segura que queres eliminar esta anotación?</string>
     <string name="title">Título...</string>
 </resources>

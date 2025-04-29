@@ -13,6 +13,7 @@ sealed class Routes(val route: String) {
     data object AnnotationDetails : Routes("annotationDetails/{annotationId}") {
         fun createRoute(annotationId: Int) = "annotationDetails/$annotationId"
     }
+    data object AddAnnotation : Routes("addAnnotation")
     data object GiftCardMaker : Routes("giftCardMaker")
     data object AddClient : Routes("addClient")
     data object NotifyClient : Routes("notifyClient")

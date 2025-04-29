@@ -1,12 +1,12 @@
 package com.example.leysaasnalbeauty.leyasnal.ui
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.leysaasnalbeauty.R
-import com.example.leysaasnalbeauty.leyasnal.data.Routes
+import com.example.leysaasnalbeauty.leyasnal.domain.annotations.AddAnnotationUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.annotations.DeleteAnnotationUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.annotations.GetAllAnnotationsUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.annotations.GetAnnotationDetailsUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.annotations.UpdateAnnotationUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.UpdateEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.AddNewClientUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.DeleteClientUseCase
@@ -22,6 +22,7 @@ import com.example.leysaasnalbeauty.leyasnal.domain.expenses.DeleteAllExpensesDa
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.DeleteExpenseUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.GetAllExpensesUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.UpdateExpenseUseCase
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AnnotationsDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
@@ -31,7 +32,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -68,12 +68,20 @@ class AppViewModel @Inject constructor(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
     private val updateExpenseUseCase: UpdateExpenseUseCase,
 
+    // Annotations
+    getAllAnnotationsUseCase: GetAllAnnotationsUseCase,
+    private val addAnnotationUseCase: AddAnnotationUseCase,
+    private val deleteAnnotationUseCase: DeleteAnnotationUseCase,
+    private val updateAnnotationUseCase: UpdateAnnotationUseCase,
+    private val getAnnotationDetailsUseCase: GetAnnotationDetailsUseCase,
+
+
     ) : ViewModel() {
 
     // Vals
 
     private val _query = MutableStateFlow("")
-    val query:StateFlow<String> = _query
+    val query: StateFlow<String> = _query
 
     private val _clients = getAllClientsUseCase().map { list ->
         list.sortedBy { it.name }
@@ -83,7 +91,7 @@ class AppViewModel @Inject constructor(
     val clients = _clients
 
     val filteredClients = combine(_clients, _query) { clients, query ->
-        if(query.isEmpty() || query.isBlank()) {
+        if (query.isEmpty() || query.isBlank()) {
             clients
         } else {
             clients.filter { it.name.contains(query, ignoreCase = true) }
@@ -114,7 +122,20 @@ class AppViewModel @Inject constructor(
     )
     val expenses = _expenses
 
+    private val _annotations = getAllAnnotationsUseCase().stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
+    )
+    val annotations: StateFlow<List<AnnotationsDataClass>> = _annotations
 
+    private val annotationId = MutableStateFlow(0)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val _annotationDetails = annotationId.flatMapLatest {
+        getAnnotationDetailsUseCase(annotationId.value)
+    }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), null
+    )
+    val annotationDetails: StateFlow<AnnotationsDataClass?> = _annotationDetails
 
     // Fun
 
@@ -129,7 +150,7 @@ class AppViewModel @Inject constructor(
     fun deleteClient(clientId: Int) {
         val client = clients.value.find { it.id == clientId }
         viewModelScope.launch(Dispatchers.IO) {
-            if(client != null) deleteClientUseCase(client)
+            if (client != null) deleteClientUseCase(client)
         }
     }
 
@@ -203,6 +224,34 @@ class AppViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             updateExpenseUseCase(expense)
         }
+    }
+
+    // Annotations
+
+    fun addAnnotation(title: String, description: String) {
+        val annotation = AnnotationsDataClass(
+            title = title,
+            description = description
+        )
+        viewModelScope.launch(Dispatchers.IO) {
+            addAnnotationUseCase(annotation)
+        }
+    }
+
+    fun deleteAnnotation(annotation: AnnotationsDataClass) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteAnnotationUseCase(annotation)
+        }
+    }
+
+    fun updateAnnotation(annotation: AnnotationsDataClass) {
+        viewModelScope.launch(Dispatchers.IO) {
+            updateAnnotationUseCase(annotation)
+        }
+    }
+
+    fun setAnnotationId(id: Int) {
+        annotationId.value = id
     }
 
     // Generic fun

@@ -14,6 +14,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AcceptDeclineButtons
+import com.example.leysaasnalbeauty.leyasnal.ui.components.AnnotationsDetailsComponent
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 
@@ -36,78 +39,40 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 fun AnnotationsDetailsScreen(
     innerPadding: PaddingValues,
     viewModel: AppViewModel,
-    annotationId: Int
+    annotationId: Int,
+    onBackButtonClicked: () -> Unit,
+    onConfirmButtonClicked: () -> Unit
 ) {
 
-    var title by rememberSaveable { mutableStateOf("") }
-    var description by rememberSaveable { mutableStateOf("") }
-
-    Box(
-        Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .background(Color.Black)
-            .padding(innerPadding)
-    ) {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            TextField(
-                value = title,
-                textStyle = TextStyle(
-                    color = Color.White,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-                onValueChange = { title = it },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    capitalization = KeyboardCapitalization.Sentences
-                ),
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { SecondTitleText(stringResource(R.string.title)) },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.White,
-                    unfocusedIndicatorColor = Color.White,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    focusedPlaceholderColor = Color.White,
-                    unfocusedPlaceholderColor = Color.White,
-                ),
-                singleLine = true
-            )
-            TextField(
-                value = description,
-                onValueChange = { description = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { BodyText(stringResource(R.string.description)) },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    capitalization = KeyboardCapitalization.Sentences
-                ),
-                minLines = 20,
-                maxLines = 20,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    focusedPlaceholderColor = Color.White,
-                    unfocusedPlaceholderColor = Color.White,
-                )
-            )
-            AcceptDeclineButtons(
-                declineText = stringResource(R.string.back),
-                onAccept = { },
-                onDecline = { }
-            )
-        }
+    LaunchedEffect(Unit) {
+        viewModel.setAnnotationId(annotationId)
     }
 
+    val annotation by viewModel.annotationDetails.collectAsState()
 
+    if (annotation == null || annotation!!.id != annotationId) return
+
+    var title by rememberSaveable { mutableStateOf(annotation!!.title) }
+    var description by rememberSaveable { mutableStateOf(annotation!!.description) }
+
+    AnnotationsDetailsComponent(
+        innerPadding = innerPadding,
+        title = title,
+        description = description,
+        onConfirmButtonClicked = {
+            if (title.isNotEmpty() && description.isNotEmpty()) {
+                onConfirmButtonClicked()
+                viewModel.updateAnnotation(
+                    annotation!!.copy(
+                        title = title,
+                        description = description
+                    )
+                )
+            }
+        },
+        onBackButtonClicked = { onBackButtonClicked() },
+        onTitleChange = { title = it },
+        onDescriptionChange = { description = it }
+    )
 }
+
