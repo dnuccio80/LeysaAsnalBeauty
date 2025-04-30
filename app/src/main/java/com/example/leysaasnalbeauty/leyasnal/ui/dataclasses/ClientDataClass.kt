@@ -1,6 +1,7 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.dataclasses
 
 import com.example.leysaasnalbeauty.leyasnal.data.clients.ClientEntity
+import java.time.LocalDate
 
 data class ClientDataClass(
     val id: Int = 0,
