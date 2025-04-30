@@ -44,6 +44,8 @@
     <string name="gift_card_wpp_message">Hola! Estamos contentos de comentarte que alguien que te quiere mucho, decidió mandarte un gift card para hacerte unas uñas en Leysa Asnal Beauty</string>
     <string name="phone_number">Número de celular</string>
     <string name="details">Detalles</string>
+    <string name="confirm">Confirmar</string>
+    <string name="birthday_date">Fecha de cumpleaños</string>
     <string name="accept">Aceptar</string>
     <string name="expand">Expandir</string>
     <string name="transactions">Transacciones</string>

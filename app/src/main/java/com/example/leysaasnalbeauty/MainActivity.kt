@@ -48,105 +48,105 @@ class MainActivity : ComponentActivity() {
                     topBar = { AppTopBar() },
                     bottomBar = { BottomBar(navController) }
                 ) { innerPadding ->
-//                    NavHost(navController, startDestination = Routes.Home.route) {
-//                        composable(Routes.Home.route) {
-//                            HomeScreen(
-//                                innerPadding,
-//                                viewModel,
-//                                navController
-//                            )
-//                        }
-//                        composable(Routes.Clients.route) {
-//                            ClientsScreen(innerPadding, viewModel, onClientClicked = { clientId ->
-//                                navController.navigate(Routes.ClientDetails.createRoute(clientId))
-//                            })
-//                        }
-//                        composable(
-//                            Routes.ClientDetails.route,
-//                            arguments = listOf(navArgument("clientId") {
-//                                type = NavType.IntType
-//                            })
-//                        )
-//                        { backStackEntry ->
-//                            ClientDetailsScreen(
-//                                innerPadding = innerPadding,
-//                                viewModel = viewModel,
-//                                clientId = backStackEntry.arguments?.getInt("clientId") ?: 0,
-//                                onBackButtonClick = {
-//                                    navController.popBackStack()
-//                                },
-//                                onDeleteClient = { clientId ->
-//                                    viewModel.deleteClient(clientId)
-//                                }
-//                            )
-//                        }
-//                        composable(Routes.GiftCardMaker.route) {
-//                            GiftCardScreen(innerPadding, onCancel = {
-//                                navController.popBackStack()
-//                            })
-//                        }
-//                        composable(Routes.AddClient.route) {
-//                            AddClientScreen(
-//                                innerPadding, onAddClient = { client ->
-//                                    viewModel.addNewClient(client)
-//                                    navController.popBackStack()
-//                                },
-//                                onCancel = {
-//                                    navController.popBackStack()
-//                                }
-//                            )
-//                        }
-//                        composable(Routes.NotifyClient.route) {
-//                            NotifyClientScreen(
-//                                innerPadding = innerPadding,
-//                                viewModel = viewModel,
-//                                onCancel = {
-//                                    viewModel.onQueryChanged("")
-//                                    navController.popBackStack()
-//                                }
-//                            )
-//                        }
-//                        composable(Routes.Annotations.route) {
-//                            AnnotationsScreen(
-//                                innerPadding = innerPadding,
-//                                viewModel = viewModel,
-//                                navController
-//                            )
-//                        }
-//                        composable(
-//                            Routes.AnnotationDetails.route,
-//                            arguments = listOf(navArgument("annotationId") {
-//                                type = NavType.IntType
-//                            })
-//                        ) { backStackEntry ->
-//                            AnnotationsDetailsScreen(
-//                                innerPadding = innerPadding,
-//                                viewModel = viewModel,
-//                                annotationId = backStackEntry.arguments?.getInt("annotationId")
-//                                    ?: 0,
-//                                onBackButtonClicked = {
-//                                    navController.popBackStack()
-//                                },
-//                                onConfirmButtonClicked = {
-//                                    navController.popBackStack()
-//                                }
-//                            )
-//                        }
-//                        composable(Routes.AddAnnotation.route) {
-//                            AddAnnotationScreen(
-//                                innerPadding = innerPadding,
-//                                onConfirmButtonClicked = { title, description ->
-//                                    viewModel.addAnnotation(
-//                                        title = title,
-//                                        description = description
-//                                    )
-//                                    navController.popBackStack()
-//                                },
-//                                onBackButtonClicked = { navController.popBackStack() }
-//                            )
-//                        }
-//                    }
-                    TestScreen(innerPadding)
+                    NavHost(navController, startDestination = Routes.Home.route) {
+                        composable(Routes.Home.route) {
+                            HomeScreen(
+                                innerPadding,
+                                viewModel,
+                                navController
+                            )
+                        }
+                        composable(Routes.Clients.route) {
+                            ClientsScreen(innerPadding, viewModel, onClientClicked = { clientId ->
+                                navController.navigate(Routes.ClientDetails.createRoute(clientId))
+                            })
+                        }
+                        composable(
+                            Routes.ClientDetails.route,
+                            arguments = listOf(navArgument("clientId") {
+                                type = NavType.IntType
+                            })
+                        )
+                        { backStackEntry ->
+                            ClientDetailsScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                clientId = backStackEntry.arguments?.getInt("clientId") ?: 0,
+                                onBackButtonClick = {
+                                    navController.popBackStack()
+                                },
+                                onDeleteClient = { clientId ->
+                                    viewModel.deleteClient(clientId)
+                                }
+                            )
+                        }
+                        composable(Routes.GiftCardMaker.route) {
+                            GiftCardScreen(innerPadding, onCancel = {
+                                navController.popBackStack()
+                            })
+                        }
+                        composable(Routes.AddClient.route) {
+                            AddClientScreen(
+                                innerPadding, onAddClient = { client ->
+                                    viewModel.addNewClient(client)
+                                    navController.popBackStack()
+                                },
+                                onCancel = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+                        composable(Routes.NotifyClient.route) {
+                            NotifyClientScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                onCancel = {
+                                    viewModel.onQueryChanged("")
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+                        composable(Routes.Annotations.route) {
+                            AnnotationsScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                navController
+                            )
+                        }
+                        composable(
+                            Routes.AnnotationDetails.route,
+                            arguments = listOf(navArgument("annotationId") {
+                                type = NavType.IntType
+                            })
+                        ) { backStackEntry ->
+                            AnnotationsDetailsScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                annotationId = backStackEntry.arguments?.getInt("annotationId")
+                                    ?: 0,
+                                onBackButtonClicked = {
+                                    navController.popBackStack()
+                                },
+                                onConfirmButtonClicked = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+                        composable(Routes.AddAnnotation.route) {
+                            AddAnnotationScreen(
+                                innerPadding = innerPadding,
+                                onConfirmButtonClicked = { title, description ->
+                                    viewModel.addAnnotation(
+                                        title = title,
+                                        description = description
+                                    )
+                                    navController.popBackStack()
+                                },
+                                onBackButtonClicked = { navController.popBackStack() }
+                            )
+                        }
+                    }
+//                    TestScreen(innerPadding)
                 }
             }
         }
