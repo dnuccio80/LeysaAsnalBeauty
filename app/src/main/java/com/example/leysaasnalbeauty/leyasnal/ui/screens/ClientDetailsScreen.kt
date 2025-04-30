@@ -21,10 +21,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -47,6 +49,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AcceptDeclineButtons
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AlertDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
+import com.example.leysaasnalbeauty.leyasnal.ui.components.DatePickerDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EditClientDetailsDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EditIcon
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
@@ -58,7 +61,10 @@ import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import com.example.leysaasnalbeauty.ui.theme.PositiveColor
 import com.example.leysaasnalbeauty.ui.theme.SecondaryBackgroundColor
+import java.time.Instant
+import java.time.ZoneId
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClientDetailsScreen(
     innerPadding: PaddingValues,
@@ -73,20 +79,29 @@ fun ClientDetailsScreen(
     var showEditNameDialog by rememberSaveable { mutableStateOf(false) }
     var showEditPhoneNumberDialog by rememberSaveable { mutableStateOf(false) }
     var showDeleteClientAlertDialog by rememberSaveable { mutableStateOf(false) }
+    var showDatePickerDialog by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.setClientId(clientId)
     }
 
     val client by viewModel.clientDetails.collectAsState()
+    val datePickerState = rememberDatePickerState()
 
     if (client == null || client!!.id != clientId) return
 
     var clientName by rememberSaveable { mutableStateOf(client!!.name) }
     var clientPhoneNumber by rememberSaveable { mutableStateOf(client!!.phone) }
     var clientDetails by rememberSaveable { mutableStateOf(client!!.details) }
+    var clientBirthday by rememberSaveable { mutableStateOf(client!!.birthday) }
 
     var editDetailsMode by rememberSaveable { mutableStateOf(false) }
+
+    val date = datePickerState.selectedDateMillis
+
+    date?.let {
+        clientBirthday = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
+    }
 
     LaunchedEffect(editDetailsMode) {
         if (editDetailsMode) focusRequester.requestFocus()
@@ -105,7 +120,11 @@ fun ClientDetailsScreen(
                 .padding(vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Icon(
                     Icons.AutoMirrored.Default.KeyboardArrowLeft,
                     contentDescription = "Back Arrow",
@@ -121,7 +140,6 @@ fun ClientDetailsScreen(
                     buttonColor = NegativeColor
                 ) {
                     showDeleteClientAlertDialog = true
-
                 }
             }
 
@@ -143,6 +161,15 @@ fun ClientDetailsScreen(
                 ) {
                     ThirdTitleText("${stringResource(R.string.phone)} $clientPhoneNumber")
                     EditIcon(20.dp) { showEditPhoneNumberDialog = true }
+                }
+            }
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    ThirdTitleText("${stringResource(R.string.birthday_date)} ${clientBirthday.dayOfMonth}/${clientBirthday.monthValue}/${clientBirthday.year}")
+                    EditIcon(20.dp) { showDatePickerDialog = true }
                 }
             }
             Card(
@@ -259,6 +286,17 @@ fun ClientDetailsScreen(
             onBackButtonClick()
             onDeleteClient(clientId)
         }
+    )
+
+    // Date Picker
+    DatePickerDialogItem(
+        showDatePickerDialog,
+        onDismiss = { showDatePickerDialog = false },
+        onConfirm = {
+            showDatePickerDialog = false
+            viewModel.updateClient(client!!.copy(birthday = clientBirthday))
+        },
+        datePickerState
     )
 }
 

@@ -14,9 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -38,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
+import com.example.leysaasnalbeauty.leyasnal.ui.components.DatePickerDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
@@ -147,7 +145,8 @@ fun AddClientScreen(
                             ClientDataClass(
                                 name = name,
                                 phone = phoneNumber,
-                                details = details
+                                details = details,
+                                birthday = Instant.ofEpochMilli(date!!).atZone(ZoneId.of("UTC")).toLocalDate()
                             )
                         )
                     }
@@ -173,7 +172,7 @@ fun DatePickerTextField(dateValue: String, onClick: () -> Unit) {
         },
         leadingIcon = {
             Icon(
-                painterResource(R.drawable.ic_birthday),
+                painterResource(R.drawable.image_birthday),
                 contentDescription = "bd icon",
                 tint = Color.White
             )
@@ -207,35 +206,3 @@ fun DatePickerTextField(dateValue: String, onClick: () -> Unit) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DatePickerDialogItem(
-    show: Boolean,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-    datePickerState: DatePickerState
-) {
-    if (show) {
-        DatePickerDialog(
-            onDismissRequest = { onDismiss() },
-            confirmButton = {
-                ButtonTextItem(
-                    text = stringResource(R.string.confirm),
-                    buttonColor = AccentColor
-                ) {
-                    onConfirm()
-                }
-            },
-            dismissButton = {
-                ButtonTextItem(
-                    text = stringResource(R.string.cancel),
-                    buttonColor = AccentColor
-                ) {
-                    onDismiss()
-                }
-            }
-        ) {
-            DatePicker(state = datePickerState)
-        }
-    }
-}

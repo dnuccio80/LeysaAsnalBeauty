@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -42,6 +43,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.toTransactionDataCla
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.toTransactionsDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EditEarningDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EditExpenseDialog
+import com.example.leysaasnalbeauty.leyasnal.ui.sections.BirthdaySection
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.TransactionsSection
 
 @Composable
@@ -148,12 +150,14 @@ fun HomeScreen(
                     notifyClientClicked = { navController.navigate(Routes.NotifyClient.route) }
                 )
                 Spacer(Modifier.size(0.dp))
+                BirthdaySection(viewModel)
                 TransactionsSection(
                     stringResource(R.string.earnings),
                     earnings.map {
                         it.toTransactionsDataClass()
                     },
                     viewModel,
+                    icon = painterResource(R.drawable.ic_money),
                     onItemListClicked = {
                         selectedEarning = it.toEarningDataClass()
                         showEditEarningDialog = true
@@ -168,6 +172,7 @@ fun HomeScreen(
                         it.toTransactionDataClass()
                     },
                     viewModel,
+                    icon = painterResource(R.drawable.ic_buys),
                     onItemListClicked = {
                         selectedExpense = it.toExpenseDataClass()
                         showEditExpenseDialog = true

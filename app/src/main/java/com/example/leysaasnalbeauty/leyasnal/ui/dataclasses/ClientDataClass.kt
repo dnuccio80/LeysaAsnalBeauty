@@ -7,6 +7,7 @@ data class ClientDataClass(
     val id: Int = 0,
     val name: String,
     val phone: String,
+    val birthday: LocalDate,
     val details: String
 )
 
@@ -14,5 +15,6 @@ fun ClientDataClass.toClientEntity(): ClientEntity = ClientEntity(
     id = id,
     name = name,
     phone = phone,
+    birthday = birthday,
     details = details
 )
