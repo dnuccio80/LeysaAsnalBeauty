@@ -19,6 +19,7 @@ fun EntryFlowRow(
     addNewClientClicked:() -> Unit,
     addNewGiftCardClicked:() -> Unit,
     notifyClientClicked:() -> Unit,
+    scheduleAppointmentClicked:() -> Unit
 ){
 
     val entryList: List<EntryDataClass> = listOf(
@@ -46,6 +47,10 @@ fun EntryFlowRow(
             R.drawable.ic_message, stringResource(R.string.notify_client),
             onClick = { notifyClientClicked() }
         ),
+        EntryDataClass(
+            R.drawable.ic_appointment, stringResource(R.string.schedule_appointment),
+            onClick = { scheduleAppointmentClicked() }
+        )
     )
 
     FlowRow(

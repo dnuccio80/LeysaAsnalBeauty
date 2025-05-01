@@ -147,7 +147,8 @@ fun HomeScreen(
                     showExpenseDialog = { showAddExpenseDialog = true },
                     addNewClientClicked = { navController.navigate(Routes.AddClient.route) },
                     addNewGiftCardClicked = { navController.navigate(Routes.GiftCardMaker.route) },
-                    notifyClientClicked = { navController.navigate(Routes.NotifyClient.route) }
+                    notifyClientClicked = { navController.navigate(Routes.NotifyClient.route) },
+                    scheduleAppointmentClicked = { navController.navigate(Routes.ScheduleAppointment.route) }
                 )
                 Spacer(Modifier.size(0.dp))
                 BirthdaySection(viewModel)
