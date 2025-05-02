@@ -25,6 +25,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.screens.GiftCardScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.HomeScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.NotifyClientScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ScheduleAppointmentScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.SelectDateTImeForAppointmentScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.TestScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.AppTopBar
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.BottomBar
@@ -148,7 +149,8 @@ class MainActivity : ComponentActivity() {
 //                        }
 //                        composable(Routes.ScheduleAppointment.route){ ScheduleAppointmentScreen(innerPadding) }
 //                    }
-                    TestScreen(innerPadding)
+//                    ScheduleAppointmentScreen(innerPadding, viewModel)
+                    SelectDateTImeForAppointmentScreen(innerPadding, viewModel, 1)
                 }
             }
         }

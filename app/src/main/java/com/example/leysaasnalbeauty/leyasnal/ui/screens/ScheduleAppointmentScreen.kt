@@ -45,7 +45,6 @@ fun ScheduleAppointmentScreen(
     val query by viewModel.query.collectAsState()
     val clientList by viewModel.filteredClients.collectAsState()
 
-    var showNotifyDialog by rememberSaveable { mutableStateOf(false) }
     var clientId by rememberSaveable { mutableIntStateOf(0) }
 
     Box(
@@ -101,7 +100,7 @@ fun ScheduleAppointmentScreen(
                         clientList.forEachIndexed { index, client ->
                             ClientItem(client) {
                                 clientId = client.id
-                                showNotifyDialog = true
+                                // Navigate to appointmentScreen
                             }
 
                             if (index < clientList.lastIndex) {
@@ -119,12 +118,4 @@ fun ScheduleAppointmentScreen(
             }
         }
     }
-    NotifyClientDialog(
-        show = showNotifyDialog,
-        clientId = clientId,
-        viewModel,
-        onDismiss = {
-            showNotifyDialog = false
-        }
-    )
 }

@@ -22,11 +22,12 @@ fun AcceptDeclineButtons(
     acceptButtonColor: Color = DarkAccentColor,
     declineButtonColor: Color = DarkAccentColor,
     onAccept: () -> Unit,
-    onDecline: () -> Unit
+    onDecline: () -> Unit,
+    acceptEnabled: Boolean = true,
 ) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Absolute.SpaceEvenly) {
         ButtonTextItem(declineText, declineButtonColor) { onDecline() }
-        ButtonTextItem(acceptText, acceptButtonColor) { onAccept() }
+        ButtonTextItem(acceptText, acceptButtonColor, enabled = acceptEnabled) { onAccept() }
     }
 }
 

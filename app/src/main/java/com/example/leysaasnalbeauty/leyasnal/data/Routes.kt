@@ -18,4 +18,7 @@ sealed class Routes(val route: String) {
     data object AddClient : Routes("addClient")
     data object NotifyClient : Routes("notifyClient")
     data object ScheduleAppointment : Routes("scheduleAppointment")
+    data object SelectDateTimeAppointment : Routes("selectDateTimeAppointment/{clientId}") {
+        fun createRoute(clientId: Int) = "selectDateTimeAppointment/$clientId"
+    }
 }
