@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.example.leysaasnalbeauty.leyasnal.data.AppDataBase
 import com.example.leysaasnalbeauty.leyasnal.data.annotations.AnnotationsDao
+import com.example.leysaasnalbeauty.leyasnal.data.appoointments.AppointmentDao
 import com.example.leysaasnalbeauty.leyasnal.data.balance.earnings.EarningDao
 import com.example.leysaasnalbeauty.leyasnal.data.balance.expenses.ExpenseDao
 import com.example.leysaasnalbeauty.leyasnal.data.clients.ClientDao
@@ -50,6 +51,12 @@ object AppModule {
     @Singleton
     fun provideAnnotationsDao(appDataBase: AppDataBase): AnnotationsDao {
         return appDataBase.annotationsDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppointmentsDao(appDataBase: AppDataBase): AppointmentDao {
+        return appDataBase.appointmentDao
     }
 
 }

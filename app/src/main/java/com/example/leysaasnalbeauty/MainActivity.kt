@@ -147,10 +147,40 @@ class MainActivity : ComponentActivity() {
 //                                onBackButtonClicked = { navController.popBackStack() }
 //                            )
 //                        }
-//                        composable(Routes.ScheduleAppointment.route){ ScheduleAppointmentScreen(innerPadding) }
+//                        composable(Routes.ScheduleAppointment.route) {
+//                            ScheduleAppointmentScreen(
+//                                innerPadding,
+//                                viewModel = viewModel,
+//                                onClientSelected = { clientId ->
+//                                    navController.navigate(
+//                                        Routes.SelectDateTimeAppointment.createRoute(
+//                                            clientId
+//                                        )
+//                                    )
+//                                }
+//                            )
+//                        }
+//                        composable(
+//                            Routes.SelectDateTimeAppointment.route,
+//                            arguments = listOf(navArgument("clientId") {
+//                                type = NavType.IntType
+//                            })
+//                        ) { backStackEntry ->
+//                            SelectDateTImeForAppointmentScreen(
+//                                innerPadding,
+//                                viewModel,
+//                                clientId = backStackEntry.arguments?.getInt("clientId") ?: 0,
+//                                onCancelButtonClicked = {
+//                                    navController.popBackStack()
+//                                }
+//                            )
+//                        }
 //                    }
+                    TestScreen(innerPadding, viewModel)
 //                    ScheduleAppointmentScreen(innerPadding, viewModel)
-                    SelectDateTImeForAppointmentScreen(innerPadding, viewModel, 1)
+//                    SelectDateTImeForAppointmentScreen(innerPadding, viewModel, 1) {
+//                        navController.popBackStack()
+//                    }
                 }
             }
         }

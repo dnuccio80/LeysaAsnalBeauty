@@ -2,11 +2,18 @@ package com.example.leysaasnalbeauty.leyasnal.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.leysaasnalbeauty.leyasnal.data.appoointments.AppointmentWithClient
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.AddAnnotationUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.DeleteAnnotationUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.GetAllAnnotationsUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.GetAnnotationDetailsUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.UpdateAnnotationUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.appointments.AddAppointmentUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.appointments.DeleteAppointmentUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.appointments.GetAllAppointmentsUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.appointments.GetAppointmentDetailsUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.appointments.GetFutureAppointmentsUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.appointments.UpdateAppointmentUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.UpdateEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.AddNewClientUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.DeleteClientUseCase
@@ -23,6 +30,7 @@ import com.example.leysaasnalbeauty.leyasnal.domain.expenses.DeleteExpenseUseCas
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.GetAllExpensesUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.UpdateExpenseUseCase
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AnnotationsDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AppointmentDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
@@ -32,12 +40,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
+import java.time.LocalDateTime
 import java.util.Locale
 import javax.inject.Inject
 
@@ -74,6 +84,14 @@ class AppViewModel @Inject constructor(
     private val deleteAnnotationUseCase: DeleteAnnotationUseCase,
     private val updateAnnotationUseCase: UpdateAnnotationUseCase,
     private val getAnnotationDetailsUseCase: GetAnnotationDetailsUseCase,
+
+    // Appointments
+    getAllAppointmentsUseCase: GetAllAppointmentsUseCase,
+    private val getFutureAppointmentsUseCase: GetFutureAppointmentsUseCase,
+    private val addAppointmentUseCase: AddAppointmentUseCase,
+    private val deleteAppointmentUseCase: DeleteAppointmentUseCase,
+    private val updateAppointmentUseCase: UpdateAppointmentUseCase,
+    private val getAppointmentDetailsUseCase: GetAppointmentDetailsUseCase,
 
 
     ) : ViewModel() {
@@ -137,7 +155,30 @@ class AppViewModel @Inject constructor(
     )
     val annotationDetails: StateFlow<AnnotationsDataClass?> = _annotationDetails
 
+    private val _appointments = getAllAppointmentsUseCase().stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
+    )
+    val appointments: StateFlow<List<AppointmentDataClass>> = _appointments
+
+    private val appointmentId = MutableStateFlow(0)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val appointmentDetails = appointmentId.flatMapLatest {
+        getAppointmentDetailsUseCase(appointmentId.value)
+    }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), null
+    )
+
+    private val _futureAppointments = MutableStateFlow<List<AppointmentWithClient>>(emptyList())
+    val futureAppointments: StateFlow<List<AppointmentWithClient>> = _futureAppointments
+
     // Fun
+
+    fun loadAppointments() {
+        viewModelScope.launch {
+            _futureAppointments.value = getFutureAppointmentsUseCase(LocalDateTime.now())
+        }
+    }
 
     // Clients
 
@@ -252,6 +293,30 @@ class AppViewModel @Inject constructor(
 
     fun setAnnotationId(id: Int) {
         annotationId.value = id
+    }
+
+    // Appointments
+
+    fun addAppointment(clientId: Int, date: LocalDateTime, serviceType: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            addAppointmentUseCase(AppointmentDataClass(clientId = clientId, serviceType = serviceType, date = date))
+        }
+    }
+
+    fun deleteAppointment(appointment: AppointmentDataClass) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteAppointmentUseCase(appointment)
+        }
+    }
+
+    fun updateAppointment(appointment: AppointmentDataClass) {
+        viewModelScope.launch(Dispatchers.IO) {
+            updateAppointmentUseCase(appointment)
+        }
+    }
+
+    fun setAppointmentId(id: Int) {
+        appointmentId.value = id
     }
 
     // Generic fun

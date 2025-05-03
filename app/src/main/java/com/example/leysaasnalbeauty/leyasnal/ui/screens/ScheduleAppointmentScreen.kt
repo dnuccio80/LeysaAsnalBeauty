@@ -39,7 +39,8 @@ import com.example.leysaasnalbeauty.ui.theme.SecondaryBackgroundColor
 @Composable
 fun ScheduleAppointmentScreen(
     innerPadding: PaddingValues,
-    viewModel: AppViewModel
+    viewModel: AppViewModel,
+    onClientSelected:(Int) -> Unit
 ) {
 
     val query by viewModel.query.collectAsState()
@@ -100,7 +101,7 @@ fun ScheduleAppointmentScreen(
                         clientList.forEachIndexed { index, client ->
                             ClientItem(client) {
                                 clientId = client.id
-                                // Navigate to appointmentScreen
+                                onClientSelected(clientId)
                             }
 
                             if (index < clientList.lastIndex) {

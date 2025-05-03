@@ -1,107 +1,91 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
-import android.app.TimePickerDialog
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import android.app.DatePickerDialog
-import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.rememberTimePickerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.data.appoointments.AppointmentWithClient
+import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
-import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
-import com.itextpdf.layout.element.Text
-import java.time.LocalDateTime
-import java.util.Calendar
+import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
+import com.example.leysaasnalbeauty.leyasnal.ui.helper.sendWppMessage
+import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TestScreen(innerPadding: PaddingValues) {
+fun TestScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
 
-    val context = LocalContext.current
-    var clientName by remember { mutableStateOf("") }
-    var selectedDateTime by remember { mutableStateOf<LocalDateTime?>(null) }
+    val appointments by viewModel.futureAppointments.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .background(Color.Red)
+    LaunchedEffect(Unit) {
+        viewModel.loadAppointments()
+    }
+
+    Box(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(Color.Black)
+            .padding(innerPadding)
     ) {
-        MainTextField(
-            value = clientName,
-            isNumeric = false,
-            onValueChange = { clientName = it }
-        )
-        MainTextField(
-            value = clientName,
-            isNumeric = false,
-            onValueChange = { clientName = it }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(onClick = {
-            val calendar = Calendar.getInstance()
-            DatePickerDialog(
-                context,
-                { _, year, month, day ->
-                    TimePickerDialog(
-                        context,
-                        { _, hour, minute ->
-                            selectedDateTime = LocalDateTime.of(year, month + 1, day, hour, minute)
-                        },
-                        calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE),
-                        true
-                    ).show()
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }) {
-            BodyText("Seleccionar fecha y hora")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        selectedDateTime?.let {
-            Text("Selected: $it")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                Log.i("Damian", "Cita Agendada para $clientName, $selectedDateTime")
-                selectedDateTime?.let { dateTime ->
-//                    viewModel.addAppointment(clientName, dateTime)
-                    clientName = ""
-                    selectedDateTime = null
-                }
-            },
-            enabled = clientName.isNotBlank() && selectedDateTime != null
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp, horizontal = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            BodyText("Agendar Fecha")
+            appointments.forEach {
+                TestItem(it)
+            }
         }
     }
 
-
 }
 
+@Composable
+fun TestItem(appointment: AppointmentWithClient) {
+    val context = LocalContext.current
+    val clientName = appointment.client.name.split(" ").first()
+    val hour = if(appointment.appointment.date.hour < 10) "0${appointment.appointment.date.hour}" else appointment.appointment.date.hour
+    val minute = if(appointment.appointment.date.minute < 10) "0${appointment.appointment.date.minute}" else appointment.appointment.date.minute
+    val appointmentDate = "${appointment.appointment.date.dayOfMonth}/${appointment.appointment.date.monthValue}"
+    val appointmentHour = "$hour:$minute"
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Box(modifier = Modifier.weight(1f)){
+            BodyText("$appointmentDate: ${appointment.client.name} - ${appointment.appointment.serviceType} - $appointmentHour")
+        }
+        ButtonTextItem(
+            text = stringResource(R.string.remember),
+            buttonColor = DarkAccentColor
+        ) {
+            sendWppMessage(
+                context = context,
+                phoneNumber = appointment.client.phone,
+                message = "${context.getString(R.string.hello)} $clientName \uD83E\uDD17\n${
+                    context.getString(R.string.date_hour_wpp_message_1)
+                } $appointmentDate ${context.getString(R.string.date_hour_wpp_message_2)} $appointmentHour hs, ${
+                    context.getString(
+                        R.string.date_hour_wpp_message_3
+                    )
+                }"
+            )
+        }
+    }
+}
