@@ -76,6 +76,8 @@
     <string name="appointment_message">Recordatorio de cita</string>
     <string name="after_appointment_message">Mensaje post cita</string>
     <string name="schedule_appointment">Agendar Cita</string>
+    <string name="today_dates">Citas de hoy</string>
+    <string name="tomorrow_dates">Citas de mañana</string>
     <string name="appointment_for">Cita para</string>
     <string name="select_date_time">Seleccionar fecha y hora</string>
     <string name="birthday_message">Te deseo que tengas un hermoso cumpleaños, y que tengas un hermoso día 🥰❣️\nTe saluda Leysa Asnal Beauty 💅🏼</string>

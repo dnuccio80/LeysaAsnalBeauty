@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +44,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.toTransactionDataCla
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.toTransactionsDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EditEarningDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EditExpenseDialog
+import com.example.leysaasnalbeauty.leyasnal.ui.sections.AppointmentsSection
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.BirthdaySection
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.TransactionsSection
 
@@ -64,8 +66,14 @@ fun HomeScreen(
     var showAddBalanceDialog by rememberSaveable { mutableStateOf(false) }
     var showDeleteAllDataDialog by rememberSaveable { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        viewModel.loadAppointments()
+    }
+
     val earnings by viewModel.earnings.collectAsState()
     val expenses by viewModel.expenses.collectAsState()
+    val todayAppointments by viewModel.todayAppointments.collectAsState()
+    val tomorrowAppointments by viewModel.tomorrowAppointments.collectAsState()
 
     val context = LocalContext.current
 
@@ -151,6 +159,8 @@ fun HomeScreen(
                     scheduleAppointmentClicked = { navController.navigate(Routes.ScheduleAppointment.route) }
                 )
                 Spacer(Modifier.size(0.dp))
+                AppointmentsSection(stringResource(R.string.today_dates), todayAppointments)
+                AppointmentsSection(stringResource(R.string.tomorrow_dates), tomorrowAppointments)
                 BirthdaySection(viewModel)
                 TransactionsSection(
                     stringResource(R.string.earnings),
