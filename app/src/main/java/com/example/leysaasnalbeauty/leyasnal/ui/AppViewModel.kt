@@ -10,6 +10,7 @@ import com.example.leysaasnalbeauty.leyasnal.domain.annotations.GetAnnotationDet
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.UpdateAnnotationUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.appointments.AddAppointmentUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.appointments.DeleteAppointmentUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.appointments.DeletePastAppointmentsUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.appointments.GetAllAppointmentsUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.appointments.GetAppointmentDetailsUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.appointments.GetFutureAppointmentsUseCase
@@ -40,13 +41,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.Locale
 import javax.inject.Inject
@@ -92,7 +93,7 @@ class AppViewModel @Inject constructor(
     private val deleteAppointmentUseCase: DeleteAppointmentUseCase,
     private val updateAppointmentUseCase: UpdateAppointmentUseCase,
     private val getAppointmentDetailsUseCase: GetAppointmentDetailsUseCase,
-
+    private val deletePastAppointmentsUseCase: DeletePastAppointmentsUseCase,
 
     ) : ViewModel() {
 
@@ -158,7 +159,7 @@ class AppViewModel @Inject constructor(
     private val _appointments = getAllAppointmentsUseCase().stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
     )
-    val appointments: StateFlow<List<AppointmentDataClass>> = _appointments
+    val appointments: StateFlow<List<AppointmentWithClient>> = _appointments
 
     private val appointmentId = MutableStateFlow(0)
 
@@ -172,13 +173,47 @@ class AppViewModel @Inject constructor(
     private val _futureAppointments = MutableStateFlow<List<AppointmentWithClient>>(emptyList())
     val futureAppointments: StateFlow<List<AppointmentWithClient>> = _futureAppointments
 
+    private val _todayAppointments = MutableStateFlow<List<AppointmentWithClient>>(emptyList())
+    val todayAppointments: StateFlow<List<AppointmentWithClient>> = _todayAppointments
+
+    private val _tomorrowAppointments = MutableStateFlow<List<AppointmentWithClient>>(emptyList())
+    val tomorrowAppointments: StateFlow<List<AppointmentWithClient>> = _tomorrowAppointments
+
     // Fun
 
     fun loadAppointments() {
         viewModelScope.launch {
-            _futureAppointments.value = getFutureAppointmentsUseCase(LocalDateTime.now())
+
+            deletePastAppointments()
+
+            val allAppointments = getFutureAppointmentsUseCase(LocalDateTime.now())
+
+            val now = LocalDate.now()
+            val todayStart = now.atStartOfDay()
+            val todayEnd = now.plusDays(1).atStartOfDay()
+
+            val tomorrowStart = now.plusDays(1).atStartOfDay()
+            val tomorrowEnd = now.plusDays(2).atStartOfDay()
+
+
+
+            _todayAppointments.value = allAppointments.filter {
+                it.appointment.date in todayStart..todayEnd
+            }
+
+            _tomorrowAppointments.value = allAppointments.filter {
+                it.appointment.date in tomorrowStart..tomorrowEnd
+            }
         }
     }
+
+    private fun deletePastAppointments() {
+        viewModelScope.launch {
+            val now = LocalDateTime.now()
+            deletePastAppointmentsUseCase(now)
+        }
+    }
+
 
     // Clients
 

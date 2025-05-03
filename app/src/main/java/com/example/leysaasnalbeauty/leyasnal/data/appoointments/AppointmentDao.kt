@@ -13,11 +13,14 @@ import java.time.LocalDateTime
 @Dao
 interface AppointmentDao {
 
-    @Query("SELECT * FROM AppointmentEntity")
-    fun getAllAppointments(): Flow<List<AppointmentEntity>>
+    @Query("SELECT * FROM AppointmentEntity ORDER BY date ASC")
+    fun getAllAppointments(): Flow<List<AppointmentWithClient>>
 
     @Query("SELECT * FROM AppointmentEntity WHERE id = :id")
     fun getAppointmentDetails(id:Int): Flow<AppointmentEntity>
+
+    @Query("DELETE FROM AppointmentEntity WHERE date < :now")
+    suspend fun deletePastAppointments(now:LocalDateTime)
 
     @Transaction
     @Query("SELECT * FROM AppointmentEntity WHERE date >= :now ORDER BY date ASC")

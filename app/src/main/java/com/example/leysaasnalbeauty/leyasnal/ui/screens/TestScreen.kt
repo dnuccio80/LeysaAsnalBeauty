@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,13 +27,17 @@ import com.example.leysaasnalbeauty.leyasnal.data.appoointments.AppointmentWithC
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
+import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.helper.sendWppMessage
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 
 @Composable
 fun TestScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
 
-    val appointments by viewModel.futureAppointments.collectAsState()
+    val appointments by viewModel.appointments.collectAsState()
+
+    val todayAppointments by viewModel.todayAppointments.collectAsState()
+    val tomorrowAppointments by viewModel.tomorrowAppointments.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.loadAppointments()
@@ -46,16 +51,53 @@ fun TestScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
             .padding(innerPadding)
     ) {
         Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            Modifier.fillMaxWidth()
         ) {
-            appointments.forEach {
-                TestItem(it)
+            ThirdTitleText("Todas las citas:")
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp, horizontal = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                appointments.forEach {
+                    TestItem(it)
+                }
+            }
+            ThirdTitleText("Citas de hoy:")
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp, horizontal = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                if (todayAppointments.isEmpty()) {
+                    BodyText("No hay citas para hoy")
+                } else {
+                    todayAppointments.forEach {
+                        TestItem(it)
+                    }
+                }
+
+            }
+            ThirdTitleText("Citas de mañana:")
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp, horizontal = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                if (tomorrowAppointments.isEmpty()) {
+                    BodyText("No hay citas para mañana")
+                } else {
+                    tomorrowAppointments.forEach {
+                        TestItem(it)
+                    }
+                }
             }
         }
     }
+
 
 }
 
@@ -63,12 +105,15 @@ fun TestScreen(innerPadding: PaddingValues, viewModel: AppViewModel) {
 fun TestItem(appointment: AppointmentWithClient) {
     val context = LocalContext.current
     val clientName = appointment.client.name.split(" ").first()
-    val hour = if(appointment.appointment.date.hour < 10) "0${appointment.appointment.date.hour}" else appointment.appointment.date.hour
-    val minute = if(appointment.appointment.date.minute < 10) "0${appointment.appointment.date.minute}" else appointment.appointment.date.minute
-    val appointmentDate = "${appointment.appointment.date.dayOfMonth}/${appointment.appointment.date.monthValue}"
+    val hour =
+        if (appointment.appointment.date.hour < 10) "0${appointment.appointment.date.hour}" else appointment.appointment.date.hour
+    val minute =
+        if (appointment.appointment.date.minute < 10) "0${appointment.appointment.date.minute}" else appointment.appointment.date.minute
+    val appointmentDate =
+        "${appointment.appointment.date.dayOfMonth}/${appointment.appointment.date.monthValue}"
     val appointmentHour = "$hour:$minute"
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Box(modifier = Modifier.weight(1f)){
+        Box(modifier = Modifier.weight(1f)) {
             BodyText("$appointmentDate: ${appointment.client.name} - ${appointment.appointment.serviceType} - $appointmentHour")
         }
         ButtonTextItem(

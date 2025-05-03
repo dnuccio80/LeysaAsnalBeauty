@@ -144,7 +144,7 @@ fun SelectDateTImeForAppointmentScreen(
                     buttonColor = DarkAccentColor
                 ) {
                     val calendar = Calendar.getInstance()
-                    DatePickerDialog(
+                    val datePickerDialog = DatePickerDialog(
                         context,
                         { _, year, month, day ->
                             TimePickerDialog(
@@ -161,7 +161,9 @@ fun SelectDateTImeForAppointmentScreen(
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)
-                    ).show()
+                    )
+                    datePickerDialog.datePicker.minDate = calendar.timeInMillis
+                    datePickerDialog.show()
                 }
             }
             AcceptDeclineButtons(

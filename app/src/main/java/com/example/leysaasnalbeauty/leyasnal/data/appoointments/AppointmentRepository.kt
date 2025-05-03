@@ -14,17 +14,15 @@ import javax.inject.Inject
 
 class AppointmentRepository @Inject constructor(private val appointmentDao: AppointmentDao){
 
-    fun getAllAppointments(): Flow<List<AppointmentDataClass>> = appointmentDao.getAllAppointments().map {
-        it.map { list ->
-            list.toAppointmentDataClass()
-        }
-    }
+    fun getAllAppointments(): Flow<List<AppointmentWithClient>> = appointmentDao.getAllAppointments()
 
     fun getAppointmentDetails(id:Int) = appointmentDao.getAppointmentDetails(id).map {
         it?.toAppointmentDataClass()
     }
 
     suspend fun getFutureAppointments(now: LocalDateTime): List<AppointmentWithClient> = appointmentDao.getFutureAppointments(now)
+
+    suspend fun deletePastAppointments(now:LocalDateTime) = appointmentDao.deletePastAppointments(now)
 
     suspend fun addAppointment(appointment: AppointmentDataClass) {
         appointmentDao.addAppointment(appointment.toAppointmentEntity())
