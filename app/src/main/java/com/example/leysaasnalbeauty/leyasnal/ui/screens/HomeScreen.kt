@@ -159,8 +159,12 @@ fun HomeScreen(
                     scheduleAppointmentClicked = { navController.navigate(Routes.ScheduleAppointment.route) }
                 )
                 Spacer(Modifier.size(0.dp))
-                AppointmentsSection(stringResource(R.string.today_dates), todayAppointments)
-                AppointmentsSection(stringResource(R.string.tomorrow_dates), tomorrowAppointments)
+                AppointmentsSection(stringResource(R.string.today_dates), todayAppointments, onAppointmentClicked = {
+                    navController.navigate(Routes.ModifyAppointment.createRoute(it))
+                })
+                AppointmentsSection(stringResource(R.string.tomorrow_dates), tomorrowAppointments, onAppointmentClicked = {
+                    navController.navigate(Routes.ModifyAppointment.createRoute(it))
+                })
                 BirthdaySection(viewModel)
                 TransactionsSection(
                     stringResource(R.string.earnings),

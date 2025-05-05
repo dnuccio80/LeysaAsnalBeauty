@@ -164,11 +164,12 @@ class AppViewModel @Inject constructor(
     private val appointmentId = MutableStateFlow(0)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val appointmentDetails = appointmentId.flatMapLatest {
+    private val _appointmentDetails = appointmentId.flatMapLatest {
         getAppointmentDetailsUseCase(appointmentId.value)
     }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), null
     )
+    val appointmentDetails = _appointmentDetails
 
     private val _futureAppointments = MutableStateFlow<List<AppointmentWithClient>>(emptyList())
     val futureAppointments: StateFlow<List<AppointmentWithClient>> = _futureAppointments
@@ -338,9 +339,9 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun deleteAppointment(appointment: AppointmentDataClass) {
+    fun deleteAppointment(id:Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteAppointmentUseCase(appointment)
+            deleteAppointmentUseCase(id)
         }
     }
 

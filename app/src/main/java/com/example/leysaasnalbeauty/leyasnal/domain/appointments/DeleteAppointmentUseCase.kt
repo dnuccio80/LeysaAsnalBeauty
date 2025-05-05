@@ -5,5 +5,5 @@ import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AppointmentDataClass
 import javax.inject.Inject
 
 class DeleteAppointmentUseCase @Inject constructor(private val appointmentRepository: AppointmentRepository) {
-    suspend operator fun invoke(appointment: AppointmentDataClass) = appointmentRepository.deleteAppointment(appointment)
+    suspend operator fun invoke(id: Int) = appointmentRepository.deleteAppointment(id)
 }

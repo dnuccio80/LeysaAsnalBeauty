@@ -16,9 +16,7 @@ class AppointmentRepository @Inject constructor(private val appointmentDao: Appo
 
     fun getAllAppointments(): Flow<List<AppointmentWithClient>> = appointmentDao.getAllAppointments()
 
-    fun getAppointmentDetails(id:Int) = appointmentDao.getAppointmentDetails(id).map {
-        it?.toAppointmentDataClass()
-    }
+    fun getAppointmentDetails(id:Int):Flow<AppointmentWithClient> = appointmentDao.getAppointmentDetails(id)
 
     suspend fun getFutureAppointments(now: LocalDateTime): List<AppointmentWithClient> = appointmentDao.getFutureAppointments(now)
 
@@ -28,8 +26,8 @@ class AppointmentRepository @Inject constructor(private val appointmentDao: Appo
         appointmentDao.addAppointment(appointment.toAppointmentEntity())
     }
 
-    suspend fun deleteAppointment(appointment: AppointmentDataClass) {
-        appointmentDao.deleteAppointment(appointment.toAppointmentEntity())
+    suspend fun deleteAppointment(id:Int) {
+        appointmentDao.deleteAppointment(id)
     }
 
     suspend fun updateAppointment(appointment: AppointmentDataClass) {

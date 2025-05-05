@@ -40,7 +40,11 @@ import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 
 @Composable
-fun AppointmentsSection(title: String, appointments: List<AppointmentWithClient>) {
+fun AppointmentsSection(
+    title: String,
+    appointments: List<AppointmentWithClient>,
+    onAppointmentClicked: (Int) -> Unit
+) {
 
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     val cardHeight by animateDpAsState(
@@ -65,10 +69,21 @@ fun AppointmentsSection(title: String, appointments: List<AppointmentWithClient>
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)){
+            Row(
+                Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
                     SecondTitleText(title)
-                    Image(painterResource(R.drawable.ic_appointment), modifier = Modifier.size(28.dp), contentDescription = "")
+                    Image(
+                        painterResource(R.drawable.ic_appointment),
+                        modifier = Modifier.size(28.dp),
+                        contentDescription = ""
+                    )
                 }
                 ButtonIconItem(if (isExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown) {
                     isExpanded = !isExpanded
@@ -78,7 +93,6 @@ fun AppointmentsSection(title: String, appointments: List<AppointmentWithClient>
                 HorizontalDivider(thickness = 1.dp, color = DarkAccentColor)
                 HorizontalDivider(thickness = 1.dp, color = Color.Black)
             }
-
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -88,7 +102,8 @@ fun AppointmentsSection(title: String, appointments: List<AppointmentWithClient>
                 appointments.forEach {
                     AppointmentItem(
                         appointment = it,
-                        showDate = false
+                        showDate = false,
+                        onClick = { onAppointmentClicked(it.appointment.id) }
                     )
                 }
             }

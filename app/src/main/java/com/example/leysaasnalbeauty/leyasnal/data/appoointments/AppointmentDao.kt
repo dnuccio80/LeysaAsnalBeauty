@@ -17,7 +17,7 @@ interface AppointmentDao {
     fun getAllAppointments(): Flow<List<AppointmentWithClient>>
 
     @Query("SELECT * FROM AppointmentEntity WHERE id = :id")
-    fun getAppointmentDetails(id:Int): Flow<AppointmentEntity>
+    fun getAppointmentDetails(id:Int): Flow<AppointmentWithClient>
 
     @Query("DELETE FROM AppointmentEntity WHERE date < :now")
     suspend fun deletePastAppointments(now:LocalDateTime)
@@ -29,8 +29,8 @@ interface AppointmentDao {
     @Insert
     suspend fun addAppointment(appointment: AppointmentEntity)
 
-    @Delete
-    suspend fun deleteAppointment(appointment: AppointmentEntity)
+    @Query("DELETE FROM AppointmentEntity WHERE id = :id")
+    suspend fun deleteAppointment(id:Int)
 
     @Update
     suspend fun updateAppointment(appointment: AppointmentEntity)

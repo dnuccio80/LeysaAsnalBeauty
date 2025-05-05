@@ -19,10 +19,12 @@ import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddAnnotationScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddClientScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.AppointmentListScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.GiftCardScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.HomeScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.ModifyAppointmentScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.NotifyClientScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ScheduleAppointmentScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.SelectDateTImeForAppointmentScreen
@@ -175,12 +177,28 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                        composable(Routes.AppointmentList.route) {
+                            AppointmentListScreen(innerPadding, viewModel, onAppointmentClicked = {
+                                navController.navigate(Routes.ModifyAppointment.createRoute(it))
+                            })
+                        }
+                        composable(
+                            Routes.ModifyAppointment.route,
+                            arguments = listOf(navArgument("appointmentId") {
+                                type = NavType.IntType
+                            })
+                        ) { backStackEntry ->
+                            ModifyAppointmentScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                appointmentId = backStackEntry.arguments?.getInt("appointmentId")
+                                    ?: 0,
+                                onCancelButtonClicked = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
                     }
-//                    TestScreen(innerPadding, viewModel)
-//                    ScheduleAppointmentScreen(innerPadding, viewModel)
-//                    SelectDateTImeForAppointmentScreen(innerPadding, viewModel, 1) {
-//                        navController.popBackStack()
-//                    }
                 }
             }
         }

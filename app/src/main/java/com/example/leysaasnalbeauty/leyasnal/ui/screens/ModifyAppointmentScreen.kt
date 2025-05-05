@@ -2,6 +2,7 @@ package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,28 +35,34 @@ import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AcceptDeclineButtons
+import com.example.leysaasnalbeauty.leyasnal.ui.components.AlertDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.DisableTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SelectableDropdownMenu
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AppointmentDataClass
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
+import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import java.time.LocalDateTime
 import java.util.Calendar
 
 @Composable
-fun SelectDateTImeForAppointmentScreen(
+fun ModifyAppointmentScreen(
     innerPadding: PaddingValues,
     viewModel: AppViewModel,
-    clientId: Int,
+    appointmentId: Int,
     onCancelButtonClicked: () -> Unit
 ) {
-
-    viewModel.setClientId(clientId)
-
-    val client by viewModel.clientDetails.collectAsState()
+    viewModel.setAppointmentId(appointmentId)
     val context = LocalContext.current
-    var selectedDateTime by remember { mutableStateOf<LocalDateTime?>(null) }
-    var serviceSelected by rememberSaveable { mutableStateOf("") }
+    val appointment by viewModel.appointmentDetails.collectAsState()
+
+    if (appointment == null) return
+    if (appointment!!.appointment.id != appointmentId) return
+
+    var selectedDateTime by remember { mutableStateOf<LocalDateTime?>(appointment!!.appointment.date) }
+    var serviceSelected by rememberSaveable { mutableStateOf(appointment!!.appointment.serviceType) }
+    var showAlertDialog by rememberSaveable { mutableStateOf(false) }
 
     val serviceTypeList = listOf(
         "Uñas",
@@ -64,7 +71,6 @@ fun SelectDateTImeForAppointmentScreen(
         "Maquillaje"
     )
 
-    if (client == null) return
 
     Box(
         Modifier
@@ -80,12 +86,12 @@ fun SelectDateTImeForAppointmentScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                FirstTitleText("${stringResource(R.string.appointment_for)} ${client!!.name}")
+                FirstTitleText("${stringResource(R.string.appointment_for)} ${appointment!!.client.name}")
                 HorizontalDivider(Modifier.fillMaxWidth())
             }
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Image(
-                    painterResource(R.drawable.image_date),
+                    painterResource(R.drawable.image_modify_date),
                     contentDescription = "date image",
                     modifier = Modifier.size(150.dp)
                 )
@@ -100,7 +106,7 @@ fun SelectDateTImeForAppointmentScreen(
                 if (selectedDateTime == null) {
                     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Column {
-                            DisableTextField("${stringResource(R.string.client)}: ${client!!.name}")
+                            DisableTextField("${stringResource(R.string.client)}: ${appointment!!.client.name}")
                             DisableTextField("${stringResource(R.string.date)}: no definido")
                             DisableTextField("${stringResource(R.string.appointment_hour)}: no definido")
 
@@ -113,7 +119,7 @@ fun SelectDateTImeForAppointmentScreen(
                         if (selectedDateTime!!.minute < 10) "0${selectedDateTime!!.minute}" else selectedDateTime!!.minute
                     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Column {
-                            DisableTextField("${stringResource(R.string.client)}: ${client!!.name}")
+                            DisableTextField("${stringResource(R.string.client)}: ${appointment!!.client.name}")
                             DisableTextField("${stringResource(R.string.date)}: ${selectedDateTime!!.dayOfMonth}/${selectedDateTime!!.monthValue}/${selectedDateTime!!.year}")
                             DisableTextField("${stringResource(R.string.appointment_hour)}: $hour:$minute")
                         }
@@ -158,24 +164,38 @@ fun SelectDateTImeForAppointmentScreen(
             }
             AcceptDeclineButtons(
                 onAccept = {
-                    viewModel.addAppointment(
-                        clientId = clientId,
+                    val updatedAppointment = AppointmentDataClass(
+                        id = appointment!!.appointment.id,
+                        clientId = appointment!!.client.id,
                         serviceType = serviceSelected,
                         date = selectedDateTime!!
                     )
-                    selectedDateTime = null
-                    Toast.makeText(context, "Cita agendada", Toast.LENGTH_SHORT).show()
+                    viewModel.updateAppointment(
+                        appointment = updatedAppointment
+                    )
+                    Toast.makeText(context, "Cita modificada", Toast.LENGTH_SHORT).show()
                     onCancelButtonClicked()
-                    serviceSelected = ""
                 },
                 acceptEnabled = selectedDateTime != null && serviceSelected.isNotEmpty(),
                 onDecline = {
                     onCancelButtonClicked()
                 }
             )
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                ButtonTextItem(stringResource(R.string.delete), buttonColor = NegativeColor) {
+                    showAlertDialog = true
+                }
+            }
+            AlertDialogItem(
+                show = showAlertDialog,
+                text = stringResource(R.string.delete_date_alert_message),
+                onDismiss = { showAlertDialog = false },
+                onConfirm = {
+                    viewModel.deleteAppointment(appointmentId)
+                    onCancelButtonClicked()
+                    showAlertDialog = false
+                }
+            )
         }
     }
 }
-
-
-
