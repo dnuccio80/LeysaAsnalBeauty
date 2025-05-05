@@ -66,12 +66,12 @@ fun TransactionsSection(
     )
 
     Card(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .height(cardHeight)
-            .padding(horizontal = 8.dp)
-            .border(4.dp, DarkAccentColor, shape = RoundedCornerShape(16.dp)),
+            .padding(horizontal = 8.dp),
+//            .border(4.dp, DarkAccentColor, shape = RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(
             containerColor = AccentColor
         )

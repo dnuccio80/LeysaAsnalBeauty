@@ -61,7 +61,7 @@ fun BalanceDetail(
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SecondTitleText(stringResource(R.string.balance), color = AccentColor)
+                    SecondTitleText(stringResource(R.string.balance), color = Color.White   )
                     Card(
                         modifier = Modifier
                             .size(24.dp)

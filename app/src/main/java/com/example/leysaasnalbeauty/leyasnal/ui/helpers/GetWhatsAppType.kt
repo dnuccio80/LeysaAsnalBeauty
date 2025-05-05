@@ -1,16 +1,11 @@
-package com.example.leysaasnalbeauty.leyasnal.ui.helper
+package com.example.leysaasnalbeauty.leyasnal.ui.helpers
 
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.ui.res.stringResource
-import com.example.leysaasnalbeauty.R
 
 fun getWhatsAppName(context: Context, packageName: String): Boolean {
-
-
     return try {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             context.packageManager.getPackageInfo(

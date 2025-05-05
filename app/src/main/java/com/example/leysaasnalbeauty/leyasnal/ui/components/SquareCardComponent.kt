@@ -35,9 +35,9 @@ fun SquareCardComponent(icon: Int, text: String, onClick: () -> Unit) {
             .size(120.dp)
             .clickable {
                 onClick()
-            }
-            .border(2.5.dp, color = DarkAccentColor, shape = RoundedCornerShape(8.dp)),
-        shape = RoundedCornerShape(8.dp),
+            },
+//            .border(2.5.dp, color = DarkAccentColor, shape = RoundedCornerShape(8.dp)),
+        shape = RoundedCornerShape(4.dp),
         elevation = CardDefaults.cardElevation(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = AccentColor

@@ -29,10 +29,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.data.appoointments.AppointmentWithClient
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AppointmentItem
+import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonIconItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.TransactionDetailsItem
@@ -53,12 +55,11 @@ fun AppointmentsSection(
     )
 
     Card(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .height(cardHeight)
-            .padding(horizontal = 8.dp)
-            .border(4.dp, DarkAccentColor, shape = RoundedCornerShape(16.dp)),
+            .padding(horizontal = 8.dp),
         colors = CardDefaults.cardColors(
             containerColor = AccentColor
         )
@@ -99,12 +100,16 @@ fun AppointmentsSection(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                appointments.forEach {
-                    AppointmentItem(
-                        appointment = it,
-                        showDate = false,
-                        onClick = { onAppointmentClicked(it.appointment.id) }
-                    )
+                if(appointments.isEmpty()){
+                    BodyText(stringResource(R.string.no_dates_schedules))
+                } else{
+                    appointments.forEach {
+                        AppointmentItem(
+                            appointment = it,
+                            showDate = false,
+                            onClick = { onAppointmentClicked(it.appointment.id) }
+                        )
+                    }
                 }
             }
         }

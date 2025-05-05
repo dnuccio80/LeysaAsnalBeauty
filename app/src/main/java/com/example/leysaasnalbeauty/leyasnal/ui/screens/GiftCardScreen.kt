@@ -1,8 +1,14 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,13 +34,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
-import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.helpers.getWhatsAppSenderAuto
+import com.example.leysaasnalbeauty.leyasnal.ui.helpers.sendPdfFile
+import com.example.leysaasnalbeauty.leyasnal.ui.helpers.sendWppMessage
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
+import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import com.itextpdf.io.font.PdfEncodings
 import com.itextpdf.io.font.constants.StandardFonts
 import com.itextpdf.io.image.ImageDataFactory
@@ -120,19 +131,33 @@ fun GiftCardScreen(innerPadding: PaddingValues, onCancel: () -> Unit) {
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     ButtonTextItem(
-                        text = stringResource(R.string.cancel),
-                        enabled = true,
-                        buttonColor = AccentColor
+                        text = stringResource(R.string.gift_send_message),
+                        enabled = isButtonEnabled,
+                        buttonColor = DarkAccentColor
                     ) {
-                        onCancel()
+                        sendWppMessage(
+                            context = context,
+                            phoneNumber = phoneNumber,
+                            message = context.getString(R.string.gift_card_message)
+                        )
                     }
                     ButtonTextItem(
-                        text = stringResource(R.string.gift_generate),
+                        text = stringResource(R.string.gift_send),
                         enabled = isButtonEnabled,
-                        buttonColor = AccentColor
+                        buttonColor = DarkAccentColor
                     ) {
-                        createPdf(context, giftName, toName, fromName)
+                        createPdf(context = context, giftName = giftName, toName = toName, fromName = fromName)
                     }
+                }
+
+            }
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+                ButtonTextItem(
+                    text = stringResource(R.string.cancel),
+                    enabled = true,
+                    buttonColor = NegativeColor
+                ) {
+                    onCancel()
                 }
             }
         }
@@ -224,6 +249,8 @@ private fun createPdf(
     canvas.endText()
 
     document.close()
+
+    sendPdfFile(context, outputFile)
 
 }
 

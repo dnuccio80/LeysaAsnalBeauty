@@ -72,7 +72,8 @@
     <string name="gift_from">De parte de quien</string>
     <string name="after_appointment_wpp_message">Espero que hayas tenido una hermosa experiencia hoy en el local 💅🏼❣️\nQue tengas una hermosa semana y nos vemos la proxima 🌈☀️</string>
     <string name="gift_phone_number">Teléfono de quien recibe</string>
-    <string name="gift_generate">Generar Gift Card</string>
+    <string name="gift_send">Enviar Gift Card</string>
+    <string name="gift_send_message">Enviar Mensaje</string>
     <string name="welcome_message">Mensaje de bienvenida</string>
     <string name="appointment_message">Recordatorio de cita</string>
     <string name="after_appointment_message">Mensaje post cita</string>
@@ -82,7 +83,10 @@
     <string name="today_dates">Citas de hoy</string>
     <string name="tomorrow_dates">Citas de mañana</string>
     <string name="appointment_for">Cita para</string>
+    <string name="client_added">Clienta agregada</string>
     <string name="select_date_time">Seleccionar fecha y hora</string>
+    <string name="no_dates_schedules">No hay citas programadas</string>
+    <string name="gift_card_message">Hola! 🌈☀️\nMe complace contarte que alguien que te quiere mucho, decidió regalarte esta gift card para que puedas mimarte 🥰❣️</string>
     <string name="delete_date_alert_message">¿Estás segura que querés eliminar la cita agendada?</string>
     <string name="birthday_message">Te deseo que tengas un hermoso cumpleaños, y que tengas un hermoso día 🥰❣️\nTe saluda Leysa Asnal Beauty 💅🏼</string>
     <string name="delete_annotation_alert_dialog">Segura que queres eliminar esta anotación?</string>

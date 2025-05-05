@@ -7,7 +7,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,7 +41,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
-import com.example.leysaasnalbeauty.leyasnal.ui.helper.sendWppMessage
+import com.example.leysaasnalbeauty.leyasnal.ui.helpers.sendWppMessage
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 import java.time.LocalDate
@@ -64,12 +63,12 @@ fun BirthdaySection(viewModel: AppViewModel) {
     )
 
     Card(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .height(cardHeight)
-            .padding(horizontal = 8.dp)
-            .border(4.dp, DarkAccentColor, shape = RoundedCornerShape(16.dp)),
+            .padding(horizontal = 8.dp),
+//            .border(4.dp, DarkAccentColor, shape = RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(
             containerColor = AccentColor
         )

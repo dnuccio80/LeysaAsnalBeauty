@@ -1,5 +1,7 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
+import android.widget.Toast
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -40,6 +43,8 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
+import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import java.time.Instant
 import java.time.ZoneId
 
@@ -51,6 +56,7 @@ fun AddClientScreen(
     onCancel: () -> Unit
 ) {
 
+    val context = LocalContext.current
     var name by rememberSaveable { mutableStateOf("") }
     var phoneNumber by rememberSaveable { mutableStateOf("") }
     var details by rememberSaveable { mutableStateOf("") }
@@ -132,14 +138,14 @@ fun AddClientScreen(
                     ButtonTextItem(
                         text = stringResource(R.string.cancel),
                         enabled = true,
-                        buttonColor = AccentColor
+                        buttonColor = NegativeColor
                     ) {
                         onCancel()
                     }
                     ButtonTextItem(
                         text = stringResource(R.string.add_client),
                         enabled = isButtonEnabled,
-                        buttonColor = AccentColor
+                        buttonColor = DarkAccentColor
                     ) {
                         onAddClient(
                             ClientDataClass(
@@ -149,6 +155,7 @@ fun AddClientScreen(
                                 birthday = Instant.ofEpochMilli(date!!).atZone(ZoneId.of("UTC")).toLocalDate()
                             )
                         )
+                        Toast.makeText(context, context.getString(R.string.client_added), Toast.LENGTH_SHORT).show()
                     }
                 }
             }

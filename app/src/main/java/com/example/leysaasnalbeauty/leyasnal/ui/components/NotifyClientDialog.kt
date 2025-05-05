@@ -22,8 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
-import com.example.leysaasnalbeauty.leyasnal.ui.helper.sendWppMessage
+import com.example.leysaasnalbeauty.leyasnal.ui.helpers.sendWppMessage
 import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import com.example.leysaasnalbeauty.ui.theme.PositiveColor
 
@@ -71,7 +72,7 @@ fun NotifyClientDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .border(2.dp, color = Color.White)
+                .border(1.dp, color = Color.White)
                 .background(AccentColor)
         ) {
             Column(
@@ -120,7 +121,8 @@ fun NotifyClientDialog(
                         AcceptDeclineButtons(
                             acceptText = stringResource(R.string.send),
                             declineText = stringResource(R.string.cancel),
-                            acceptButtonColor = PositiveColor,
+                            acceptButtonColor = DarkAccentColor,
+                            acceptEnabled = appointmentHour.isNotEmpty() && appointmentDate.isNotEmpty(),
                             declineButtonColor = NegativeColor,
                             onAccept = {
                                 sendWppMessage(
@@ -128,7 +130,7 @@ fun NotifyClientDialog(
                                     client!!.phone,
                                     message = "${context.getString(R.string.hello)} $firstName \uD83E\uDD17\n${
                                         context.getString(R.string.date_hour_wpp_message_1)
-                                    } $appointmentDate ${context.getString(R.string.date_hour_wpp_message_2)} $appointmentHour hs, ${
+                                    } $appointmentDate ${context.getString(R.string.date_hour_wpp_message_2)} ${appointmentHour}hs, ${
                                         context.getString(
                                             R.string.date_hour_wpp_message_3
                                         )
@@ -153,7 +155,8 @@ fun NotifyClientDialog(
                         AcceptDeclineButtons(
                             acceptText = stringResource(R.string.send),
                             declineText = stringResource(R.string.cancel),
-                            acceptButtonColor = PositiveColor,
+                            acceptEnabled = customMessage.isNotEmpty(),
+                            acceptButtonColor = DarkAccentColor,
                             declineButtonColor = NegativeColor,
                             onAccept = {
                                 sendWppMessage(
@@ -185,7 +188,7 @@ fun NotifyClientDialog(
                         AcceptDeclineButtons(
                             acceptText = stringResource(R.string.send),
                             declineText = stringResource(R.string.cancel),
-                            acceptButtonColor = PositiveColor,
+                            acceptButtonColor = DarkAccentColor,
                             declineButtonColor = NegativeColor,
                             onAccept = {
                                 sendWppMessage(context, client!!.phone, message = "${context.getString(
@@ -217,7 +220,7 @@ fun NotifyClientDialog(
                         AcceptDeclineButtons(
                             acceptText = stringResource(R.string.send),
                             declineText = stringResource(R.string.cancel),
-                            acceptButtonColor = PositiveColor,
+                            acceptButtonColor = DarkAccentColor,
                             declineButtonColor = NegativeColor,
                             onAccept = {
                                 sendWppMessage(
