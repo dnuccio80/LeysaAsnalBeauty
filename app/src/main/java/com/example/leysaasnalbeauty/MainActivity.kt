@@ -22,6 +22,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AppointmentListScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientsScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.FidelityClientSystemScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.GiftCardScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.HomeScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ModifyAppointmentScreen
@@ -104,10 +105,10 @@ class MainActivity : ComponentActivity() {
                             NotifyClientScreen(
                                 innerPadding = innerPadding,
                                 viewModel = viewModel,
-                                onCancel = {
-                                    viewModel.onQueryChanged("")
-                                    navController.popBackStack()
-                                }
+//                                onCancel = {
+//                                    viewModel.onQueryChanged("")
+//                                    navController.popBackStack()
+//                                }
                             )
                         }
                         composable(Routes.Annotations.route) {
@@ -199,6 +200,9 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
+//                    FidelityClientSystemScreen(innerPadding, viewModel, onBackClick = {
+//
+//                    })
                 }
             }
         }

@@ -14,8 +14,10 @@ import com.example.leysaasnalbeauty.leyasnal.data.balance.expenses.ExpenseEntity
 import com.example.leysaasnalbeauty.leyasnal.data.clients.ClientDao
 import com.example.leysaasnalbeauty.leyasnal.data.clients.ClientEntity
 import com.example.leysaasnalbeauty.leyasnal.data.converters.Converters
+import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyDao
+import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyEntity
 
-@Database(entities = [ClientEntity::class, EarningEntity::class, ExpenseEntity::class, AnnotationsEntity::class, AppointmentEntity::class] , version = 7)
+@Database(entities = [ClientEntity::class, EarningEntity::class, ExpenseEntity::class, AnnotationsEntity::class, AppointmentEntity::class, LoyaltyEntity::class] , version = 8)
 @TypeConverters(Converters::class)
 abstract class AppDataBase : RoomDatabase(){
     abstract val clientDao: ClientDao
@@ -23,4 +25,5 @@ abstract class AppDataBase : RoomDatabase(){
     abstract val expenseDao: ExpenseDao
     abstract val annotationsDao: AnnotationsDao
     abstract val appointmentDao: AppointmentDao
+    abstract val loyaltyDao: LoyaltyDao
 }

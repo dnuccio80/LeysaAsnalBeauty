@@ -23,7 +23,7 @@ import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
-import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import com.example.leysaasnalbeauty.ui.theme.NeutralColor
 import com.example.leysaasnalbeauty.ui.theme.PositiveColor
@@ -86,7 +86,7 @@ fun BalanceDetail(
         }
         ButtonTextItem(
             text = stringResource(R.string.clear_all_data),
-            buttonColor = AccentColor
+            buttonColor = DarkAccentColor
         ) {
             onDeleteButtonClicked()
         }

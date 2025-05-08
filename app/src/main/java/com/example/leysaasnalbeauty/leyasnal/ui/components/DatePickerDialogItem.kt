@@ -7,7 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.example.leysaasnalbeauty.R
-import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkGrayColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,7 +23,7 @@ fun DatePickerDialogItem(
             confirmButton = {
                 ButtonTextItem(
                     text = stringResource(R.string.confirm),
-                    buttonColor = AccentColor
+                    buttonColor = DarkGrayColor
                 ) {
                     onConfirm()
                 }
@@ -31,7 +31,7 @@ fun DatePickerDialogItem(
             dismissButton = {
                 ButtonTextItem(
                     text = stringResource(R.string.cancel),
-                    buttonColor = AccentColor
+                    buttonColor = DarkGrayColor
                 ) {
                     onDismiss()
                 }

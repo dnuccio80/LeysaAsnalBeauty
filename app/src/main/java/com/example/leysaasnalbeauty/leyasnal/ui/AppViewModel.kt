@@ -3,6 +3,7 @@ package com.example.leysaasnalbeauty.leyasnal.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.leysaasnalbeauty.leyasnal.data.appoointments.AppointmentWithClient
+import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyWithClient
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.AddAnnotationUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.DeleteAnnotationUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.GetAllAnnotationsUseCase
@@ -30,6 +31,10 @@ import com.example.leysaasnalbeauty.leyasnal.domain.expenses.DeleteAllExpensesDa
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.DeleteExpenseUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.GetAllExpensesUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.UpdateExpenseUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.AddLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.DeleteLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.GetAllLoyaltiesUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.UpdateLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AnnotationsDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AppointmentDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
@@ -94,6 +99,12 @@ class AppViewModel @Inject constructor(
     private val updateAppointmentUseCase: UpdateAppointmentUseCase,
     private val getAppointmentDetailsUseCase: GetAppointmentDetailsUseCase,
     private val deletePastAppointmentsUseCase: DeletePastAppointmentsUseCase,
+
+    // Loyalty
+    getAllLoyaltiesUseCase: GetAllLoyaltiesUseCase,
+    private val addLoyaltyUseCase: AddLoyaltyUseCase,
+    private val deleteLoyaltyUseCase: DeleteLoyaltyUseCase,
+    private val updateLoyaltyUseCase: UpdateLoyaltyUseCase,
 
     ) : ViewModel() {
 
@@ -179,6 +190,11 @@ class AppViewModel @Inject constructor(
 
     private val _tomorrowAppointments = MutableStateFlow<List<AppointmentWithClient>>(emptyList())
     val tomorrowAppointments: StateFlow<List<AppointmentWithClient>> = _tomorrowAppointments
+
+    private val _loyalties = getAllLoyaltiesUseCase().stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
+    )
+    val loyalties: StateFlow<List<LoyaltyWithClient>> = _loyalties
 
     // Fun
 

@@ -23,10 +23,9 @@ import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.helpers.sendWppMessage
-import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkGrayColor
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
-import com.example.leysaasnalbeauty.ui.theme.PositiveColor
 
 @Composable
 fun NotifyClientDialog(
@@ -73,7 +72,7 @@ fun NotifyClientDialog(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .border(1.dp, color = Color.White)
-                .background(AccentColor)
+                .background(DarkGrayColor)
         ) {
             Column(
                 Modifier

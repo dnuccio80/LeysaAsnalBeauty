@@ -1,7 +1,6 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,7 +41,6 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.DatePickerDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
-import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import java.time.Instant

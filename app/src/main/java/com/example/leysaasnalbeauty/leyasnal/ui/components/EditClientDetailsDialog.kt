@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
-import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkGrayColor
 
 @Composable
 fun EditClientDetailsDialog(
@@ -46,7 +46,7 @@ fun EditClientDetailsDialog(
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
             colors = CardDefaults.cardColors(
-                containerColor = AccentColor
+                containerColor = DarkGrayColor
             ),
             border = BorderStroke(1.dp, color = Color.White)
         ) {

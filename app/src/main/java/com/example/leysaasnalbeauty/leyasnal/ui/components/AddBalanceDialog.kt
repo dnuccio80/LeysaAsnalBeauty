@@ -2,30 +2,25 @@ package com.example.leysaasnalbeauty.leyasnal.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
-import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkGrayColor
 
 @Composable
 fun AddBalanceDialog(
@@ -53,7 +48,7 @@ fun AddBalanceDialog(
             modifier = Modifier
                 .width(250.dp)
                 .border(1.dp, color = Color.White)
-                .background(AccentColor)
+                .background(DarkGrayColor)
         ) {
             Column(
                 Modifier

@@ -59,7 +59,7 @@
     <string name="no_birthday_today">No hay cumpleaños el día de hoy</string>
     <string name="say_hello">Saludar</string>
     <string name="back">Volver</string>
-    <string name="new_fidelity_client">Agregar Clienta Fiel</string>
+    <string name="fidelity_client_system">Sistema Clienta Fiel</string>
     <string name="create_gift_card">Crear Gift Card</string>
     <string name="notify_client">Notificar Clienta</string>
     <string name="gift_type">Tipo de regalo</string>
@@ -74,6 +74,7 @@
     <string name="gift_phone_number">Teléfono de quien recibe</string>
     <string name="gift_send">Enviar Gift Card</string>
     <string name="gift_send_message">Enviar Mensaje</string>
+    <string name="rewards_club">Club de Recompensas</string>
     <string name="welcome_message">Mensaje de bienvenida</string>
     <string name="appointment_message">Recordatorio de cita</string>
     <string name="after_appointment_message">Mensaje post cita</string>
@@ -82,6 +83,8 @@
     <string name="appointments">Citas</string>
     <string name="today_dates">Citas de hoy</string>
     <string name="tomorrow_dates">Citas de mañana</string>
+    <string name="add_client_points">Agregar puntos</string>
+    <string name="change_points">Canjear puntos</string>
     <string name="appointment_for">Cita para</string>
     <string name="client_added">Clienta agregada</string>
     <string name="select_date_time">Seleccionar fecha y hora</string>

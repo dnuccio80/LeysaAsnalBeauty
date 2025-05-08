@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
-import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkGrayColor
 
 @Composable
 fun AmountDialog(show: Boolean, text: String, onDismiss: () -> Unit, onConfirm: (Int, String) -> Unit) {
@@ -36,7 +36,7 @@ fun AmountDialog(show: Boolean, text: String, onDismiss: () -> Unit, onConfirm: 
             modifier = Modifier
                 .width(250.dp)
                 .border(1.dp, color = Color.White)
-                .background(AccentColor)
+                .background(DarkGrayColor)
         ) {
             Column(
                 Modifier

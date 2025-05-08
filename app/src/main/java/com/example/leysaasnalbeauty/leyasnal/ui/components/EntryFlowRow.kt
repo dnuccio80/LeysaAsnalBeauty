@@ -36,7 +36,7 @@ fun EntryFlowRow(
             onClick = { addNewClientClicked() }
         ),
         EntryDataClass(
-            R.drawable.ic_fidelity, stringResource(R.string.new_fidelity_client),
+            R.drawable.ic_fidelity, stringResource(R.string.fidelity_client_system),
             onClick = { }
         ),
         EntryDataClass(

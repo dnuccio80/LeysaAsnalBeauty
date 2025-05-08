@@ -20,9 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
-import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
-import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkGrayColor
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import com.example.leysaasnalbeauty.ui.theme.PositiveColor
 
@@ -41,7 +40,7 @@ fun EditExpenseDialog(show: Boolean, expense: ExpenseDataClass, onDismiss:() -> 
             modifier = Modifier
                 .width(250.dp)
                 .border(1.dp, color = Color.White)
-                .background(AccentColor)
+                .background(DarkGrayColor)
         ) {
             Column(
                 Modifier

@@ -8,6 +8,7 @@ import com.example.leysaasnalbeauty.leyasnal.data.appoointments.AppointmentDao
 import com.example.leysaasnalbeauty.leyasnal.data.balance.earnings.EarningDao
 import com.example.leysaasnalbeauty.leyasnal.data.balance.expenses.ExpenseDao
 import com.example.leysaasnalbeauty.leyasnal.data.clients.ClientDao
+import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,6 +58,12 @@ object AppModule {
     @Singleton
     fun provideAppointmentsDao(appDataBase: AppDataBase): AppointmentDao {
         return appDataBase.appointmentDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoyaltyDao(appDataBase: AppDataBase): LoyaltyDao {
+        return appDataBase.loyaltyDao
     }
 
 }

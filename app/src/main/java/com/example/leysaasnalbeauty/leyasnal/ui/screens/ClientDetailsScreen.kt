@@ -1,7 +1,5 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
-import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,21 +41,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
-import com.example.leysaasnalbeauty.leyasnal.ui.components.AcceptDeclineButtons
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AlertDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.DatePickerDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EditClientDetailsDialog
 import com.example.leysaasnalbeauty.leyasnal.ui.components.EditIcon
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
-import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
-import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
-import com.example.leysaasnalbeauty.ui.theme.AccentColor
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 import com.example.leysaasnalbeauty.ui.theme.PositiveColor
 import com.example.leysaasnalbeauty.ui.theme.SecondaryBackgroundColor

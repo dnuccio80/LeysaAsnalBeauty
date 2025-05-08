@@ -3,7 +3,6 @@ package com.example.leysaasnalbeauty.leyasnal.ui.sections
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,7 +41,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.helpers.sendWppMessage
-import com.example.leysaasnalbeauty.ui.theme.AccentColor
+import com.example.leysaasnalbeauty.ui.theme.DarkGrayColor
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 import java.time.LocalDate
 
@@ -70,7 +69,7 @@ fun BirthdaySection(viewModel: AppViewModel) {
             .padding(horizontal = 8.dp),
 //            .border(4.dp, DarkAccentColor, shape = RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = AccentColor
+            containerColor = DarkGrayColor
         )
     ) {
         Column(
