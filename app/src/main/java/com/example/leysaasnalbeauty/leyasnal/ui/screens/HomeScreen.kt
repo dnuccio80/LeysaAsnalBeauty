@@ -156,15 +156,22 @@ fun HomeScreen(
                     addNewClientClicked = { navController.navigate(Routes.AddClient.route) },
                     addNewGiftCardClicked = { navController.navigate(Routes.GiftCardMaker.route) },
                     notifyClientClicked = { navController.navigate(Routes.NotifyClient.route) },
-                    scheduleAppointmentClicked = { navController.navigate(Routes.ScheduleAppointment.route) }
+                    scheduleAppointmentClicked = { navController.navigate(Routes.ScheduleAppointment.route) },
+                    fidelityClientClicked = { navController.navigate(Routes.FidelitySystem.route) }
                 )
                 Spacer(Modifier.size(0.dp))
-                AppointmentsSection(stringResource(R.string.today_dates), todayAppointments, onAppointmentClicked = {
-                    navController.navigate(Routes.ModifyAppointment.createRoute(it))
-                })
-                AppointmentsSection(stringResource(R.string.tomorrow_dates), tomorrowAppointments, onAppointmentClicked = {
-                    navController.navigate(Routes.ModifyAppointment.createRoute(it))
-                })
+                AppointmentsSection(
+                    stringResource(R.string.today_dates),
+                    todayAppointments,
+                    onAppointmentClicked = {
+                        navController.navigate(Routes.ModifyAppointment.createRoute(it))
+                    })
+                AppointmentsSection(
+                    stringResource(R.string.tomorrow_dates),
+                    tomorrowAppointments,
+                    onAppointmentClicked = {
+                        navController.navigate(Routes.ModifyAppointment.createRoute(it))
+                    })
                 BirthdaySection(viewModel)
                 TransactionsSection(
                     stringResource(R.string.earnings),

@@ -25,4 +25,13 @@ sealed class Routes(val route: String) {
         fun createRoute(appointmentId: Int) = "modifyAppointment/$appointmentId"
     }
     data object AppointmentList : Routes("appointmentList")
+    data object FidelitySystem : Routes("fidelitySystem")
+    data object LoyaltyClientList : Routes("loyaltyClientList")
+    data object AddLoyaltyPoints : Routes("addLoyaltyPoints/{clientId}") {
+        fun createRoute(clientId:Int) = "addLoyaltyPoints/$clientId"
+    }
+    data object ChangePointsClientList : Routes("changePointsClientList")
+    data object ChangeLoyaltyPointsScreen : Routes("changeLoyaltyPoints/{clientId}") {
+        fun createRoute(clientId: Int) = "changeLoyaltyPoints/$clientId"
+    }
 }

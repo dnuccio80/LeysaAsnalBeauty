@@ -19,7 +19,8 @@ fun EntryFlowRow(
     addNewClientClicked:() -> Unit,
     addNewGiftCardClicked:() -> Unit,
     notifyClientClicked:() -> Unit,
-    scheduleAppointmentClicked:() -> Unit
+    scheduleAppointmentClicked:() -> Unit,
+    fidelityClientClicked:() -> Unit
 ){
 
     val entryList: List<EntryDataClass> = listOf(
@@ -37,7 +38,7 @@ fun EntryFlowRow(
         ),
         EntryDataClass(
             R.drawable.ic_fidelity, stringResource(R.string.fidelity_client_system),
-            onClick = { }
+            onClick = { fidelityClientClicked() }
         ),
         EntryDataClass(
             R.drawable.ic_gift_card, stringResource(R.string.create_gift_card),

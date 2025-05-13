@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavArgument
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,14 +18,18 @@ import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddAnnotationScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddClientScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddLoyaltyPointsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AppointmentListScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.ChangeLoyaltyPointsScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.ChangePointsClientListScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.FidelityClientSystemScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.GiftCardScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.HomeScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.LoyaltyClientListScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ModifyAppointmentScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.NotifyClientScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ScheduleAppointmentScreen
@@ -199,10 +204,65 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                        composable(Routes.FidelitySystem.route) {
+                            FidelityClientSystemScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                onBackClick = {
+                                    navController.popBackStack()
+                                },
+                                onAddPointsButtonClicked = {
+                                    navController.navigate(Routes.LoyaltyClientList.route)
+                                },
+                                onChangePointsButtonClicked = {
+                                    navController.navigate(Routes.ChangePointsClientList.route)
+                                }
+                            )
+                        }
+                        composable(Routes.LoyaltyClientList.route) {
+                            LoyaltyClientListScreen(
+                                viewModel,
+                                innerPadding,
+                                onClientClicked = { clientId ->
+                                    navController.navigate(Routes.AddLoyaltyPoints.createRoute(clientId))
+                                },
+                            )
+                        }
+                        composable(Routes.AddLoyaltyPoints.route, arguments = listOf(navArgument("clientId") {
+                            type = NavType.IntType
+                        })) { backStackEntry ->
+                            AddLoyaltyPointsScreen(
+                                viewModel,
+                                innerPadding,
+                                backStackEntry.arguments?.getInt("clientId") ?: 0,
+                                onBackButtonClicked = {
+                                    navController.popBackStack()
+                                },
+                                onConfirm = {
+                                    navController.navigate(Routes.Home.route)
+                                }
+                            )
+                        }
+                        composable(Routes.ChangePointsClientList.route) {
+                            ChangePointsClientListScreen(innerPadding,viewModel, onClientClicked = {
+                                navController.navigate(Routes.ChangeLoyaltyPointsScreen.createRoute(it))
+                            })
+                        }
+                        composable(Routes.ChangeLoyaltyPointsScreen.route, arguments = listOf(
+                            navArgument("clientId") {
+                                type = NavType.IntType
+                            }
+                        )) { backStackEntry ->
+                            ChangeLoyaltyPointsScreen(
+                                viewModel = viewModel,
+                                innerPadding = innerPadding,
+                                clientId = backStackEntry.arguments?.getInt("clientId") ?: 0
+                            ) {
+                                navController.popBackStack()
+                            }
+
+                        }
                     }
-//                    FidelityClientSystemScreen(innerPadding, viewModel, onBackClick = {
-//
-//                    })
                 }
             }
         }

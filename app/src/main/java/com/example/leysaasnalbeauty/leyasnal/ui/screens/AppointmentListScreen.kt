@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.AppointmentItem
+import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 
 @Composable
@@ -57,12 +58,16 @@ fun AppointmentListScreen(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                appointments.forEach {
-                    AppointmentItem(
-                        appointment = it,
-                        showDate = true,
-                        onClick = { onAppointmentClicked(it.appointment.id) }
-                    )
+                if(appointments.isEmpty()) {
+                    BodyText(stringResource(R.string.no_appointments_yet))
+                } else{
+                    appointments.forEach {
+                        AppointmentItem(
+                            appointment = it,
+                            showDate = true,
+                            onClick = { onAppointmentClicked(it.appointment.id) }
+                        )
+                    }
                 }
             }
         }

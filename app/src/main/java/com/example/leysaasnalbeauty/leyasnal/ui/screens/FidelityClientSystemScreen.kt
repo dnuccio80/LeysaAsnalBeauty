@@ -48,7 +48,9 @@ import com.example.leysaasnalbeauty.ui.theme.DarkGrayColor
 fun FidelityClientSystemScreen(
     innerPadding: PaddingValues,
     viewModel: AppViewModel,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onAddPointsButtonClicked: () -> Unit,
+    onChangePointsButtonClicked: () -> Unit
 ) {
 
     val loyalties by viewModel.loyalties.collectAsState()
@@ -128,11 +130,15 @@ fun FidelityClientSystemScreen(
                             ButtonTextItem(
                                 text = stringResource(R.string.add_client_points),
                                 buttonColor = DarkAccentColor
-                            ) { }
+                            ) {
+                                onAddPointsButtonClicked()
+                            }
                             ButtonTextItem(
                                 text = stringResource(R.string.change_points),
                                 buttonColor = DarkAccentColor
-                            ) { }
+                            ) {
+                                onChangePointsButtonClicked()
+                            }
                         }
                     }
                 }

@@ -85,8 +85,12 @@
     <string name="tomorrow_dates">Citas de mañana</string>
     <string name="add_client_points">Agregar puntos</string>
     <string name="change_points">Canjear puntos</string>
+    <string name="change">Canjear</string>
+    <string name="change_points_alert_dialog">¿Segura que deseas canjear los puntos?</string>
     <string name="appointment_for">Cita para</string>
+    <string name="add_points">Agregar Puntos</string>
     <string name="client_added">Clienta agregada</string>
+    <string name="no_appointments_yet">No hay citas agendadas hasta el momento.. Agrega una nueva desde el menú principal</string>
     <string name="select_date_time">Seleccionar fecha y hora</string>
     <string name="no_dates_schedules">No hay citas programadas</string>
     <string name="gift_card_message">Hola! 🌈☀️\nMe complace contarte que alguien que te quiere mucho, decidió regalarte esta gift card para que puedas mimarte 🥰❣️</string>
