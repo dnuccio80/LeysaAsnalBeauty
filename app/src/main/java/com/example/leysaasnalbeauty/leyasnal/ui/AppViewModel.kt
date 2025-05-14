@@ -16,7 +16,6 @@ import com.example.leysaasnalbeauty.leyasnal.domain.appointments.GetAllAppointme
 import com.example.leysaasnalbeauty.leyasnal.domain.appointments.GetAppointmentDetailsUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.appointments.GetFutureAppointmentsUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.appointments.UpdateAppointmentUseCase
-import com.example.leysaasnalbeauty.leyasnal.domain.earnings.UpdateEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.AddNewClientUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.DeleteClientUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.clients.GetAllClientsUseCase
@@ -26,20 +25,24 @@ import com.example.leysaasnalbeauty.leyasnal.domain.earnings.AddEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.DeleteAllEarningsUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.DeleteEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.earnings.GetAllEarningsUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.earnings.UpdateEarningUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.AddExpenseUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.DeleteAllExpensesDataUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.DeleteExpenseUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.GetAllExpensesUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.expenses.UpdateExpenseUseCase
-import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.AddLoyaltyUseCase
-import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.DeleteLoyaltyUseCase
-import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.GetAllLoyaltiesUseCase
-import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.UpdateLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.AddClientPointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.DeleteClientPointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.GetAllClientPointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.GetLoyaltyClientPointsByIdUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.UpdateClientPointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.UpsertClientPointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AnnotationsDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AppointmentDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyClientPointsDataClass
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -101,10 +104,12 @@ class AppViewModel @Inject constructor(
     private val deletePastAppointmentsUseCase: DeletePastAppointmentsUseCase,
 
     // Loyalty
-    getAllLoyaltiesUseCase: GetAllLoyaltiesUseCase,
-    private val addLoyaltyUseCase: AddLoyaltyUseCase,
-    private val deleteLoyaltyUseCase: DeleteLoyaltyUseCase,
-    private val updateLoyaltyUseCase: UpdateLoyaltyUseCase,
+    getAllClientPointsLoyaltyUseCase: GetAllClientPointsLoyaltyUseCase,
+    private val upsertClientPointsLoyaltyUseCase: UpsertClientPointsLoyaltyUseCase,
+    private val addClientPointsLoyaltyUseCase: AddClientPointsLoyaltyUseCase,
+    private val deleteClientPointsLoyaltyUseCase: DeleteClientPointsLoyaltyUseCase,
+    private val updateClientPointsLoyaltyUseCase: UpdateClientPointsLoyaltyUseCase,
+    private val getLoyaltyClientPointsByIdUseCase: GetLoyaltyClientPointsByIdUseCase
 
     ) : ViewModel() {
 
@@ -138,6 +143,8 @@ class AppViewModel @Inject constructor(
     }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), null
     )
+
+
 
     val clientDetails: StateFlow<ClientDataClass?> = _clientDetails
 
@@ -191,10 +198,18 @@ class AppViewModel @Inject constructor(
     private val _tomorrowAppointments = MutableStateFlow<List<AppointmentWithClient>>(emptyList())
     val tomorrowAppointments: StateFlow<List<AppointmentWithClient>> = _tomorrowAppointments
 
-    private val _loyalties = getAllLoyaltiesUseCase().stateIn(
+    private val _clientPointsLoyalties = getAllClientPointsLoyaltyUseCase().stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
     )
-    val loyalties: StateFlow<List<LoyaltyWithClient>> = _loyalties
+    val clientPointsLoyalties: StateFlow<List<LoyaltyWithClient>> = _clientPointsLoyalties
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val _clientDetailsLoyaltyPoints = clientId.flatMapLatest {
+        getLoyaltyClientPointsByIdUseCase(clientId.value)
+    }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), null
+    )
+    val clientDetailsLoyaltyPoints = _clientDetailsLoyaltyPoints
 
     // Fun
 
@@ -369,6 +384,14 @@ class AppViewModel @Inject constructor(
 
     fun setAppointmentId(id: Int) {
         appointmentId.value = id
+    }
+
+    // Loyalty
+
+    fun upsertClientPointsLoyalty(loyalty: LoyaltyClientPointsDataClass) {
+        viewModelScope.launch(Dispatchers.IO) {
+            upsertClientPointsLoyaltyUseCase(loyalty)
+        }
     }
 
     // Generic fun

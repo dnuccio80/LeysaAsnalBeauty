@@ -6,7 +6,7 @@ import com.example.leysaasnalbeauty.leyasnal.data.clients.ClientEntity
 
 data class LoyaltyWithClient (
     @Embedded
-    val loyalty:LoyaltyEntity,
+    val loyalty:LoyaltyClientPointsEntity,
     @Relation(
         parentColumn = "clientId",
         entityColumn = "id"

@@ -1,6 +1,5 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyWithClient
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
@@ -53,7 +53,7 @@ fun FidelityClientSystemScreen(
     onChangePointsButtonClicked: () -> Unit
 ) {
 
-    val loyalties by viewModel.loyalties.collectAsState()
+    val clientPointsLoyalties by viewModel.clientPointsLoyalties.collectAsState()
 
     val sectionList: List<String> = listOf(
         "Sistema de Puntos",
@@ -121,7 +121,7 @@ fun FidelityClientSystemScreen(
                     }
 
                     sectionList[1] -> {
-                        ClientTable()
+                        ClientTable(clientPointsLoyalties)
                         Row(
                             Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
@@ -241,7 +241,7 @@ fun RewardExchangeCardItem() {
 }
 
 @Composable
-fun ClientTable() {
+fun ClientTable(clientPointsLoyalties: List<LoyaltyWithClient>) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -257,21 +257,14 @@ fun ClientTable() {
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            RewardItem("Leysa Asnal", "250")
-            RewardItem("Martina Gutierrez", "100")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
-            RewardItem("Damian Nuccio", "80")
+            // ACA LA TABLA DE CLIENT-POINTS
+            if(clientPointsLoyalties.isEmpty()) {
+                BodyText(stringResource(R.string.no_client_points))
+            } else {
+                clientPointsLoyalties.forEach { loyaltyClient ->
+                    RewardItem(loyaltyClient.client.name, loyaltyClient.loyalty.points.toString())
+                }
+            }
         }
     }
 }

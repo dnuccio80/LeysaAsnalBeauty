@@ -209,7 +209,7 @@ class MainActivity : ComponentActivity() {
                                 innerPadding = innerPadding,
                                 viewModel = viewModel,
                                 onBackClick = {
-                                    navController.popBackStack()
+                                    navController.navigate(Routes.Home.route)
                                 },
                                 onAddPointsButtonClicked = {
                                     navController.navigate(Routes.LoyaltyClientList.route)
@@ -239,7 +239,7 @@ class MainActivity : ComponentActivity() {
                                     navController.popBackStack()
                                 },
                                 onConfirm = {
-                                    navController.navigate(Routes.Home.route)
+                                    navController.navigate(Routes.FidelitySystem.route)
                                 }
                             )
                         }

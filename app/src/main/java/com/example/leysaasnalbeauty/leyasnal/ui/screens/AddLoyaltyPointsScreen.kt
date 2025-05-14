@@ -39,8 +39,11 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.DisableTextField
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SelectableDropdownMenu
+import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyClientPointsDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyServicePointsDataClass
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
+import com.example.leysaasnalbeauty.ui.theme.PositiveColor
 
 
 @Composable
@@ -57,8 +60,10 @@ fun AddLoyaltyPointsScreen(
     }
 
     val client by viewModel.clientDetails.collectAsState()
+    val clientDetailsLoyalty by viewModel.clientDetailsLoyaltyPoints.collectAsState()
 
     if (client == null || client?.id != clientId) return
+    if(clientDetailsLoyalty == null) return
 
     val context = LocalContext.current
     val serviceTypeData = listOf(
@@ -104,7 +109,10 @@ fun AddLoyaltyPointsScreen(
 
             }
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                SecondTitleText(client!!.name)
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    SecondTitleText(client!!.name)
+                    ThirdTitleText("${stringResource(R.string.current_points)}: ${clientDetailsLoyalty!!.points}", color = PositiveColor)
+                }
             }
             SelectableDropdownMenu(
                 list = serviceType,
@@ -124,6 +132,10 @@ fun AddLoyaltyPointsScreen(
             Spacer(Modifier.size(16.dp))
             AcceptDeclineButtons(
                 onAccept = {
+                    val newLoyaltyPoints = clientDetailsLoyalty!!.points + pointsByService
+                    viewModel.upsertClientPointsLoyalty(
+                        clientDetailsLoyalty!!.copy(points = newLoyaltyPoints)
+                    )
                     Toast.makeText(context, "Puntos agregados", Toast.LENGTH_SHORT).show()
                     onConfirm()
                 },

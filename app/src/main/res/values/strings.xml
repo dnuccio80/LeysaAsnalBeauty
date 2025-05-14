@@ -85,10 +85,12 @@
     <string name="tomorrow_dates">Citas de mañana</string>
     <string name="add_client_points">Agregar puntos</string>
     <string name="change_points">Canjear puntos</string>
+    <string name="current_points">Puntos Actuales</string>
     <string name="change">Canjear</string>
     <string name="change_points_alert_dialog">¿Segura que deseas canjear los puntos?</string>
     <string name="appointment_for">Cita para</string>
     <string name="add_points">Agregar Puntos</string>
+    <string name="no_client_points">No hay clientes con puntos registrados</string>
     <string name="client_added">Clienta agregada</string>
     <string name="no_appointments_yet">No hay citas agendadas hasta el momento.. Agrega una nueva desde el menú principal</string>
     <string name="select_date_time">Seleccionar fecha y hora</string>

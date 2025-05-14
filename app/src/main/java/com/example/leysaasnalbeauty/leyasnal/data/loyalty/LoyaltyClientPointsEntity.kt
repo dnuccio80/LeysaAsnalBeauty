@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.leysaasnalbeauty.leyasnal.data.clients.ClientEntity
-import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyClientPointsDataClass
 
 @Entity(
     foreignKeys = [
@@ -16,15 +16,13 @@ import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyDataClass
         )
     ]
 )
-data class LoyaltyEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+data class LoyaltyClientPointsEntity(
+    @PrimaryKey
+    val clientId:Int,
     val points: Int,
-    val clientId:Int
 )
 
-fun LoyaltyEntity.toLoyaltyDataClass(): LoyaltyDataClass = LoyaltyDataClass(
-    id = id,
+fun LoyaltyClientPointsEntity.toLoyaltyDataClass(): LoyaltyClientPointsDataClass = LoyaltyClientPointsDataClass(
     points = points,
     clientId = clientId
 )

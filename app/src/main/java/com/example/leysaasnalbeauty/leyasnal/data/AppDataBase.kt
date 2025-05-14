@@ -14,12 +14,17 @@ import com.example.leysaasnalbeauty.leyasnal.data.balance.expenses.ExpenseEntity
 import com.example.leysaasnalbeauty.leyasnal.data.clients.ClientDao
 import com.example.leysaasnalbeauty.leyasnal.data.clients.ClientEntity
 import com.example.leysaasnalbeauty.leyasnal.data.converters.Converters
+import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyClientPointsEntity
 import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyDao
-import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyEntity
+import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyRewardPointsEntity
+import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyServicePointsEntity
 
-@Database(entities = [ClientEntity::class, EarningEntity::class, ExpenseEntity::class, AnnotationsEntity::class, AppointmentEntity::class, LoyaltyEntity::class] , version = 8)
+@Database(
+    entities = [ClientEntity::class, EarningEntity::class, ExpenseEntity::class, AnnotationsEntity::class, AppointmentEntity::class, LoyaltyClientPointsEntity::class, LoyaltyServicePointsEntity::class, LoyaltyRewardPointsEntity::class],
+    version = 13
+)
 @TypeConverters(Converters::class)
-abstract class AppDataBase : RoomDatabase(){
+abstract class AppDataBase : RoomDatabase() {
     abstract val clientDao: ClientDao
     abstract val earningDao: EarningDao
     abstract val expenseDao: ExpenseDao
