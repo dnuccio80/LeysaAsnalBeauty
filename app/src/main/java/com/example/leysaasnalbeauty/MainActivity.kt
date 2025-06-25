@@ -19,6 +19,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddAnnotationScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddClientScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddLoyaltyPointsScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddRewardPointsToServiceScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AppointmentListScreen
@@ -26,6 +27,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.screens.ChangeLoyaltyPointsScree
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ChangePointsClientListScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientsScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.EditRewardPointsToServiceScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.FidelityClientSystemScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.GiftCardScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.HomeScreen
@@ -216,6 +218,12 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onChangePointsButtonClicked = {
                                     navController.navigate(Routes.ChangePointsClientList.route)
+                                },
+                                onAddRewardPointsToService =  {
+                                    navController.navigate(Routes.AddRewardPointsToService.route)
+                                },
+                                onServiceClicked = {
+                                    navController.navigate(Routes.EditRewardPointsToService.createRoute(it))
                                 }
                             )
                         }
@@ -224,13 +232,20 @@ class MainActivity : ComponentActivity() {
                                 viewModel,
                                 innerPadding,
                                 onClientClicked = { clientId ->
-                                    navController.navigate(Routes.AddLoyaltyPoints.createRoute(clientId))
+                                    navController.navigate(
+                                        Routes.AddLoyaltyPoints.createRoute(
+                                            clientId
+                                        )
+                                    )
                                 },
                             )
                         }
-                        composable(Routes.AddLoyaltyPoints.route, arguments = listOf(navArgument("clientId") {
-                            type = NavType.IntType
-                        })) { backStackEntry ->
+                        composable(
+                            Routes.AddLoyaltyPoints.route,
+                            arguments = listOf(navArgument("clientId") {
+                                type = NavType.IntType
+                            })
+                        ) { backStackEntry ->
                             AddLoyaltyPointsScreen(
                                 viewModel,
                                 innerPadding,
@@ -244,15 +259,23 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(Routes.ChangePointsClientList.route) {
-                            ChangePointsClientListScreen(innerPadding,viewModel, onClientClicked = {
-                                navController.navigate(Routes.ChangeLoyaltyPointsScreen.createRoute(it))
-                            })
+                            ChangePointsClientListScreen(
+                                innerPadding,
+                                viewModel,
+                                onClientClicked = {
+                                    navController.navigate(
+                                        Routes.ChangeLoyaltyPointsScreen.createRoute(
+                                            it
+                                        )
+                                    )
+                                })
                         }
-                        composable(Routes.ChangeLoyaltyPointsScreen.route, arguments = listOf(
-                            navArgument("clientId") {
-                                type = NavType.IntType
-                            }
-                        )) { backStackEntry ->
+                        composable(
+                            Routes.ChangeLoyaltyPointsScreen.route, arguments = listOf(
+                                navArgument("clientId") {
+                                    type = NavType.IntType
+                                }
+                            )) { backStackEntry ->
                             ChangeLoyaltyPointsScreen(
                                 viewModel = viewModel,
                                 innerPadding = innerPadding,
@@ -260,7 +283,27 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 navController.popBackStack()
                             }
-
+                        }
+                        composable(Routes.AddRewardPointsToService.route) {
+                            AddRewardPointsToServiceScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                onBackClick = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+                        composable(Routes.EditRewardPointsToService.route, arguments = listOf(
+                            navArgument("loyaltyId"){
+                                type = NavType.IntType
+                            }
+                        )) {backStackEntry ->
+                            EditRewardPointsToServiceScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                onBackClick = { navController.popBackStack() },
+                                loyaltyId = backStackEntry.arguments?.getInt("loyaltyId")?:0
+                            )                            
                         }
                     }
                 }

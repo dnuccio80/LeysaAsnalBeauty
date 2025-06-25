@@ -37,12 +37,18 @@ import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.GetAll
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.GetLoyaltyClientPointsByIdUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.UpdateClientPointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.UpsertClientPointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.service_points.AddServicePointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.service_points.DeleteServicePointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.service_points.GetAllServicePointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.service_points.GetLoyaltyServicePointsByIdUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.service_points.UpdateServicePointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AnnotationsDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.AppointmentDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyClientPointsDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyServicePointsDataClass
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -109,7 +115,13 @@ class AppViewModel @Inject constructor(
     private val addClientPointsLoyaltyUseCase: AddClientPointsLoyaltyUseCase,
     private val deleteClientPointsLoyaltyUseCase: DeleteClientPointsLoyaltyUseCase,
     private val updateClientPointsLoyaltyUseCase: UpdateClientPointsLoyaltyUseCase,
-    private val getLoyaltyClientPointsByIdUseCase: GetLoyaltyClientPointsByIdUseCase
+    private val getLoyaltyClientPointsByIdUseCase: GetLoyaltyClientPointsByIdUseCase,
+
+    getAllServicePointsLoyaltyUseCase: GetAllServicePointsLoyaltyUseCase,
+    private val addServicePointsLoyaltyUseCase: AddServicePointsLoyaltyUseCase,
+    private val getLoyaltyServicePointsByIdUseCase: GetLoyaltyServicePointsByIdUseCase,
+    private val deleteServicePointsLoyaltyUseCase: DeleteServicePointsLoyaltyUseCase,
+    private val updateServicePointsLoyaltyUseCase: UpdateServicePointsLoyaltyUseCase,
 
     ) : ViewModel() {
 
@@ -144,10 +156,7 @@ class AppViewModel @Inject constructor(
         viewModelScope, SharingStarted.WhileSubscribed(5000), null
     )
 
-
-
     val clientDetails: StateFlow<ClientDataClass?> = _clientDetails
-
 
     private val _earnings = getAllEarningsUseCase().stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
@@ -211,6 +220,21 @@ class AppViewModel @Inject constructor(
     )
     val clientDetailsLoyaltyPoints = _clientDetailsLoyaltyPoints
 
+    private val servicePointsLoyaltyId = MutableStateFlow(0)
+
+    private val _servicePointsLoyaltyList = getAllServicePointsLoyaltyUseCase().stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
+    )
+    val servicePointsLoyaltyList = _servicePointsLoyaltyList
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val _servicePointsLoyaltyDetails = servicePointsLoyaltyId.flatMapLatest {
+        getLoyaltyServicePointsByIdUseCase(servicePointsLoyaltyId.value)
+    }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), null
+    )
+    val servicePointsLoyaltyDetails = _servicePointsLoyaltyDetails
+
     // Fun
 
     fun loadAppointments() {
@@ -270,6 +294,10 @@ class AppViewModel @Inject constructor(
 
     fun setClientId(id: Int) {
         clientId.value = id
+    }
+
+    fun setServicePointsLoyaltyId(id:Int) {
+        servicePointsLoyaltyId.value = id
     }
 
     // Earnings
@@ -391,6 +419,28 @@ class AppViewModel @Inject constructor(
     fun upsertClientPointsLoyalty(loyalty: LoyaltyClientPointsDataClass) {
         viewModelScope.launch(Dispatchers.IO) {
             upsertClientPointsLoyaltyUseCase(loyalty)
+        }
+    }
+
+    fun addServicePointsLoyalty(service:String, points:String) {
+
+        val loyalty = LoyaltyServicePointsDataClass(service = service, points = points.toInt())
+
+        viewModelScope.launch(Dispatchers.IO) {
+            addServicePointsLoyaltyUseCase(loyalty)
+        }
+    }
+
+    fun deleteServicePointsLoyalty(loyaltyId:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteServicePointsLoyaltyUseCase(loyaltyId)
+        }
+    }
+
+    fun updateServicePointsLoyaltyUseCase(loyaltyId:Int, service:String, points:String) {
+        val loyalty = LoyaltyServicePointsDataClass(id = loyaltyId, service = service, points = points.toInt())
+        viewModelScope.launch(Dispatchers.IO) {
+            updateServicePointsLoyaltyUseCase(loyalty)
         }
     }
 

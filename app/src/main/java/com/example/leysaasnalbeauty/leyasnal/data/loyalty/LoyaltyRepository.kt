@@ -47,6 +47,10 @@ class LoyaltyRepository @Inject constructor(private val loyaltyDao: LoyaltyDao) 
     suspend fun deleteServicePointsLoyalty(loyaltyId: Int) =
         loyaltyDao.deleteLoyaltyServicePoints(loyaltyId)
 
+    fun getLoyaltyServicePointsById(loyaltyId:Int):Flow<LoyaltyServicePointsDataClass> = loyaltyDao.getLoyaltyServicePointsById(loyaltyId).map {
+        item -> item.toLoyaltyServicePointsDataClass()
+    }
+
     suspend fun updateServicePointsLoyalty(loyalty: LoyaltyServicePointsDataClass) =
         loyaltyDao.updateLoyaltyServicePoints(loyalty.toLoyaltyServicePointsEntity())
 

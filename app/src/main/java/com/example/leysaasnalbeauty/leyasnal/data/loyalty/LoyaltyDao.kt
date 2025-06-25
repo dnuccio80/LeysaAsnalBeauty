@@ -33,11 +33,14 @@ interface LoyaltyDao {
 
     // Service-Points Relationship
 
-    @Query("SELECT * FROM LoyaltyServicePointsEntity ORDER BY points ASC")
+    @Query("SELECT * FROM LoyaltyServicePointsEntity ORDER BY points DESC")
     fun getAllServicePoints():Flow<List<LoyaltyServicePointsEntity>>
 
     @Insert
     suspend fun addLoyaltyServicePoints(loyalty: LoyaltyServicePointsEntity)
+
+    @Query("SELECT * FROM LoyaltyServicePointsEntity WHERE id = :loyaltyId LIMIT 1")
+    fun getLoyaltyServicePointsById(loyaltyId: Int): Flow<LoyaltyServicePointsEntity>
 
     @Update
     suspend fun updateLoyaltyServicePoints(loyalty: LoyaltyServicePointsEntity)

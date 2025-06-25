@@ -51,8 +51,10 @@ fun ChangeLoyaltyPointsScreen(
     }
 
     val client by viewModel.clientDetails.collectAsState()
+    val clientDetailsLoyalty by viewModel.clientDetailsLoyaltyPoints.collectAsState()
 
     if (client == null || client?.id != clientId) return
+    if(clientDetailsLoyalty == null) return
 
     var showConfirmDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -70,11 +72,9 @@ fun ChangeLoyaltyPointsScreen(
         ) {
             BackButtonItem(onBackButtonClicked)
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
-                SecondTitleText("Canje de Puntos")
+                SecondTitleText(stringResource(R.string.change_points).uppercase())
             }
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
-                ThirdTitleText(client!!.name)
-            }
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -90,7 +90,7 @@ fun ChangeLoyaltyPointsScreen(
                         .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     SecondTitleText(client!!.name, color = PositiveColor)
-                    ThirdTitleText("Total puntos: 130")
+                    ThirdTitleText("${stringResource(R.string.total_points)}: ${clientDetailsLoyalty!!.points}")
                 }
             }
             Card(
@@ -107,7 +107,7 @@ fun ChangeLoyaltyPointsScreen(
                         .fillMaxWidth()
                         .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    SecondTitleText("Canje de Puntos", color = PositiveColor)
+                    SecondTitleText(stringResource(R.string.available_changes), color = PositiveColor)
                     ChangeRewardRowItem("2x1 Maquillaje", 128.toString()) {
                         showConfirmDialog = true
                     }

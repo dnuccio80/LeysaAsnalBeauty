@@ -7,5 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetAllServicePointsLoyaltyUseCase @Inject constructor(private val loyaltyRepository: LoyaltyRepository) {
-    operator fun invoke(): Flow<List<LoyaltyServicePointsDataClass>> = loyaltyRepository.getAllServicePointsLoyalty()
+    operator fun invoke(): Flow<List<LoyaltyServicePointsDataClass>> =
+        loyaltyRepository.getAllServicePointsLoyalty()
 }

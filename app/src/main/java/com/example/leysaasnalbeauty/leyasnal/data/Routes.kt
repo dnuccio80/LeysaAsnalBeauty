@@ -34,4 +34,9 @@ sealed class Routes(val route: String) {
     data object ChangeLoyaltyPointsScreen : Routes("changeLoyaltyPoints/{clientId}") {
         fun createRoute(clientId: Int) = "changeLoyaltyPoints/$clientId"
     }
+    data object AddRewardPointsToService : Routes("addRewardPointsToService")
+    data object EditRewardPointsToService : Routes("editRewardPointsToService/{loyaltyId}") {
+        fun createRoute(loyaltyId: Int) = "editRewardPointsToService/$loyaltyId"
+    }
+
 }

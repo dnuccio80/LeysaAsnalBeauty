@@ -17,12 +17,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,10 +35,13 @@ import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyWithClient
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
+import com.example.leysaasnalbeauty.leyasnal.ui.components.BackButtonItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
+import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonIconItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyServicePointsDataClass
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 import com.example.leysaasnalbeauty.ui.theme.DarkGrayColor
 
@@ -50,14 +51,17 @@ fun FidelityClientSystemScreen(
     viewModel: AppViewModel,
     onBackClick: () -> Unit,
     onAddPointsButtonClicked: () -> Unit,
-    onChangePointsButtonClicked: () -> Unit
+    onChangePointsButtonClicked: () -> Unit,
+    onAddRewardPointsToService: () -> Unit,
+    onServiceClicked: (Int) -> Unit
 ) {
 
     val clientPointsLoyalties by viewModel.clientPointsLoyalties.collectAsState()
+    val servicePointsLoyaltyList by viewModel.servicePointsLoyaltyList.collectAsState()
 
     val sectionList: List<String> = listOf(
-        "Sistema de Puntos",
-        "Tabla de Clientas",
+        "Sistema de Puntaje",
+        "Tabla de Puntos",
     )
 
     var sectionSelected by rememberSaveable { mutableStateOf(sectionList[0]) }
@@ -77,14 +81,9 @@ fun FidelityClientSystemScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Spacer(Modifier.size(0.dp))
-                Icon(
-                    Icons.AutoMirrored.Default.ArrowBack,
-                    contentDescription = "icon back",
-                    tint = Color.White,
-                    modifier = Modifier.clickable {
-                        onBackClick()
-                    }
-                )
+                BackButtonItem {
+                    onBackClick()
+                }
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     SecondTitleText("${stringResource(R.string.rewards_club)} \uD83C\uDF1F")
                 }
@@ -116,7 +115,14 @@ fun FidelityClientSystemScreen(
 
                 when (sectionSelected) {
                     sectionList[0] -> {
-                        RewardPointsCardItem()
+                        RewardPointsCardItem(
+                            servicePointsLoyaltyList,
+                            onAddRewardPointsToService = {
+                                onAddRewardPointsToService()
+                            },
+                            onServiceClicked = {
+                                onServiceClicked(it)
+                            })
                         RewardExchangeCardItem()
                     }
 
@@ -148,7 +154,11 @@ fun FidelityClientSystemScreen(
 }
 
 @Composable
-fun RewardPointsCardItem() {
+fun RewardPointsCardItem(
+    servicePointsLoyaltyList: List<LoyaltyServicePointsDataClass>,
+    onAddRewardPointsToService: () -> Unit,
+    onServiceClicked: (Int) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -163,28 +173,29 @@ fun RewardPointsCardItem() {
                 .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Row(Modifier.fillMaxWidth()) {
-                    SecondTitleText("Puntos de recompensa")
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    SecondTitleText(stringResource(R.string.reward_points))
                     Spacer(Modifier.weight(1f))
-                    Icon(
-                        Icons.Default.Edit,
-                        contentDescription = "edit icon",
-                        tint = Color.White,
-                        modifier = Modifier.clickable { }
-                    )
+                    ButtonIconItem(
+                        icon = Icons.Default.Add
+                    ) {
+                        onAddRewardPointsToService()
+                    }
                 }
                 HorizontalDivider(Modifier.fillMaxWidth(), thickness = 1.dp, color = Color.White)
             }
-            RewardItem("Maquillaje Premium", "50")
-            RewardItem("Clase de automaquillaje", "50")
-            RewardItem("Maquillaje Básico", "30")
-            RewardItem("Capping", "10")
-            RewardItem("Perfilado de Cejas", "8")
-            RewardItem("Laminado de Cejas", "8")
-            RewardItem("Polygel", "8")
-            RewardItem("Soft Gel", "8")
-            RewardItem("Lifting de Pesteñas", "8")
-            RewardItem("Esmaltado Semipermanente", "7")
+            if (servicePointsLoyaltyList.isEmpty()) {
+                BodyText(stringResource(R.string.no_reward_points_available))
+            } else {
+                servicePointsLoyaltyList.forEach { service ->
+                    RewardRowItem(
+                        title = service.service,
+                        points = service.points.toString()
+                    ) {
+                        onServiceClicked(service.id)
+                    }
+                }
+            }
         }
     }
 }
@@ -206,36 +217,39 @@ fun RewardExchangeCardItem() {
                 .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Row(Modifier.fillMaxWidth()) {
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     SecondTitleText("Canje de puntos")
                     Spacer(Modifier.weight(1f))
-                    Icon(
-                        Icons.Default.Edit,
-                        contentDescription = "edit icon",
-                        tint = Color.White,
-                        modifier = Modifier.clickable { }
-                    )
+                    ButtonIconItem(
+                        icon = Icons.Default.Add
+                    ) { }
+//                    Icon(
+//                        Icons.Default.Add,
+//                        contentDescription = "add icon",
+//                        tint = Color.White,
+//                        modifier = Modifier.clickable { }
+//                    )
                 }
                 HorizontalDivider(Modifier.fillMaxWidth(), thickness = 1.dp, color = Color.White)
             }
-            RewardItem("2x1 maquillaje/automaquillaje", "500")
-            RewardItem("15% en maquillaje/automaquillaje", "250")
-            RewardItem("10% en maquillaje/automaquillaje", "180")
-            RewardItem("15% servicio de Capping", "80")
-            RewardItem("10% servicio de Capping", "55")
-            RewardItem("5% servicio de Capping", "30")
-            RewardItem("15% descuento en Lifting de Pesteñas", "80")
-            RewardItem("10% descuento en Lifting de Pesteñas", "50")
-            RewardItem("5% descuento en Lifting de Pesteñas", "30")
-            RewardItem("15% descuento en Perfilado de Cejas", "65")
-            RewardItem("10% descuento en Perfilado de Cejas", "45")
-            RewardItem("5% descuento en Perfilado de Cejas", "25")
-            RewardItem("15% descuento en Laminado de Cejas", "65")
-            RewardItem("10% descuento en Laminado de Cejas", "45")
-            RewardItem("5% descuento en Laminado de Cejas", "25")
-            RewardItem("15% descuento en Esmaltado Semipermanente", "50")
-            RewardItem("10% descuento en Esmaltado Semipermanente", "35")
-            RewardItem("5% descuento en Esmaltado Semipermanente", "21")
+//            RewardRowItem("2x1 maquillaje/automaquillaje", "500")
+//            RewardRowItem("15% en maquillaje/automaquillaje", "250")
+//            RewardRowItem("10% en maquillaje/automaquillaje", "180")
+//            RewardRowItem("15% servicio de Capping", "80")
+//            RewardRowItem("10% servicio de Capping", "55")
+//            RewardRowItem("5% servicio de Capping", "30")
+//            RewardRowItem("15% descuento en Lifting de Pesteñas", "80")
+//            RewardRowItem("10% descuento en Lifting de Pesteñas", "50")
+//            RewardRowItem("5% descuento en Lifting de Pesteñas", "30")
+//            RewardRowItem("15% descuento en Perfilado de Cejas", "65")
+//            RewardRowItem("10% descuento en Perfilado de Cejas", "45")
+//            RewardRowItem("5% descuento en Perfilado de Cejas", "25")
+//            RewardRowItem("15% descuento en Laminado de Cejas", "65")
+//            RewardRowItem("10% descuento en Laminado de Cejas", "45")
+//            RewardRowItem("5% descuento en Laminado de Cejas", "25")
+//            RewardRowItem("15% descuento en Esmaltado Semipermanente", "50")
+//            RewardRowItem("10% descuento en Esmaltado Semipermanente", "35")
+//            RewardRowItem("5% descuento en Esmaltado Semipermanente", "21")
         }
     }
 }
@@ -258,21 +272,36 @@ fun ClientTable(clientPointsLoyalties: List<LoyaltyWithClient>) {
                 .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // ACA LA TABLA DE CLIENT-POINTS
-            if(clientPointsLoyalties.isEmpty()) {
+            if (clientPointsLoyalties.isEmpty()) {
                 BodyText(stringResource(R.string.no_client_points))
             } else {
                 clientPointsLoyalties.forEach { loyaltyClient ->
-                    RewardItem(loyaltyClient.client.name, loyaltyClient.loyalty.points.toString())
+                    ClientRowItem(
+                        loyaltyClient.client.name,
+                        loyaltyClient.loyalty.points.toString()
+                    )
                 }
             }
         }
     }
 }
 
+@Composable
+fun ClientRowItem(name: String, points: String) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        BodyText(name)
+        Spacer(modifier = Modifier.weight(1f))
+        BodyText("$points pts")
+    }
+}
 
 @Composable
-fun RewardItem(title: String, points: String) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+fun RewardRowItem(title: String, points: String, onClick: () -> Unit) {
+    Row(Modifier
+        .fillMaxWidth()
+        .clickable {
+            onClick()
+        }, horizontalArrangement = Arrangement.SpaceBetween) {
         BodyText(title)
         Spacer(modifier = Modifier.weight(1f))
         BodyText("$points pts")
