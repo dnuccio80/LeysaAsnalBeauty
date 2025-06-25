@@ -66,12 +66,8 @@ fun AddLoyaltyPointsScreen(
     if(clientDetailsLoyalty == null) return
 
     val context = LocalContext.current
-    val serviceTypeData = listOf(
-        LoyaltyServicePointsDataClass(service = "Esmaltado Semipermanente", points = 8),
-        LoyaltyServicePointsDataClass(service = "Lifting de pestañas", points = 11),
-        LoyaltyServicePointsDataClass(service = "Maquillaje", points = 50),
-        LoyaltyServicePointsDataClass(service = "Cejas", points = 10),
-    )
+
+    val serviceTypeData by viewModel.servicePointsLoyaltyList.collectAsState()
 
     val serviceType: List<String> = serviceTypeData.map {
         it.service
