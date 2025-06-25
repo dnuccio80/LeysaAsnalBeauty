@@ -40,7 +40,7 @@ interface LoyaltyDao {
     suspend fun addLoyaltyServicePoints(loyalty: LoyaltyServicePointsEntity)
 
     @Query("SELECT * FROM LoyaltyServicePointsEntity WHERE id = :loyaltyId LIMIT 1")
-    fun getLoyaltyServicePointsById(loyaltyId: Int): Flow<LoyaltyServicePointsEntity>
+    fun getLoyaltyServicePointsById(loyaltyId: Int): Flow<LoyaltyServicePointsEntity?>
 
     @Update
     suspend fun updateLoyaltyServicePoints(loyalty: LoyaltyServicePointsEntity)
