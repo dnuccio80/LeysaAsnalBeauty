@@ -41,6 +41,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonIconItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ThirdTitleText
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyRewardPointsDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyServicePointsDataClass
 import com.example.leysaasnalbeauty.ui.theme.DarkAccentColor
 import com.example.leysaasnalbeauty.ui.theme.DarkGrayColor
@@ -53,11 +54,13 @@ fun FidelityClientSystemScreen(
     onAddPointsButtonClicked: () -> Unit,
     onChangePointsButtonClicked: () -> Unit,
     onAddRewardPointsToService: () -> Unit,
-    onServiceClicked: (Int) -> Unit
+    onServiceClicked: (Int) -> Unit,
+    onAddRewardLoyaltyClicked:() -> Unit,
 ) {
 
     val clientPointsLoyalties by viewModel.clientPointsLoyalties.collectAsState()
     val servicePointsLoyaltyList by viewModel.servicePointsLoyaltyList.collectAsState()
+    val rewardsLoyalty by viewModel.rewardsLoyalty.collectAsState()
 
     val sectionList: List<String> = listOf(
         "Sistema de Puntaje",
@@ -123,7 +126,9 @@ fun FidelityClientSystemScreen(
                             onServiceClicked = {
                                 onServiceClicked(it)
                             })
-                        RewardExchangeCardItem()
+                        RewardExchangeCardItem(rewardsLoyalty) {
+                            onAddRewardLoyaltyClicked()
+                        }
                     }
 
                     sectionList[1] -> {
@@ -202,7 +207,10 @@ fun RewardPointsCardItem(
 
 
 @Composable
-fun RewardExchangeCardItem() {
+fun RewardExchangeCardItem(
+    rewardsLoyalty: List<LoyaltyRewardPointsDataClass>,
+    onAddRewardClicked: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -222,34 +230,18 @@ fun RewardExchangeCardItem() {
                     Spacer(Modifier.weight(1f))
                     ButtonIconItem(
                         icon = Icons.Default.Add
-                    ) { }
-//                    Icon(
-//                        Icons.Default.Add,
-//                        contentDescription = "add icon",
-//                        tint = Color.White,
-//                        modifier = Modifier.clickable { }
-//                    )
+                    ) { onAddRewardClicked() }
                 }
                 HorizontalDivider(Modifier.fillMaxWidth(), thickness = 1.dp, color = Color.White)
+
             }
-//            RewardRowItem("2x1 maquillaje/automaquillaje", "500")
-//            RewardRowItem("15% en maquillaje/automaquillaje", "250")
-//            RewardRowItem("10% en maquillaje/automaquillaje", "180")
-//            RewardRowItem("15% servicio de Capping", "80")
-//            RewardRowItem("10% servicio de Capping", "55")
-//            RewardRowItem("5% servicio de Capping", "30")
-//            RewardRowItem("15% descuento en Lifting de Pesteñas", "80")
-//            RewardRowItem("10% descuento en Lifting de Pesteñas", "50")
-//            RewardRowItem("5% descuento en Lifting de Pesteñas", "30")
-//            RewardRowItem("15% descuento en Perfilado de Cejas", "65")
-//            RewardRowItem("10% descuento en Perfilado de Cejas", "45")
-//            RewardRowItem("5% descuento en Perfilado de Cejas", "25")
-//            RewardRowItem("15% descuento en Laminado de Cejas", "65")
-//            RewardRowItem("10% descuento en Laminado de Cejas", "45")
-//            RewardRowItem("5% descuento en Laminado de Cejas", "25")
-//            RewardRowItem("15% descuento en Esmaltado Semipermanente", "50")
-//            RewardRowItem("10% descuento en Esmaltado Semipermanente", "35")
-//            RewardRowItem("5% descuento en Esmaltado Semipermanente", "21")
+            if (rewardsLoyalty.isEmpty()) {
+                BodyText(stringResource(R.string.no_reward_changeable_available))
+            } else {
+                rewardsLoyalty.forEach { reward ->
+                    RewardRowItem(reward.reward, reward.points.toString()) {}
+                }
+            }
         }
     }
 }
@@ -297,11 +289,13 @@ fun ClientRowItem(name: String, points: String) {
 
 @Composable
 fun RewardRowItem(title: String, points: String, onClick: () -> Unit) {
-    Row(Modifier
-        .fillMaxWidth()
-        .clickable {
-            onClick()
-        }, horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable {
+                onClick()
+            }, horizontalArrangement = Arrangement.SpaceBetween
+    ) {
         BodyText(title)
         Spacer(modifier = Modifier.weight(1f))
         BodyText("$points pts")

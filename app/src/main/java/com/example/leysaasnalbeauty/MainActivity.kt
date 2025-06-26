@@ -19,6 +19,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddAnnotationScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddClientScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddLoyaltyPointsScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddRewardLoyaltyScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddRewardPointsToServiceScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AnnotationsScreen
@@ -219,11 +220,18 @@ class MainActivity : ComponentActivity() {
                                 onChangePointsButtonClicked = {
                                     navController.navigate(Routes.ChangePointsClientList.route)
                                 },
-                                onAddRewardPointsToService =  {
+                                onAddRewardPointsToService = {
                                     navController.navigate(Routes.AddRewardPointsToService.route)
                                 },
                                 onServiceClicked = {
-                                    navController.navigate(Routes.EditRewardPointsToService.createRoute(it))
+                                    navController.navigate(
+                                        Routes.EditRewardPointsToService.createRoute(
+                                            it
+                                        )
+                                    )
+                                },
+                                onAddRewardLoyaltyClicked = {
+                                    navController.navigate(Routes.AddRewardLoyalty.route)
                                 }
                             )
                         }
@@ -293,17 +301,28 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        composable(Routes.EditRewardPointsToService.route, arguments = listOf(
-                            navArgument("loyaltyId"){
+                        composable(
+                            Routes.EditRewardPointsToService.route, arguments = listOf(
+                            navArgument("loyaltyId") {
                                 type = NavType.IntType
                             }
-                        )) {backStackEntry ->
+                        )) { backStackEntry ->
                             EditRewardPointsToServiceScreen(
                                 innerPadding = innerPadding,
                                 viewModel = viewModel,
                                 onBackClick = { navController.popBackStack() },
-                                loyaltyId = backStackEntry.arguments?.getInt("loyaltyId")?:0
-                            )                            
+                                loyaltyId = backStackEntry.arguments?.getInt("loyaltyId") ?: 0
+                            )
+                        }
+                        composable(Routes.AddRewardLoyalty.route) {
+                            AddRewardLoyaltyScreen(
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                onAcceptClick = {
+                                    navController.popBackStack()
+                                },
+                                onBackClick = { navController.popBackStack() }
+                            )
                         }
                     }
                 }

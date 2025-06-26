@@ -59,6 +59,7 @@ fun AddRewardPointsToServiceScreen(
         service,
         points,
         forEdit = false,
+        title = "Agregar Recompensa a servicio",
         onBackClick,
         onAcceptClick = {
             viewModel.addServicePointsLoyalty(service = service, points = points)

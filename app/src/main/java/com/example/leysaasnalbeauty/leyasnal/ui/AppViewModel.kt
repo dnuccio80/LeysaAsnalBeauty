@@ -3,6 +3,7 @@ package com.example.leysaasnalbeauty.leyasnal.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.leysaasnalbeauty.leyasnal.data.appoointments.AppointmentWithClient
+import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyRewardPointsEntity
 import com.example.leysaasnalbeauty.leyasnal.data.loyalty.LoyaltyWithClient
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.AddAnnotationUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.annotations.DeleteAnnotationUseCase
@@ -37,6 +38,10 @@ import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.GetAll
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.GetLoyaltyClientPointsByIdUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.UpdateClientPointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.UpsertClientPointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.reward_points.AddRewardPointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.reward_points.DeleteRewardPointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.reward_points.GetAllRewardPointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.reward_points.UpdateRewardPointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.service_points.AddServicePointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.service_points.DeleteServicePointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.service_points.GetAllServicePointsLoyaltyUseCase
@@ -48,6 +53,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ClientDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.EarningDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.ExpenseDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyClientPointsDataClass
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyRewardPointsDataClass
 import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.LoyaltyServicePointsDataClass
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -122,6 +128,12 @@ class AppViewModel @Inject constructor(
     private val getLoyaltyServicePointsByIdUseCase: GetLoyaltyServicePointsByIdUseCase,
     private val deleteServicePointsLoyaltyUseCase: DeleteServicePointsLoyaltyUseCase,
     private val updateServicePointsLoyaltyUseCase: UpdateServicePointsLoyaltyUseCase,
+
+    // Rewards for loyalty
+    getAllRewardPointsLoyaltyUseCase: GetAllRewardPointsLoyaltyUseCase,
+    private val addRewardPointsLoyaltyUseCase: AddRewardPointsLoyaltyUseCase,
+    private val updateRewardPointsLoyaltyUseCase: UpdateRewardPointsLoyaltyUseCase,
+    private val deleteRewardPointsLoyaltyUseCase: DeleteRewardPointsLoyaltyUseCase,
 
     ) : ViewModel() {
 
@@ -234,6 +246,11 @@ class AppViewModel @Inject constructor(
         viewModelScope, SharingStarted.WhileSubscribed(5000), null
     )
     val servicePointsLoyaltyDetails = _servicePointsLoyaltyDetails
+
+    private val _rewardsLoyalty = getAllRewardPointsLoyaltyUseCase().stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
+    )
+    val rewardsLoyalty = _rewardsLoyalty
 
     // Fun
 
@@ -441,6 +458,29 @@ class AppViewModel @Inject constructor(
         val loyalty = LoyaltyServicePointsDataClass(id = loyaltyId, service = service, points = points.toInt())
         viewModelScope.launch(Dispatchers.IO) {
             updateServicePointsLoyaltyUseCase(loyalty)
+        }
+    }
+
+    fun addRewardLoyalty(reward:String, points:Int) {
+        val loyaltyRewardPoint = LoyaltyRewardPointsDataClass(reward = reward, points = points)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            addRewardPointsLoyaltyUseCase(loyaltyRewardPoint)
+        }
+    }
+
+    fun updateRewardLoyalty(reward:String, points:Int) {
+        val loyaltyRewardPoint = LoyaltyRewardPointsDataClass(reward = reward, points = points)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            updateRewardPointsLoyaltyUseCase(loyaltyRewardPoint)
+        }
+    }
+
+    fun deleteRewardLoyaltyById(rewardId:Int) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteRewardPointsLoyaltyUseCase(rewardId)
         }
     }
 

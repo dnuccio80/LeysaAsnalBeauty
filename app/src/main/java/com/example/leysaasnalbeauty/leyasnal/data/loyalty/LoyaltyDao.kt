@@ -50,7 +50,7 @@ interface LoyaltyDao {
 
     // Reward-Points Relationship
 
-    @Query("SELECT * FROM LoyaltyRewardPointsEntity ORDER BY points ASC")
+    @Query("SELECT * FROM LoyaltyRewardPointsEntity ORDER BY points DESC")
     fun getAllRewardPoints():Flow<List<LoyaltyRewardPointsEntity>>
 
     @Insert

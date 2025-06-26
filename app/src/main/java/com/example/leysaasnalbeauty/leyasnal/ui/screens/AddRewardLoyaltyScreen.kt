@@ -1,11 +1,11 @@
-package com.example.leysaasnalbeauty.leyasnal.ui.components
+package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,26 +19,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
-import com.example.leysaasnalbeauty.ui.theme.NegativeColor
+import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
+import com.example.leysaasnalbeauty.leyasnal.ui.components.AcceptDeclineButtons
+import com.example.leysaasnalbeauty.leyasnal.ui.components.BackButtonItem
+import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
+import com.example.leysaasnalbeauty.leyasnal.ui.components.SecondTitleText
 
 @Composable
-fun RewardPointsWithTextFieldComponent(
+fun AddRewardLoyaltyScreen(
     innerPadding: PaddingValues,
-    service: String,
-    points: String,
-    forEdit:Boolean,
-    title:String,
-    onBackClick: () -> Unit,
+    viewModel: AppViewModel,
     onAcceptClick: () -> Unit,
-    onServiceChange: (String) -> Unit,
-    onPointsChange: (String) -> Unit,
-    onDeleteItem:() -> Unit
+    onBackClick: () -> Unit
 ) {
 
-    var showDialog by rememberSaveable { mutableStateOf(false) }
+    var rewardName by rememberSaveable { mutableStateOf("") }
+    var rewardPoints by rememberSaveable { mutableStateOf("") }
+    val context = LocalContext.current
 
     Box(
         Modifier
@@ -55,7 +56,7 @@ fun RewardPointsWithTextFieldComponent(
         ) {
             BackButtonItem { onBackClick() }
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                SecondTitleText(title)
+                SecondTitleText("Agregar Canje de Puntos")
             }
             Column(
                 Modifier
@@ -64,50 +65,38 @@ fun RewardPointsWithTextFieldComponent(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 MainTextField(
-                    value = service,
+                    value = rewardName,
                     isNumeric = false,
                     onValueChange = {
-                        onServiceChange(it)
+                        if(rewardName.length < 30){
+                            rewardName = it
+                        }
+//                        onServiceChange(it)
                     },
-                    label = stringResource(R.string.service),
+                    label = stringResource(R.string.reward),
                     icon = R.drawable.ic_service
                 )
                 MainTextField(
-                    value = points,
+                    value = rewardPoints,
                     isNumeric = true,
-                    onValueChange = { onPointsChange(it) },
+                    onValueChange = {
+//                        onPointsChange(it)
+                        rewardPoints = it
+                    },
                     label = stringResource(R.string.points),
                     icon = R.drawable.ic_star
                 )
             }
             AcceptDeclineButtons(
                 onAccept = {
-                    if (service.isNotEmpty() && points.isNotEmpty() && points.toInt() > 0) {
+                    if (rewardName.isNotEmpty() && rewardPoints.isNotEmpty() && rewardPoints.toInt() > 0) {
                         onAcceptClick()
-
+                        Toast.makeText(context, "Canje agregado", Toast.LENGTH_SHORT).show()
+                        viewModel.addRewardLoyalty(reward = rewardName, points = rewardPoints.toInt())
                     }
                 },
                 onDecline = { onBackClick() }
             )
-            if(!forEdit) return
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                ButtonTextItem(
-                    text = stringResource(R.string.delete),
-                    buttonColor = NegativeColor,
-                    enabled = true
-                ) {
-                    showDialog = true
-                }
-            }
-            AlertDialogItem(
-                show = showDialog,
-                text = stringResource(R.string.delete_reward_item_message),
-                onDismiss = { showDialog = false }
-            ) {
-                onDeleteItem()
-                showDialog = false
-                onBackClick()
-            }
         }
     }
 }

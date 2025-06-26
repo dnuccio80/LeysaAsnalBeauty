@@ -89,9 +89,11 @@
     <string name="current_points">Puntos Actuales</string>
     <string name="change">Canjear</string>
     <string name="service">Servicio</string>
+    <string name="reward">Recompensa</string>
     <string name="points">Puntos</string>
     <string name="reward_points">Puntos de recompensa</string>
     <string name="no_reward_points_available">No hay puntos de recompensa disponibles</string>
+    <string name="no_reward_changeable_available">No hay canjes disponibles</string>
     <string name="available_changes">Canjes Disponibles</string>
     <string name="change_points_alert_dialog">¿Segura que deseas canjear los puntos?</string>
     <string name="appointment_for">Cita para</string>

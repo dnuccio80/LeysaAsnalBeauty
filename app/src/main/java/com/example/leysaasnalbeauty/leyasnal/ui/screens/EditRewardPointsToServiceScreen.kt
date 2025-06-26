@@ -40,6 +40,7 @@ fun EditRewardPointsToServiceScreen(
         service,
         points,
         forEdit = true,
+        title = "Editar Recompensa de servicio",
         onBackClick,
         onAcceptClick = {
             viewModel.updateServicePointsLoyaltyUseCase(loyaltyId = loyaltyId, service = service, points = points)
@@ -48,6 +49,9 @@ fun EditRewardPointsToServiceScreen(
         },
         onServiceChange = { service = it },
         onPointsChange = { points = it },
-        onDeleteItem = { viewModel.deleteServicePointsLoyalty(loyaltyId) }
+        onDeleteItem = {
+            viewModel.deleteServicePointsLoyalty(loyaltyId)
+            Toast.makeText(context, "Recompensa eliminada", Toast.LENGTH_SHORT).show()
+        }
     )
 }

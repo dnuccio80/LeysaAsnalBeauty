@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
@@ -52,17 +54,23 @@ fun ChangeLoyaltyPointsScreen(
 
     val client by viewModel.clientDetails.collectAsState()
     val clientDetailsLoyalty by viewModel.clientDetailsLoyaltyPoints.collectAsState()
+    val rewardsLoyalty by viewModel.rewardsLoyalty.collectAsState()
 
     if (client == null || client?.id != clientId) return
     if(clientDetailsLoyalty == null) return
 
     var showConfirmDialog by rememberSaveable { mutableStateOf(false) }
 
+    val filteredLoyaltyList = rewardsLoyalty.filter {
+        it.points <= clientDetailsLoyalty!!.points
+    }
+
     Box(
         Modifier
             .fillMaxSize()
             .background(Color.Black)
             .padding(innerPadding)
+            .verticalScroll(rememberScrollState())
     ) {
         Column(
             Modifier
@@ -108,17 +116,14 @@ fun ChangeLoyaltyPointsScreen(
                         .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     SecondTitleText(stringResource(R.string.available_changes), color = PositiveColor)
-                    ChangeRewardRowItem("2x1 Maquillaje", 128.toString()) {
-                        showConfirmDialog = true
-                    }
-                    ChangeRewardRowItem("2x1 Maquillaje", 128.toString()) {
-                        showConfirmDialog = true
-                    }
-                    ChangeRewardRowItem("2x1 Maquillaje", 128.toString()) {
-                        showConfirmDialog = true
-                    }
-                    ChangeRewardRowItem("2x1 Maquillaje", 128.toString()) {
-                        showConfirmDialog = true
+                    if(filteredLoyaltyList.isEmpty()) {
+                        SecondTitleText("No hay ningún canjeable con sus puntos")
+                    } else {
+                        filteredLoyaltyList.forEach {
+                            ChangeRewardRowItem(it.reward, it.points.toString()) {
+                                showConfirmDialog = true
+                            }
+                        }
                     }
                 }
             }
@@ -143,8 +148,10 @@ fun ChangeRewardRowItem(title: String, points: String, onClick: () -> Unit) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         BodyText(title)
+        Spacer(Modifier.weight(3f))
         BodyText("$points pts")
-        ButtonTextItem(stringResource(R.string.change), DarkAccentColor) {
+        Spacer(Modifier.padding(start = 12.dp))
+        ButtonTextItem(stringResource(R.string.change), DarkAccentColor, horizontalPadding = 4.dp, verticalPadding = 2.dp) {
             onClick()
         }
     }
