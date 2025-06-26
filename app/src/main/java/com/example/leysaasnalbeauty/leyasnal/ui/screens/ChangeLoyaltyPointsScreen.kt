@@ -1,5 +1,6 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,12 +20,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
@@ -55,6 +58,8 @@ fun ChangeLoyaltyPointsScreen(
     val client by viewModel.clientDetails.collectAsState()
     val clientDetailsLoyalty by viewModel.clientDetailsLoyaltyPoints.collectAsState()
     val rewardsLoyalty by viewModel.rewardsLoyalty.collectAsState()
+    val context = LocalContext.current
+    var changeablePoints by rememberSaveable { mutableIntStateOf(0) }
 
     if (client == null || client?.id != clientId) return
     if(clientDetailsLoyalty == null) return
@@ -122,6 +127,7 @@ fun ChangeLoyaltyPointsScreen(
                         filteredLoyaltyList.forEach {
                             ChangeRewardRowItem(it.reward, it.points.toString()) {
                                 showConfirmDialog = true
+                                changeablePoints = it.points
                             }
                         }
                     }
@@ -133,6 +139,12 @@ fun ChangeLoyaltyPointsScreen(
                 onDismiss = { showConfirmDialog = false },
                 onConfirm = {
                     showConfirmDialog = false
+                    val newLoyaltyPoints = clientDetailsLoyalty!!.points - changeablePoints
+                    viewModel.upsertClientPointsLoyalty(
+                        clientDetailsLoyalty!!.copy(points = newLoyaltyPoints)
+                    )
+                    Toast.makeText(context, "Canje realizado con éxito!", Toast.LENGTH_SHORT).show()
+//                    onConfirm()
                 }
             )
         }

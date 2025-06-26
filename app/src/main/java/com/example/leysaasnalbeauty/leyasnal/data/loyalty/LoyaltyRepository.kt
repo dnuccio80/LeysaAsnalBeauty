@@ -72,5 +72,8 @@ class LoyaltyRepository @Inject constructor(private val loyaltyDao: LoyaltyDao) 
     suspend fun updateRewardPointsLoyalty(loyalty: LoyaltyRewardPointsDataClass) =
         loyaltyDao.updateLoyaltyRewardPoints(loyalty.toLoyaltyRewardPointsEntity())
 
+    fun getLoyaltyRewardPointsById(loyaltyId:Int):Flow<LoyaltyRewardPointsDataClass?> = loyaltyDao.getLoyaltyRewardPointsById(loyaltyId).map {
+        item -> item?.toLoyaltyRewardPointsDataClass()
+    }
 
 }

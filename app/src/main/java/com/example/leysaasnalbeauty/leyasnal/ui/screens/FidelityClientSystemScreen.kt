@@ -55,7 +55,8 @@ fun FidelityClientSystemScreen(
     onChangePointsButtonClicked: () -> Unit,
     onAddRewardPointsToService: () -> Unit,
     onServiceClicked: (Int) -> Unit,
-    onAddRewardLoyaltyClicked:() -> Unit,
+    onAddRewardLoyaltyClicked: () -> Unit,
+    onRewardClicked:(Int) -> Unit
 ) {
 
     val clientPointsLoyalties by viewModel.clientPointsLoyalties.collectAsState()
@@ -126,9 +127,13 @@ fun FidelityClientSystemScreen(
                             onServiceClicked = {
                                 onServiceClicked(it)
                             })
-                        RewardExchangeCardItem(rewardsLoyalty) {
-                            onAddRewardLoyaltyClicked()
-                        }
+                        RewardExchangeCardItem(
+                            rewardsLoyalty,
+                            onAddRewardClicked = {
+                                onAddRewardLoyaltyClicked()
+                            }, onRewardClicked = {
+                                onRewardClicked(it)
+                            })
                     }
 
                     sectionList[1] -> {
@@ -209,7 +214,8 @@ fun RewardPointsCardItem(
 @Composable
 fun RewardExchangeCardItem(
     rewardsLoyalty: List<LoyaltyRewardPointsDataClass>,
-    onAddRewardClicked: () -> Unit
+    onAddRewardClicked: () -> Unit,
+    onRewardClicked: (Int) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -239,7 +245,9 @@ fun RewardExchangeCardItem(
                 BodyText(stringResource(R.string.no_reward_changeable_available))
             } else {
                 rewardsLoyalty.forEach { reward ->
-                    RewardRowItem(reward.reward, reward.points.toString()) {}
+                    RewardRowItem(reward.reward, reward.points.toString()) {
+                        onRewardClicked(reward.id)
+                    }
                 }
             }
         }

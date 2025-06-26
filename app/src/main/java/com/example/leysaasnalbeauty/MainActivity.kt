@@ -28,6 +28,7 @@ import com.example.leysaasnalbeauty.leyasnal.ui.screens.ChangeLoyaltyPointsScree
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ChangePointsClientListScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientDetailsScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ClientsScreen
+import com.example.leysaasnalbeauty.leyasnal.ui.screens.EditRewardLoyaltyScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.EditRewardPointsToServiceScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.FidelityClientSystemScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.GiftCardScreen
@@ -232,6 +233,9 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onAddRewardLoyaltyClicked = {
                                     navController.navigate(Routes.AddRewardLoyalty.route)
+                                },
+                                onRewardClicked = {
+                                    navController.navigate(Routes.EditRewardLoyalty.createRoute(it))
                                 }
                             )
                         }
@@ -246,6 +250,9 @@ class MainActivity : ComponentActivity() {
                                         )
                                     )
                                 },
+                                onBackButtonClicked = {
+                                    navController.popBackStack()
+                                }
                             )
                         }
                         composable(
@@ -276,7 +283,11 @@ class MainActivity : ComponentActivity() {
                                             it
                                         )
                                     )
-                                })
+                                },
+                                onBackButtonClicked = {
+                                    navController.popBackStack()
+                                }
+                            )
                         }
                         composable(
                             Routes.ChangeLoyaltyPointsScreen.route, arguments = listOf(
@@ -322,6 +333,20 @@ class MainActivity : ComponentActivity() {
                                     navController.popBackStack()
                                 },
                                 onBackClick = { navController.popBackStack() }
+                            )
+                        }
+                        composable(Routes.EditRewardLoyalty.route, arguments = listOf(
+                            navArgument("loyaltyId") {
+                                type = NavType.IntType
+                            }
+                        )) {backStackEntry ->
+                            EditRewardLoyaltyScreen(
+                                rewardId = backStackEntry.arguments?.getInt("loyaltyId") ?: 0,
+                                innerPadding = innerPadding,
+                                viewModel = viewModel,
+                                onAcceptClick = { navController.popBackStack() },
+                                onBackClick = { navController.popBackStack() },
+
                             )
                         }
                     }

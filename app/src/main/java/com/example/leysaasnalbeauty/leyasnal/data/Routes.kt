@@ -39,6 +39,9 @@ sealed class Routes(val route: String) {
         fun createRoute(loyaltyId: Int) = "editRewardPointsToService/$loyaltyId"
     }
     data object AddRewardLoyalty : Routes("addRewardLoyalty")
+    data object EditRewardLoyalty : Routes("editRewardLoyalty/{loyaltyId}") {
+        fun createRoute(loyaltyId: Int) = "editRewardLoyalty/$loyaltyId"
+    }
 
 
 }

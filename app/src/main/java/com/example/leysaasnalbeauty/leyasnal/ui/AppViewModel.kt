@@ -41,6 +41,7 @@ import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.client_points.Upsert
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.reward_points.AddRewardPointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.reward_points.DeleteRewardPointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.reward_points.GetAllRewardPointsLoyaltyUseCase
+import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.reward_points.GetRewardLoyaltyByIdUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.reward_points.UpdateRewardPointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.service_points.AddServicePointsLoyaltyUseCase
 import com.example.leysaasnalbeauty.leyasnal.domain.loyalty.service_points.DeleteServicePointsLoyaltyUseCase
@@ -134,6 +135,7 @@ class AppViewModel @Inject constructor(
     private val addRewardPointsLoyaltyUseCase: AddRewardPointsLoyaltyUseCase,
     private val updateRewardPointsLoyaltyUseCase: UpdateRewardPointsLoyaltyUseCase,
     private val deleteRewardPointsLoyaltyUseCase: DeleteRewardPointsLoyaltyUseCase,
+    private val getRewardLoyaltyByIdUseCase: GetRewardLoyaltyByIdUseCase,
 
     ) : ViewModel() {
 
@@ -251,6 +253,16 @@ class AppViewModel @Inject constructor(
         viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
     )
     val rewardsLoyalty = _rewardsLoyalty
+
+    private val rewardId = MutableStateFlow(0)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val _rewardLoyaltyDetails = rewardId.flatMapLatest {
+        getRewardLoyaltyByIdUseCase(rewardId.value)
+    }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), null
+    )
+    val rewardLoyaltyDetails = _rewardLoyaltyDetails
 
     // Fun
 
@@ -469,8 +481,8 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun updateRewardLoyalty(reward:String, points:Int) {
-        val loyaltyRewardPoint = LoyaltyRewardPointsDataClass(reward = reward, points = points)
+    fun updateRewardLoyalty(id:Int, reward:String, points:Int) {
+        val loyaltyRewardPoint = LoyaltyRewardPointsDataClass(id = id, reward = reward, points = points)
 
         viewModelScope.launch(Dispatchers.IO) {
             updateRewardPointsLoyaltyUseCase(loyaltyRewardPoint)
@@ -478,10 +490,13 @@ class AppViewModel @Inject constructor(
     }
 
     fun deleteRewardLoyaltyById(rewardId:Int) {
-
         viewModelScope.launch(Dispatchers.IO) {
             deleteRewardPointsLoyaltyUseCase(rewardId)
         }
+    }
+
+    fun setRewardId(id:Int) {
+        rewardId.value = id
     }
 
     // Generic fun

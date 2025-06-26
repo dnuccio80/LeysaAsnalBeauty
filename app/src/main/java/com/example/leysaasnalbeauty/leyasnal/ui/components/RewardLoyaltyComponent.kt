@@ -1,11 +1,11 @@
 package com.example.leysaasnalbeauty.leyasnal.ui.components
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,24 +19,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
 import com.example.leysaasnalbeauty.ui.theme.NegativeColor
 
 @Composable
-fun RewardPointsWithTextFieldComponent(
+fun RewardLoyaltyComponent(
     innerPadding: PaddingValues,
-    service: String,
-    points: String,
-    forEdit:Boolean,
-    title:String,
-    onBackClick: () -> Unit,
+    viewModel: AppViewModel,
+    rewardName: String,
+    rewardPoints: String,
+    title: String,
+    isForEdit: Boolean,
     onAcceptClick: () -> Unit,
-    onServiceChange: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onDeleteItem: () -> Unit,
+    onRewardNameChange: (String) -> Unit,
     onPointsChange: (String) -> Unit,
-    onDeleteItem:() -> Unit
 ) {
+
 
     var showDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -64,43 +68,46 @@ fun RewardPointsWithTextFieldComponent(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 MainTextField(
-                    value = service,
+                    value = rewardName,
                     isNumeric = false,
                     onValueChange = {
-                        onServiceChange(it)
+                        onRewardNameChange(it)
                     },
-                    label = stringResource(R.string.service),
+                    label = stringResource(R.string.reward),
                     icon = R.drawable.ic_service
                 )
                 MainTextField(
-                    value = points,
+                    value = rewardPoints,
                     isNumeric = true,
-                    onValueChange = { onPointsChange(it) },
+                    onValueChange = {
+                        onPointsChange(it)
+                    },
                     label = stringResource(R.string.points),
                     icon = R.drawable.ic_star
                 )
             }
             AcceptDeclineButtons(
                 onAccept = {
-                    if (service.isNotEmpty() && points.isNotEmpty() && points.toInt() > 0) {
+                    if (rewardName.isNotEmpty() && rewardPoints.isNotEmpty() && rewardPoints.toInt() > 0) {
                         onAcceptClick()
                     }
                 },
                 onDecline = { onBackClick() }
             )
-            if(!forEdit) return
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            if (!isForEdit) return
+
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 ButtonTextItem(
                     text = stringResource(R.string.delete),
                     buttonColor = NegativeColor,
-                    enabled = true
                 ) {
                     showDialog = true
                 }
             }
+
             AlertDialogItem(
                 show = showDialog,
-                text = stringResource(R.string.delete_reward_item_message),
+                text = stringResource(R.string.delete_reward_change_message),
                 onDismiss = { showDialog = false }
             ) {
                 onDeleteItem()

@@ -62,6 +62,7 @@ interface LoyaltyDao {
     @Query ("DELETE FROM LoyaltyRewardPointsEntity where id = :loyaltyId")
     suspend fun deleteLoyaltyRewardPointsEntity(loyaltyId:Int)
 
-
+    @Query ("SELECT * FROM LoyaltyRewardPointsEntity where id = :loyaltyId LIMIT 1")
+    fun getLoyaltyRewardPointsById(loyaltyId:Int):Flow<LoyaltyRewardPointsEntity?>
 
 }
