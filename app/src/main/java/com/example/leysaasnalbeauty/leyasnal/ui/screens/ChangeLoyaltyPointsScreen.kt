@@ -121,8 +121,8 @@ fun ChangeLoyaltyPointsScreen(
                         .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     SecondTitleText(stringResource(R.string.available_changes), color = PositiveColor)
-                    if(filteredLoyaltyList.isEmpty()) {
-                        SecondTitleText("No hay ningún canjeable con sus puntos")
+                    if(filteredLoyaltyList.isNullOrEmpty()) {
+                        BodyText("No hay ningún canjeable con sus puntos")
                     } else {
                         filteredLoyaltyList.forEach {
                             ChangeRewardRowItem(it.reward, it.points.toString()) {
@@ -144,7 +144,6 @@ fun ChangeLoyaltyPointsScreen(
                         clientDetailsLoyalty!!.copy(points = newLoyaltyPoints)
                     )
                     Toast.makeText(context, "Canje realizado con éxito!", Toast.LENGTH_SHORT).show()
-//                    onConfirm()
                 }
             )
         }
