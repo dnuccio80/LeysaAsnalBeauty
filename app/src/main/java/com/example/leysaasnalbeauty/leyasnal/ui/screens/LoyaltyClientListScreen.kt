@@ -28,7 +28,6 @@ fun LoyaltyClientListScreen(
     onClientClicked: (Int) -> Unit,
     onBackButtonClicked:() -> Unit
 ) {
-
     Box(
         Modifier
             .fillMaxSize()
@@ -42,7 +41,5 @@ fun LoyaltyClientListScreen(
                 onClientClicked(id)
             }
         }
-
     }
-
 }

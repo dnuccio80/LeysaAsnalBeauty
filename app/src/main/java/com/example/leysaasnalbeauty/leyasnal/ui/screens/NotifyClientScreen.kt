@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -29,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
+import com.example.leysaasnalbeauty.leyasnal.ui.components.BackButtonItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ClientItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ClientListWithQuery
@@ -41,6 +43,7 @@ import com.example.leysaasnalbeauty.ui.theme.SecondaryBackgroundColor
 fun NotifyClientScreen(
     innerPadding: PaddingValues,
     viewModel: AppViewModel,
+    onBackClicked:() -> Unit
 ) {
 
     var showNotifyDialog by rememberSaveable { mutableStateOf(false) }
@@ -52,9 +55,13 @@ fun NotifyClientScreen(
             .background(Color.Black)
             .padding(innerPadding)
     ) {
-        ClientListWithQuery(viewModel) { id ->
-            clientId = id
-            showNotifyDialog = true
+        Column(Modifier.fillMaxWidth()) {
+            Spacer(Modifier.height(16.dp))
+            BackButtonItem { onBackClicked() }
+            ClientListWithQuery(viewModel) { id ->
+                clientId = id
+                showNotifyDialog = true
+            }
         }
     }
     NotifyClientDialog(

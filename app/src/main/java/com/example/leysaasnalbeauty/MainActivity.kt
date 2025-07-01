@@ -112,6 +112,9 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onCancel = {
                                     navController.popBackStack()
+                                },
+                                onBackClicked = {
+                                    navController.popBackStack()
                                 }
                             )
                         }
@@ -119,6 +122,9 @@ class MainActivity : ComponentActivity() {
                             NotifyClientScreen(
                                 innerPadding = innerPadding,
                                 viewModel = viewModel,
+                                onBackClicked = {
+                                    navController.popBackStack()
+                                }
 //                                onCancel = {
 //                                    viewModel.onQueryChanged("")
 //                                    navController.popBackStack()
@@ -174,7 +180,8 @@ class MainActivity : ComponentActivity() {
                                             clientId
                                         )
                                     )
-                                }
+                                },
+                                onBackClicked = { navController.popBackStack() }
                             )
                         }
                         composable(

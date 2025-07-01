@@ -35,8 +35,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.leysaasnalbeauty.R
+import com.example.leysaasnalbeauty.leyasnal.ui.components.BackButtonItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.ButtonTextItem
+import com.example.leysaasnalbeauty.leyasnal.ui.components.ClientListWithQuery
 import com.example.leysaasnalbeauty.leyasnal.ui.components.DatePickerDialogItem
 import com.example.leysaasnalbeauty.leyasnal.ui.components.FirstTitleText
 import com.example.leysaasnalbeauty.leyasnal.ui.components.MainTextField
@@ -51,7 +53,8 @@ import java.time.ZoneId
 fun AddClientScreen(
     innerPadding: PaddingValues,
     onAddClient: (ClientDataClass) -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    onBackClicked: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -73,7 +76,8 @@ fun AddClientScreen(
     }
 
     LaunchedEffect(name, phoneNumber, details, dateValue) {
-        isButtonEnabled = name.isNotEmpty() && phoneNumber.isNotEmpty() && details.isNotEmpty() && dateValue.isNotEmpty()
+        isButtonEnabled =
+            name.isNotEmpty() && phoneNumber.isNotEmpty() && details.isNotEmpty() && dateValue.isNotEmpty()
     }
 
     Box(
@@ -88,6 +92,8 @@ fun AddClientScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+
+            BackButtonItem { onBackClicked() }
             Spacer(Modifier.size(0.dp))
             Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 FirstTitleText(stringResource(R.string.add_client))
@@ -150,10 +156,15 @@ fun AddClientScreen(
                                 name = name,
                                 phone = phoneNumber,
                                 details = details,
-                                birthday = Instant.ofEpochMilli(date!!).atZone(ZoneId.of("UTC")).toLocalDate()
+                                birthday = Instant.ofEpochMilli(date!!).atZone(ZoneId.of("UTC"))
+                                    .toLocalDate()
                             )
                         )
-                        Toast.makeText(context, context.getString(R.string.client_added), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.client_added),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
