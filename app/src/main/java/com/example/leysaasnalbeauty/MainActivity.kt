@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavArgument
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.ui.AppViewModel
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.BottomNavigationBarItem
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddAnnotationScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddClientScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.AddLoyaltyPointsScreen
@@ -38,7 +38,6 @@ import com.example.leysaasnalbeauty.leyasnal.ui.screens.ModifyAppointmentScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.NotifyClientScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.ScheduleAppointmentScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.screens.SelectDateTImeForAppointmentScreen
-import com.example.leysaasnalbeauty.leyasnal.ui.screens.TestScreen
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.AppTopBar
 import com.example.leysaasnalbeauty.leyasnal.ui.sections.BottomBar
 import com.example.leysaasnalbeauty.ui.theme.LeysaAsnalBeautyTheme
@@ -56,11 +55,17 @@ class MainActivity : ComponentActivity() {
             LeysaAsnalBeautyTheme {
 
                 val navController = rememberNavController()
+                val bottomNavList = listOf(
+                    BottomNavigationBarItem.Home(),
+                    BottomNavigationBarItem.Clients(),
+                    BottomNavigationBarItem.Appointments(),
+                    BottomNavigationBarItem.Annotations()
+                )
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = { AppTopBar() },
-                    bottomBar = { BottomBar(navController) }
+                    bottomBar = { BottomBar(navController, bottomNavList) }
                 ) { innerPadding ->
                     NavHost(navController, startDestination = Routes.Home.route) {
                         composable(Routes.Home.route) {
@@ -314,10 +319,10 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(
                             Routes.EditRewardPointsToService.route, arguments = listOf(
-                            navArgument("loyaltyId") {
-                                type = NavType.IntType
-                            }
-                        )) { backStackEntry ->
+                                navArgument("loyaltyId") {
+                                    type = NavType.IntType
+                                }
+                            )) { backStackEntry ->
                             EditRewardPointsToServiceScreen(
                                 innerPadding = innerPadding,
                                 viewModel = viewModel,
@@ -335,11 +340,12 @@ class MainActivity : ComponentActivity() {
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
-                        composable(Routes.EditRewardLoyalty.route, arguments = listOf(
+                        composable(
+                            Routes.EditRewardLoyalty.route, arguments = listOf(
                             navArgument("loyaltyId") {
                                 type = NavType.IntType
                             }
-                        )) {backStackEntry ->
+                        )) { backStackEntry ->
                             EditRewardLoyaltyScreen(
                                 rewardId = backStackEntry.arguments?.getInt("loyaltyId") ?: 0,
                                 innerPadding = innerPadding,
@@ -347,7 +353,7 @@ class MainActivity : ComponentActivity() {
                                 onAcceptClick = { navController.popBackStack() },
                                 onBackClick = { navController.popBackStack() },
 
-                            )
+                                )
                         }
                     }
                 }

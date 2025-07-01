@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,57 +16,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.leysaasnalbeauty.R
 import com.example.leysaasnalbeauty.leyasnal.data.Routes
 import com.example.leysaasnalbeauty.leyasnal.ui.components.BodyText
+import com.example.leysaasnalbeauty.leyasnal.ui.dataclasses.BottomNavigationBarItem
 
 @Composable
-fun BottomBar(navController: NavHostController) {
+fun BottomBar(navController: NavHostController, bottomNavList: List<BottomNavigationBarItem>) {
 
-    var selectedItem by rememberSaveable { mutableIntStateOf(0) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(
         Modifier.fillMaxWidth(),
         containerColor = Color.Black
     ) {
-        NavigationBarItem(
-            selected = selectedItem == 0,
-            onClick = {
-                selectedItem = 0
-                navController.navigate(Routes.Home.route)
-            },
-            icon = { Icon(Icons.Filled.Home, contentDescription = "") },
-            label = { BodyText(stringResource(R.string.home)) }
-        )
-        NavigationBarItem(
-            selected = selectedItem == 1,
-            onClick = {
-                selectedItem = 1
-                navController.navigate(Routes.Clients.route)
-            },
-            icon = { Icon(Icons.Filled.Favorite, contentDescription = "") },
-            label = { BodyText(stringResource(R.string.clients)) }
-
-        )
-        NavigationBarItem(
-            selected = selectedItem == 2,
-            onClick = {
-                selectedItem = 2
-                navController.navigate(Routes.AppointmentList.route)
-            },
-            icon = { Icon(painterResource(R.drawable.ic_date), contentDescription = "") },
-            label = { BodyText(stringResource(R.string.appointments)) }
-
-        )
-        NavigationBarItem(
-            selected = selectedItem == 3,
-            onClick = {
-                selectedItem = 3
-                navController.navigate(Routes.Annotations.route)
-            },
-            icon = { Icon(painterResource(R.drawable.ic_annotations), contentDescription = "") },
-            label = { BodyText(stringResource(R.string.notes)) }
-        )
+        bottomNavList.forEach { item ->
+            NavigationBarItem(
+                selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
+                onClick = {
+                    navController.navigate(item.route) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) { saveState = true }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                icon = item.icon,
+                label = item.label
+            )
+        }
     }
 }
