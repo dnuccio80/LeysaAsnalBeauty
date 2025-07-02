@@ -245,7 +245,7 @@ private fun createPdf(
 
 }
 
-fun drawableToByteArray(context: Context, drawableResId: Int): ByteArray {
+private fun drawableToByteArray(context: Context, drawableResId: Int): ByteArray {
     val drawable = ContextCompat.getDrawable(context, drawableResId)
     val bitmap = (drawable as BitmapDrawable).bitmap
 
